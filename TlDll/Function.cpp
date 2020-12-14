@@ -300,11 +300,7 @@ BOOL CFunction::FUN_RunToTarget(float fx, float fy, float dis)//¿çµØÍ¼Ñ°Â·
 	float fCurDistance = FUN_GetDistance(fx, fy);
 	if (fCurDistance > 30)
 	{
-		//if (!FUN_IsZuoQi())
-		//{
-		//	FUN_ZuoQi();
-		//	Sleep(5000);
-		//}
+		g_pMsg->CallInOutRide(1);
 	}
 
 	while (g_pMe->bRun)
@@ -342,10 +338,7 @@ BOOL CFunction::FUN_RunToTarget(float fx, float fy, float dis)//¿çµØÍ¼Ñ°Â·
 		if (fCurDistance < dis)//µ±Ç°µÄ¾àÀëÐ¡ÓÚ2¿ÉÒÔ²Ù×÷Ä¿±êÁË
 		{
 			dbgPrint("µ½´ïÄ¿µÄµØ");
-			//if (FUN_IsZuoQi())
-			//{
-			//	FUN_ZuoQi();
-			//}
+			g_pMsg->CallInOutRide(0);
 			return TRUE;
 		}
 		Sleep(1000);
@@ -369,11 +362,7 @@ BOOL CFunction::FUN_RunToTargetEx(float fx, float fy, int SceneId, float dis)//¿
 	else if (SceneId != tAsmMap.nSceneId)
 	{
 		dbgPrint("¿ªÊ¼¿çÍ¼Ñ°Â· %f, %f, %d", fx, fy, SceneId);
-		//if (!FUN_IsZuoQi())
-		//{
-		//	FUN_ZuoQi();
-		//	Sleep(5000);
-		//}
+		g_pMsg->CallInOutRide(1);
 
 		while (g_pMe->bRun)
 		{
@@ -742,11 +731,7 @@ bool CFunction::FUN_IsSkillName(_tstring taskName)
 bool CFunction::FUN_SkillUseIDPos(int nSkillId, float x, float y)
 {
 	//ÅÐ¶Ï Èç¹ûÊÇÆï³Ë×´Ì¬²»ÄÜ´ò¹Ö¡£
-	if (FUN_IsZuoQi())
-	{
-		FUN_ZuoQi();
-	}
-
+	g_pMsg->CallInOutRide(0);
 	g_pAsmSkill->AsmUseSkillCallByPoint(nSkillId, x, y);
 	return 1;
 }
@@ -1137,15 +1122,22 @@ void CFunction::FUN_AttackMonster(_tstring monsterName, _tstring sceneName, floa
 	{
 		return;
 	}
-	static _tstring strTemp;
-	if (strTemp != monsterName)
+	//static _tstring strTemp;
+	//if (strTemp != monsterName)
 	{
-		strTemp = monsterName;
+		//strTemp = monsterName;
 		int sceneId = FUN_GetSceneID(sceneName.c_str());
-		FUN_RunToTargetEx(x, y, sceneId);
+		if (FUN_RunToTargetEx(x, y, sceneId)) {
+			TAsmMonster tAsmMonster = FUN_GetMonsterByName(monsterName.c_str(), 0, 1);
+			if (tAsmMonster.nMonsterId != -1)
+			{
+				dbgPrint("FUN_KillMonsterByNameID %d", tAsmMonster.nMonsterId);
+				FUN_UseSkillKillMonster(tAsmMonster);//¿ªÊ¼¼¼ÄÜ´ò¹Ö;
+			}
+		}
 	}
 
-	FUN_MisKillMonsterByName(monsterName);
+	//FUN_MisKillMonsterByName(monsterName);
 
 }
 
@@ -1170,11 +1162,7 @@ void CFunction::FUN_JoinMenPai(_tstring szMenPaiName)
 				return;
 			}
 
-			//if (!FUN_IsZuoQi())
-			//{
-			//	FUN_ZuoQi();
-			//	Sleep(5000);
-			//}
+			g_pMsg->CallInOutRide(1);
 
 			int sceneId = FUN_GetSceneID("Áè²¨¶´");
 			float tmpPosX = 124;
@@ -1235,11 +1223,7 @@ int CFunction::FUN_AutoMove()
 	{
 		if (strTemp.Find("×Ô¶¯Ñ°Â·") != -1)
 		{
-			//if (!FUN_IsZuoQi())
-			//{
-			//	FUN_ZuoQi();
-			//	Sleep(5000);
-			//}
+			g_pMsg->CallInOutRide(1);
 
 			g_pMsg->msg_dostring("setmetatable(_G, {__index = MessageBox_Self_Env}); StartAutoMove();this:Hide()");
 			Sleep(200);
@@ -1263,29 +1247,10 @@ int CFunction::FUN_AutoMove()
 	return 0;
 }
 
-bool CFunction::FUN_IsZuoQi()
-{
-	int val = g_pMsg->msg_getnumber("g_GetValue = GetMountID();");
-	Sleep(1000);
-	if (val == -1)
-	{
-		return FALSE;
-	}
-	return TRUE;
-}
-
-void CFunction::FUN_ZuoQi()
-{
-	g_pAsmSkill->AsmUseSkillCall(-1, 21);//Ê¹ÓÃ´Ë¼¼ÄÜ
-}
-
 void CFunction::FUN_SkillUseID(int nSkillId)
 {
-	if (FUN_IsZuoQi())
-	{
-		FUN_ZuoQi();
-	}
-	Sleep(1000);
+	g_pMsg->CallInOutRide(0);
+	Sleep(500);
 	g_pAsmSkill->AsmUseSkillCall(-1, nSkillId);//Ê¹ÓÃ´Ë¼¼ÄÜ
 }
 

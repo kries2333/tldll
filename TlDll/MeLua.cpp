@@ -431,19 +431,6 @@ int CMeLua::LUA_SkillUseID(LuaState* pState)	//使用指向地面技能
 		int nSkillId = args[2].GetInteger();
 
 		dbgPrint("LUA_SkillUseID monsterId=%d nSkillId=%d", monsterId, nSkillId);
-		//for (int i = 0; i < 6; i++)
-		//{
-		//	if (FUN_IsZuoQi())
-		//	{
-		//		FUN_ZuoQi();
-		//	}
-		//	Sleep(100);
-		//}
-		//if (!FUN_IsZuoQi())
-		//{
-		//	g_pAsmSkill->AsmUseSkillCall(monsterId, nSkillId);//使用此技能
-		//}
-		
 		FUN_SkillUseID(nSkillId);
 		return 1;
 	}

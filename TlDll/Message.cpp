@@ -362,7 +362,7 @@ void CMessage::QuestFrameOptionClicked(const char* strNpcOption)//NPC对话选项
 
 int CMessage::GetCurMountID()//当前坐骑id
 {
-	return	msg_getnumber("g_GetValue = Player:GetMountID();");
+	return	msg_getnumber("g_GetValue = GetMountID();");
 }
 
 //==========================================================================

@@ -446,7 +446,7 @@ end
 
 function GetBagItemNum(name)
 	local count = 0;
-	for i=1, 60 do
+	for i=1, 100 do
 		local itemName = PlayerPackage:GetBagItemName(i);
 		if itemName == name then
 			count = count + PlayerPackage:GetBagItemNum(i);

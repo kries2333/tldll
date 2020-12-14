@@ -122,12 +122,6 @@ public:
 
 	int FUN_AutoMove();
 
-	//Æï³Ë×´Ì¬
-	bool FUN_IsZuoQi();
-
-	//ÕÙ»½×øÆï
-	void FUN_ZuoQi();
-
 	BOOL FUN_IsQuitRelative();
 
 	void FUN_DeathResurrection();
