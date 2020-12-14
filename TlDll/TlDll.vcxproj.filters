@@ -108,6 +108,9 @@
     <ClCompile Include="AsmTeam.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="TlDll.def">
