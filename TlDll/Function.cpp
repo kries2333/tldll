@@ -395,10 +395,11 @@ BOOL CFunction::FUN_RunToTargetEx(float fx, float fy, int SceneId, float dis)//¿
 			float fCurDistance = FUN_GetDistance(fx, fy);
 			CString strTemp;
 			strTemp.Format("´Ó%s(%d)ÒÆ¶¯µ½%s(%d) ¾àÀëÄ¿±ê=%f", tAsmMap.szName, tAsmMap.nSceneId, CString(FUN_GetSceneName(SceneId).c_str()), SceneId, fCurDistance);
-			//g_pHPInit->MySendGameInfo(strTemp);
+			g_pHPInit->MySendGameInfo(strTemp);
 			if (fCurDistance < dis)//µ±Ç°µÄ¾àÀëÐ¡ÓÚ2¿ÉÒÔ²Ù×÷Ä¿±êÁË
 			{
 				dbgPrint("µ½´ïÄ¿µÄµØ");
+				g_pMsg->CallInOutRide(0);
 				return TRUE;
 			}
 

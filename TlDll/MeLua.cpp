@@ -318,7 +318,7 @@ int  CMeLua::LUA_MoveTo(LuaState* pState)//ÒÆ¶¯º¯Êı
 		dbgPrint("LUA_MoveTo %f %f %s", x, y, sceneName.c_str());
 
 		int sceneId = FUN_GetSceneID(sceneName.c_str());
-		int nRet = FUN_RunToTargetEx(x, y, sceneId);
+		int nRet = FUN_RunToTargetEx(x, y, sceneId, 5);
 		pState->PushInteger(nRet);
 		return 1;
 	}
