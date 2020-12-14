@@ -319,6 +319,8 @@ BOOL CFunction::FUN_RunToTarget(float fx, float fy, float dis)//¿çµØÍ¼Ñ°Â·
 			return TRUE;
 		}
 
+
+
 		TAsmRoleInfo tRoleInfo = g_pAsmRole->GetRoleInfo();
 		if (tRoleInfo.nState != 2)
 		{
@@ -328,6 +330,22 @@ BOOL CFunction::FUN_RunToTarget(float fx, float fy, float dis)//¿çµØÍ¼Ñ°Â·
 				Sleep(1000);
 				FUN_AutoMove();
 				bMov = true;
+				Sleep(1000);
+				auto APos = g_pAsmRole->GetPos();
+				fOldX = APos.fx;
+				fOldY = APos.fy;
+			}
+		}
+
+		DWORD dwEndTime = GetTickCount64();
+		if ((dwEndTime - dwCurTime) > (3 * 1000)) //Èç¹û30Ãë»¹Ã»µ½´ïÍË³öÖØÐÂÑ°Â·
+		{
+			auto APos = g_pAsmRole->GetPos();
+			if (APos.fx == fOldX && APos.fy == fOldY)
+			{
+				bMov = false;
+				fOldX = APos.fx;
+				fOldY = APos.fy;
 			}
 		}
 
@@ -389,6 +407,21 @@ BOOL CFunction::FUN_RunToTargetEx(float fx, float fy, int SceneId, float dis)//¿
 					Sleep(1000);
 					FUN_AutoMove();
 					bMov = true;
+					auto APos = g_pAsmRole->GetPos();
+					fOldX = APos.fx;
+					fOldY = APos.fy;
+				}
+			}
+
+			DWORD dwEndTime = GetTickCount64();
+			if ((dwEndTime - dwCurTime) > (3 * 1000)) //Èç¹û30Ãë»¹Ã»µ½´ïÍË³öÖØÐÂÑ°Â·
+			{
+				auto APos = g_pAsmRole->GetPos();
+				if (APos.fx == fOldX && APos.fy == fOldY)
+				{
+					bMov = false;
+					fOldX = APos.fx;
+					fOldY = APos.fy;
 				}
 			}
 
@@ -1554,6 +1587,21 @@ void CFunction::FUN_RoleHMProtection(CString szLp, CString szTypeName, int Per, 
 	else
 	{
 
+	}
+}
+
+void CFunction::FUN_PetHMProtection(CString szTypeName, int Per, CString szYaoNames)
+{
+	dbgPrint("FUN_PetHMProtection szTypeName=%s Per=%d szYaoNames=%s", szTypeName, Per, szYaoNames);
+	if (szTypeName == "ÑªÁ¿")
+	{
+		_tstring szTemp = szYaoNames;
+		auto  vString = UserSubMonsterName(szTemp, _T('|'));
+		for (auto v : vString)
+		{
+			g_pUser->tPetProtect.vYaoName.push_back(v.c_str());
+		}
+		g_pUser->tPetProtect.nHpPer = Per;
 	}
 }
 

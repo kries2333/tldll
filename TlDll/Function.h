@@ -144,6 +144,9 @@ public:
 	//角色保护吃药设置
 	void FUN_RoleHMProtection(CString szLp, CString szTypeName, int Per, CString szYaoNames);
 
+	//宠物保护吃药设置
+	void FUN_PetHMProtection(CString szTypeName, int Per, CString szYaoNames);
+
 	/************************************************************************/
 	/////////////////////////////组队函数封装//////////////
 	/************************************************************************/
