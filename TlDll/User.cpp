@@ -125,7 +125,10 @@ VAsmSkill CUser::UserGetSkill()//获取技能
 	}
 	else
 	{
-
+		nSkill.szName = "普通攻击";
+		nSkill.nSkillId = 0;
+		nSkill.fMax = 2.0;
+		l_AsmSkill.push_back(nSkill);
 	}
 	return l_AsmSkill;
 }
