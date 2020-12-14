@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "MeKillMonster.h"
 
-extern CMain *g_pMain;
+extern CMe *g_pMe;
 extern CUser* g_pUser;
 
 void CMeKillMonster::Me_TimeDetectionRadius(TUserTime* ptUserTime, VUserPos vUserPos, size_t nNum)//¹Ò»ú°ë¾¶
@@ -51,7 +51,7 @@ UINT __stdcall KillMonster_ThreadFunc(LPVOID p)
 
 	CMeKillMonster* pMeKill = new CMeKillMonster();
 
-	while (g_pMain->bKillMonsterThread) {
+	while (g_pMe->bKillMonsterThread) {
 		//°ë¾¶¼ì²â
 		pMeKill->Me_TimeDetectionRadius(&tUserRadiusTime, vUserPos, nNum);
 

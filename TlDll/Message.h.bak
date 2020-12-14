@@ -17,7 +17,7 @@ typedef struct _TLGameInfo {
 	int RoleLv;					//角色等级
 	int RoleHp;					//角色血量
 	bool IsInject;				//是否已经注入	dll写入
-	DWORD ControlId;			//控制标识
+DWORD ControlId;			//控制标识
 }TLGAMEINFO, PTLGAMEINFO;
 
 typedef int(*Glua_dostring)(int, const char*);//do_string

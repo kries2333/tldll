@@ -195,7 +195,10 @@
     <ClCompile Include="AsmMonster.cpp" />
     <ClCompile Include="AsmPet.cpp" />
     <ClCompile Include="AsmSkill.cpp" />
+    <ClCompile Include="AsmStoreItem.cpp" />
     <ClCompile Include="AsmTask.cpp" />
+    <ClCompile Include="AsmTeam.cpp" />
+    <ClCompile Include="Base.cpp" />
     <ClCompile Include="CControlsCommon.cpp" />
     <ClCompile Include="DlgPage2.cpp" />
     <ClCompile Include="DlgPage3.cpp" />
@@ -206,9 +209,11 @@
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="HPInit.cpp" />
     <ClCompile Include="Login.cpp" />
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Me.cpp" />
+    <ClCompile Include="MeKill.cpp" />
     <ClCompile Include="MeKillMonster.cpp" />
     <ClCompile Include="MeLua.cpp" />
+    <ClCompile Include="MeProtect.cpp" />
     <ClCompile Include="Message.cpp" />
     <ClCompile Include="MonsterNameDlg.cpp" />
     <ClCompile Include="pch.cpp">
@@ -233,6 +238,8 @@
     <ClInclude Include="AsmMonster.h" />
     <ClInclude Include="AsmPet.h" />
     <ClInclude Include="AsmSkill.h" />
+    <ClInclude Include="AsmStoreItem.h" />
+    <ClInclude Include="AsmTeam.h" />
     <ClInclude Include="Base.h" />
     <ClInclude Include="AsmTask.h" />
     <ClInclude Include="CControlsCommon.h" />
@@ -246,7 +253,8 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="HPInit.h" />
     <ClInclude Include="Login.h" />
-    <ClInclude Include="Main.h" />
+    <ClInclude Include="Me.h" />
+    <ClInclude Include="MeKill.h" />
     <ClInclude Include="MeKillMonster.h" />
     <ClInclude Include="MeLua.h" />
     <ClInclude Include="Message.h" />

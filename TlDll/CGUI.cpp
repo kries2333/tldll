@@ -5,11 +5,11 @@
 #include "TlDll.h"
 #include "CGUI.h"
 #include "afxdialogex.h"
-#include "Main.h"
+#include "Me.h"
 #include "ScriptSystem.h"
 #include "FileSystem.h"
 
-extern CMain *g_pMain;
+extern CMe *g_pMe;
 extern CFileSystem* g_pFileSystem;
 
 // CGUI 对话框
@@ -123,12 +123,12 @@ void CGUI::OnBnClickedButton1()
 
 void CGUI::OnBnClickedBtnStart()
 {
-	g_pMain->CreateTask("棋局");
+	g_pMe->CreateTask("野外30-40");
 }
 
 
 void CGUI::OnBnClickedBtnEnd()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	g_pMain->EndThread();
+	g_pMe->EndThread();
 }

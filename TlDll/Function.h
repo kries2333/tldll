@@ -52,26 +52,10 @@ public:
 	BOOL  FUN_RunToTargetEx(float x, float y, int SceneId, float dis = 2);//跨地图寻路
 	float FUN_GetDistance(float x2, float y2);//获取与目标的距离
 
-	/************************************************************************/
-	/////////////////////////////技能打怪相关的函数封装//////////////
-	/************************************************************************/
-	//BOOL FUN_KillAnyMonster(int nMonsterType, int nKillType = 2);//杀任意怪
-	//TAsmMonster FUN_GetAnyMonster(int nMonsterType, int nKillType);//获取最近的任意怪物
-	//BOOL FUN_MisKillMonsterByName(VUserMonsterName vm_UserMonsterName, int nMonsterType, int nKillType);//杀指定怪
-	//void FUN_UseSkillKillMonster(TAsmMonster tAsmMonster, int nMonsterType = 0, int nKillType = 2);
-	bool FUN_MinDistanceObject(float* fdistance, float fx, float fy);	//true是最近的
-	//void FUN_UseAttackSkill(TAsmSkill tAsmSkill/*CString SkillName*/, TAsmMonster tAsmMonster);//使用攻击技能
-	void FUN_UseMovAttackSkill(TAsmSkill tAsmSkill, TAsmMonster tAsmMonster);//开始释放攻击技能
-	bool FUN_MovToMonster(TAsmMonster tAsmMonster, TAsmSkill tAsmSkill);//走到技能射程内
-	bool FUN_IsMonsterDie(TAsmMonster* ptAsmMonster);//false为死亡
-	TAsmMonster FUN_GetMonsterByName(_tstring MonsterName, int nMonsterType, int nKillType);//名称获取最近的怪物
-	TAsmMonster FUN_GetCatchMonsterByName(_tstring MonsterName);
+	void FUN_SetAttackMonsterPoints(CString szPoints);
 
 	//执行杀怪
 	void FUN_AttackMonster(_tstring monsterName, _tstring sceneName, float x, float y);
-
-	//当前地图定点杀怪
-	void FUN_AttackMonsterEx(VUserMonsterName monsterNames);
 
 	/************************************************************************/
 	/* 主线任务打怪函数                                                     */
@@ -144,8 +128,6 @@ public:
 	//召唤坐骑
 	void FUN_ZuoQi();
 
-	void FUN_AutoSell(_tstring itemNames);
-
 	BOOL FUN_IsQuitRelative();
 
 	void FUN_DeathResurrection();
@@ -154,11 +136,39 @@ public:
 
 	BOOL FUN_RunTo(float x, float y, int nTime);
 
-	void FUN_AutoBuy(_tstring itemNames, _tstring sceneName, int nPosX, int nPosY, _tstring npcName, _tstring _talkName);
+	void FUN_AutoSell(CString sceneName, int nPosX, int nPosY, CString npcName, CString _talkName);
+
+	void FUN_AutoBuy(CString itemNames, CString sceneName, int nPosX, int nPosY, CString npcName, CString _talkName);
 
 	void FUN_AutoStorage(_tstring sceneName, int nPosX, int nPosY, _tstring npcName, _tstring _talkName);
 
 	//自动恢复角色状态
 	void FUN_AutoRoleStatus(int nPercentage);
+
+	int FUN_GetBagItemBlankNum();
+
+	//角色保护吃药设置
+	void FUN_RoleHMProtection(CString szLp, CString szTypeName, int Per, CString szYaoNames);
+
+	/************************************************************************/
+	/////////////////////////////组队函数封装//////////////
+	/************************************************************************/
+	BOOL FUN_AutoTeam();
+	BOOL FUN_CheckTeam();
+
+protected:
+	/************************************************************************/
+	/////////////////////////////技能打怪相关的函数封装//////////////
+	/************************************************************************/
+	bool FUN_MinDistanceObject(float* fdistance, float fx, float fy);	//true是最近的
+	void FUN_UseMovAttackSkill(TAsmSkill tAsmSkill, TAsmMonster tAsmMonster);//开始释放攻击技能
+	bool FUN_MovToMonster(TAsmMonster tAsmMonster, TAsmSkill tAsmSkill);//走到技能射程内
+	bool FUN_IsMonsterDie(TAsmMonster* ptAsmMonster);//false为死亡
+	TAsmMonster FUN_GetMonsterByName(_tstring MonsterName, int nMonsterType, int nKillType);//名称获取最近的怪物
+	TAsmMonster FUN_GetCatchMonsterByName(_tstring MonsterName);
+
+	BOOL FUN_KillMonsterByName(VUserMonsterName vm_UserMonsterName);
+	void FUN_UseSkillKillMonster(TAsmMonster tAsmMonster);
+	void FUN_UseAttackSkill(TAsmSkill tAsmSkill/*CString SkillName*/, TAsmMonster tAsmMonster);
 };
 

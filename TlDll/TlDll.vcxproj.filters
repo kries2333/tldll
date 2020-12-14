@@ -21,9 +21,6 @@
     <ClCompile Include="pch.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Login.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -93,6 +90,24 @@
     <ClCompile Include="AsmItem.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Base.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AsmStoreItem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MeKill.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Me.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MeProtect.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AsmTeam.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="TlDll.def">
@@ -117,9 +132,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Main.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Login.h">
@@ -195,6 +207,18 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="AsmItem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmStoreItem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MeKill.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Me.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmTeam.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

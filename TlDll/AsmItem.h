@@ -18,6 +18,9 @@ struct TAsmItem
 	char* szTypeName;//物品类型名称
 	char* szDataAttribute;//属性说明
 	int   nIntdex;//物品所在格子
+	DWORD uAttributeObj1;
+	DWORD uAttributeObj2;
+	DWORD uAttributeObj3;
 
 	TAsmItem()
 	{
@@ -46,13 +49,16 @@ public:
 	BYTE byTwoCount = 0;//材料背包格子总数
 	BYTE byThreeCount = 0;//任务背包格子总数
 public:
-	VAsmItem  AsmGetItemData(int nNum);
+	VAsmItem  AsmGetItemData();
 	void AutoWearEquipment(_tstring itemNames);
 	void WearEquipment(int nIndex, int nTypeName);
 	void AutoSell(_tstring itemNames);
 	void SellEquipment(DWORD uObj);
 	void AutoDestroy(_tstring itemNames);
 	void Destroy(int nIndex);
+	int  AsmGetItemNum(CString name);
+
+	void AsmUseHpItem(int nIndex, DWORD ItemObject1, DWORD ItemObject2, DWORD ItemObject3);
 private:
 	int GetEquipmentTypeForName(CString name);
 };

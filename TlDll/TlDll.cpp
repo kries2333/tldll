@@ -4,14 +4,14 @@
 #include "pch.h"
 #include "framework.h"
 #include "TlDll.h"
-#include "Main.h"
+#include "Me.h"
 #include "mutex.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-CMain* g_pMain;
+CMe* g_pMe;
 //
 //TODO:  如果此 DLL 相对于 MFC DLL 是动态链接的，
 //		则从此 DLL 导出的任何调入
@@ -62,9 +62,9 @@ bool CloseObjectByName(LPCTSTR pObjectName, int type = 11);
 BOOL CTlDllApp::InitInstance()
 {
 	CWinApp::InitInstance();
-	g_pMain = new CMain();
-	g_pMain->hDll = theApp.m_hInstance;
-	g_pMain->CreateLogin(1);
+	g_pMe = new CMe();
+	g_pMe->hDll = theApp.m_hInstance;
+	g_pMe->CreateLogin(1);
 
 	//CloseObjectByName("\\BaseNamedObjects\\DBWinMutex");
 	//CloseObjectByName("\\BaseNamedObjects\\__DDravCheckExclMode__");

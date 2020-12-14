@@ -115,12 +115,8 @@ void CScriptSystem::LUA_ScriptSystemInitial(/*CString strScriptName*/)
 
 	objGlobal.Register("lua_RoleHMProtection", *MeLua,
 		&CMeLua::LUA_RoleHMProtection);		//设置角色保护
-
-	objGlobal.Register("lua_AutoTeam", *MeLua, 
+	objGlobal.Register("自动组队", *MeLua, 
 		&CMeLua::LUA_AutoTeam);			//自动组队
-
-	objGlobal.Register("lua_CheckTeam", *MeLua,
-		&CMeLua::LUA_CheckTeam);			//检查队伍
 	//======以上为对外接口=============================================
 
 	//========以下测试接口使用，发布需要屏蔽=============================================

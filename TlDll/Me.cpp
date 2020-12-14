@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Main.h"
+#include "Me.h"
 #include "Login.h"
 #include "CGUI.h"
 #include "Function.h"
@@ -12,7 +12,7 @@
 #include "HPInit.h"
 
 CGUI* g_pUI;
-extern CMain* g_pMain;
+extern CMe* g_pMe;
 extern CMessage *g_pMsg;
 extern CFileSystem* g_pFileSystem;
 extern CScriptSystem *g_pScriptSystem;
@@ -29,9 +29,10 @@ UINT __stdcall UI_ThreadFunc(LPVOID p)
 	dbgPrint("初始化界面");
 
 	Sleep(2000);
-	g_pMain->CreateTask(g_pMsg->mGameInfo->LuaScript);
-	g_pMain->CreateInfo();
-	g_pMain->CreateGift();
+	g_pMe->CreateTask(g_pMsg->mGameInfo->LuaScript);
+	g_pMe->CreatProtect();
+	g_pMe->CreateInfo();
+	g_pMe->CreateGift();
 	
 
 	//采用成员变量创建一个模态对话框
@@ -43,13 +44,13 @@ UINT __stdcall UI_ThreadFunc(LPVOID p)
 //更新信息
 UINT __stdcall Info_ThreadFunc(void* p)
 {
-	if (g_pMain == NULL)
+	if (g_pMe == NULL)
 	{
 		return 0;
 	}
 	while (true)
 	{
-		if (!g_pMain->bInfoThread)
+		if (!g_pMe->bInfoThread)
 		{
 			return 0;
 		}
@@ -73,13 +74,13 @@ UINT __stdcall Info_ThreadFunc(void* p)
 //定时领取礼物
 UINT __stdcall Gift_ThreadFunc(void* p)
 {
-	if (g_pMain == NULL)
+	if (g_pMe == NULL)
 	{
 		return 0;
 	}
 	while (true)
 	{
-		if (!g_pMain->bGiftThread)
+		if (!g_pMe->bGiftThread)
 		{
 			return 0;
 		}
@@ -100,7 +101,7 @@ UINT __stdcall Gift_ThreadFunc(void* p)
 			}
 
 			CString strTemp = g_pMsg->msg_getstring("MyMonCanCommitString", "setmetatable(_G, {__index = QuitRelative_Env}); MyMonCanCommitString = QuitRelative_Text:GetText()").c_str();
-			dbgPrint("服务器的连接 strTemp=%s", strTemp);
+			//dbgPrint("服务器的连接 strTemp=%s", strTemp);
 			if (strTemp.Find("服务器的连接") != -1)
 			{
 				g_pMsg->msg_dostring("setmetatable(_G, { __index = QuitRelative_Env }); QuitRelative_Cancel_Clicked();");
@@ -114,10 +115,9 @@ UINT __stdcall Gift_ThreadFunc(void* p)
 	return 0;
 }
 
-
 UINT __stdcall Task_ThreadFunc(void* pType)
 {
-	//++g_pMain->atomic_int_work_thread;//线程计数
+	//++g_pMe->atomic_int_work_thread;//线程计数
 	Sleep(1000);
 	::SendMessage(g_pUI->m_hWnd, WM_MY_MESSAGE, 0, 0);//激活按钮
 	g_pUser->UserSystemInitial();
@@ -137,8 +137,7 @@ UINT __stdcall Task_ThreadFunc(void* pType)
 	return 0;
 }
 
-
-void CMain::EndThread()
+void CMe::EndThread()
 {
 	bRun = false;
 	bTaskThread = false;
@@ -161,20 +160,20 @@ void CMain::EndThread()
 	}
 }
 
-void CMain::CreateLogin(int nNUM)//创建登录线程
+void CMe::CreateLogin(int nNUM)//创建登录线程
 {
 	bGiftThread = true;
 	HANDLE	hlg = (HANDLE)_beginthreadex(NULL, 0, &Login_threadFunc, (void*)nNUM, 0, NULL);
 	::CloseHandle(hlg);
 }
 
-void CMain::CreateUI()	//创建模态对话框
+void CMe::CreateUI()	//创建模态对话框
 {
 	bUiThread = true;
 	hUIThread = (HANDLE)_beginthreadex(NULL, 0, &UI_ThreadFunc, this, 0, NULL);
 }
 
-void CMain::CreateKillMonster()//创建打怪线程
+void CMe::CreateKillMonster()//创建打怪线程
 {
 	if (hKillMonsterThread)//杀怪线程
 	{
@@ -188,7 +187,7 @@ void CMain::CreateKillMonster()//创建打怪线程
 }
 
 //执行任务脚本
-void CMain::CreateTask(const char* tasks)//创建Task线程
+void CMe::CreateTask(const char* tasks)//创建Task线程
 {
 	if (hTaskThread)
 	{
@@ -203,7 +202,7 @@ void CMain::CreateTask(const char* tasks)//创建Task线程
 }
 
 //执行领取礼物
-void CMain::CreateInfo()	//创建Task线程
+void CMe::CreateInfo()	//创建Task线程
 {
 	if (hInfoThread)
 	{
@@ -216,7 +215,7 @@ void CMain::CreateInfo()	//创建Task线程
 }
 
 //执行领取礼物
-void CMain::CreateGift()	//创建Task线程
+void CMe::CreateGift()	//创建Task线程
 {
 	if (hGiftThread)
 	{
@@ -228,7 +227,20 @@ void CMain::CreateGift()	//创建Task线程
 	hGiftThread = (HANDLE)_beginthreadex(nullptr, 0, &Gift_ThreadFunc, 0, 0, nullptr);
 }
 
-BOOL CMain::OpenShareMemory()
+
+void CMe::CreatProtect()//创建保护线程
+{
+	if (hProtectThread)//任务线程停止时可能要等待很久
+	{
+		::CloseHandle(hProtectThread);
+		hProtectThread = nullptr;
+	}
+	bProtectRun = true;
+	//hTryThread = (HANDLE)_beginthreadex(NULL, 0, &Try_threadfunc, this, 0, NULL);
+	hProtectThread = (HANDLE)_beginthreadex(NULL, 0, &Protect_threadfunc, this, 0, NULL);
+}
+
+BOOL CMe::OpenShareMemory()
 {
 	CString szNameresult;			//共享内存名字作为标识
 

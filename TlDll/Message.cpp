@@ -4,14 +4,15 @@
 #include "AsmRole.h"
 #include "AsmItem.h"
 #include "AsmTask.h"
-#include "Main.h"
+#include "Me.h"
 #include "resource.h"
 
-extern CMain* g_pMain;
+extern CMe* g_pMe;
 extern CMessage* g_pMsg;
 extern CAsmRole* g_pAsmRole;
 extern CAsmItem* g_pAsmItem;
 extern CAsmTask* g_pAsmTask;
+extern CAsmSkill* g_pAsmSkill;
 
 void CMessage::Init()
 {
@@ -102,16 +103,16 @@ HWND CMessage::GetGameWindow()//通过进程id获取窗口句柄
 BOOL CMessage::LUAInitialize(const char* SzDriverPath)
 {
 	// 在自定义资源中释放出sys
-	HRSRC hResc = FindResource(g_pMain->hDll, MAKEINTRESOURCE(IDR_RCDATA2), RT_RCDATA);
+	HRSRC hResc = FindResource(g_pMe->hDll, MAKEINTRESOURCE(IDR_RCDATA2), RT_RCDATA);
 	if (hResc == NULL)
 	{
 		dbgPrint("GetLastError  ==   %d", ::GetLastError());
 		return FALSE;
 	}
 
-	DWORD dwImageSize = SizeofResource(g_pMain->hDll, hResc);
+	DWORD dwImageSize = SizeofResource(g_pMe->hDll, hResc);
 
-	HGLOBAL hResourecImage = LoadResource(g_pMain->hDll, hResc);
+	HGLOBAL hResourecImage = LoadResource(g_pMe->hDll, hResc);
 	if (hResourecImage == NULL)
 	{
 		return FALSE;
@@ -647,4 +648,26 @@ LRESULT CALLBACK CMessage::our_wndproc(HWND hWnd, UINT wMsg, WPARAM wParam, LPAR
 	////////////////////////////////////////////////////////////////////////////
 
 	return ::CallWindowProc(g_pMsg->funWndProc, hWnd, wMsg, wParam, lParam);
+}
+
+void CMessage::CallInOutRide(int nValue)//召唤找回坐骑
+{
+	if (nValue == 0)
+	{
+		if (GetCurMountID() != -1)
+		{
+			g_pAsmSkill->AsmUseSkillCall(-1, 0x15);
+			Sleep(1000);
+		}
+	}
+	else if (nValue == 1)
+	{
+		if (GetCurMountID() == -1)//当前不是骑乘状态
+		{
+			g_pAsmSkill->AsmUseSkillCall(-1, 0x15);
+			//CMeKill MeKill;
+			//MeKill.FUN_WaitTime(5);
+			Sleep(5000);
+		}
+	}
 }

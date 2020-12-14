@@ -107,30 +107,7 @@ VAsmSkill CUser::UserGetSkill()//获取技能
 {
 	int nCount = g_pUI->m_Page2.m_SkillList.GetItemCount();
 	VAsmSkill l_AsmSkill;
-	//auto  ASkill = g_pAsmSkill->AsmGetSkillData();
-	//for (auto s : ASkill)
-	//{
-	//	//if ((CString)s.szName == "初级隐遁")
-	//	//	nYinShenSkillID = s.nSkillId;
-	//	//else if ((CString)s.szName == "捕兽")
-	//	//	nBuShouSkillID = s.nSkillId;
 
-	//	//if (pAsmSkill->AsmHaveMasterSkill(s.unTree) == 0)//返回0已经学会
-	//	//{
-	//	for (int i = 0; i < nCount; i++)
-	//	{
-	//		//用户是否勾选了此技能
-	//		if (g_pUI->m_Page2.m_SkillList.GetCheck(i))
-	//		{//技能名字
-	//			CString SkillName = g_pUI->m_Page2.m_SkillList.GetItemText(i, 0);
-	//			if (SkillName == s.szName)
-	//			{
-	//				l_AsmSkill.push_back(s);
-	//			}
-	//		}
-	//	}
-	//	//}
-	//}
 	int nMenPai = g_pAsmRole->GetMenPaiForId();
 	TAsmSkill nSkill;
 	if (nMenPai == 8) {
@@ -138,6 +115,17 @@ VAsmSkill CUser::UserGetSkill()//获取技能
 		nSkill.nSkillId = 521;
 		nSkill.fMax = 15.0;
 		l_AsmSkill.push_back(nSkill);
+	}
+	else if (nMenPai == 4)
+	{
+		nSkill.szName = "貂蝉拜月";
+		nSkill.nSkillId = 401;
+		nSkill.fMax = 15.0;
+		l_AsmSkill.push_back(nSkill);
+	}
+	else
+	{
+
 	}
 	return l_AsmSkill;
 }

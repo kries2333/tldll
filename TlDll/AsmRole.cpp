@@ -93,6 +93,7 @@ TAsmRoleInfo CAsmRole::GetRoleInfo()
 		default:
 			break;
 		}
+		TAsmRoleInfo.bool_ret = true;
 		//dbgPrint("GetRoleInfo szName=%s, nState =%d nLevel=%d, szMenpai=%s, nMenpai=%d", 
 		//	TAsmRoleInfo.szName, TAsmRoleInfo.nState, TAsmRoleInfo.nLevel, TAsmRoleInfo.szMenpai, TAsmRoleInfo.nMenpai);
 	}
@@ -201,7 +202,7 @@ int	CAsmRole::GetMenPaiForId()
 _tstring CAsmRole::GetMenPaiForName()
 {
 	int menpaiId = 0;
-	_tstring strMenPai = 0;
+	_tstring strMenPai = "";
 	try
 	{
 		ULONG data = 0;
@@ -308,4 +309,41 @@ int CAsmRole::GetQiChenStatus()
 	}
 
 	return 0;
+}
+
+TAsmHPMP CAsmRole::GetHPMP()
+{
+
+	TAsmHPMP tAsmHPMP;
+
+	try
+	{
+		ULONG data = 0;
+		data = GetRoleBase();
+		if (data != 0)
+		{
+			if (IsBadReadPtr((PULONG)(data + 0x144), 4) == 0)
+				data = *(PULONG)(data + 0x144);
+			if (IsBadReadPtr((PULONG)(data + 0x4), 4) == 0)
+				data = *(PULONG)(data + 0x4);
+
+			if (IsBadReadPtr((int*)(data + 0x980), 4) == 0)
+				tAsmHPMP.nCurhp = *(int*)(data + 0x980);		//Ñª 0x980
+			if (IsBadReadPtr((int*)(data + 0x9EC), 4) == 0)
+				tAsmHPMP.nMaxhp = *(int*)(data + 0x9EC);	//Ñª 0x980
+			if (IsBadReadPtr((int*)(data + 0x984), 4) == 0)
+				tAsmHPMP.nCurmp = *(int*)(data + 0x984);		//Æø 0x980
+			if (IsBadReadPtr((int*)(data + 0x9F0), 4) == 0)
+				tAsmHPMP.nMaxmp = *(int*)(data + 0x9F0);	//Æø 0x980
+
+			tAsmHPMP.bool_ret = true;
+		}
+
+	}
+	catch (const std::exception&)
+	{
+		dbgPrint(__FUNCTION__);
+	}
+
+	return tAsmHPMP;
 }

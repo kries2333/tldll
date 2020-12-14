@@ -444,13 +444,13 @@ function getAcceptBoxText()
     return "";
 end
 
--- function 取背包空格数量()
-	-- local count = 0;
-	-- for i=1, 60 do
-		-- local itemName = PlayerPackage:GetBagItemName();
-		-- if itemName == "" then
-			-- count = count + 1;
-		-- end
-	-- end
-	-- return count;
--- end
+function GetBagItemNum(name)
+	local count = 0;
+	for i=1, 60 do
+		local itemName = PlayerPackage:GetBagItemName(i);
+		if itemName == name then
+			count = count + PlayerPackage:GetBagItemNum(i);
+		end
+	end
+	return count;
+end

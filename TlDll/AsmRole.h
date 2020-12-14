@@ -15,6 +15,24 @@ struct TAsmRolePos
 	};
 };
 
+struct TAsmHPMP
+{
+	BOOL bool_ret;
+	int nCurhp;
+	int nMaxhp;
+	int nCurmp;
+	int nMaxmp;
+
+	TAsmHPMP()
+	{
+		bool_ret = FALSE;
+		nCurhp = -1;
+		nMaxhp = -1;
+		nCurmp = -1;
+		nMaxmp = -1;
+	};
+};
+
 struct TAsmRoleInfo {
 	PCHAR szName;
 	PCHAR szMenpai;
@@ -25,6 +43,7 @@ struct TAsmRoleInfo {
 	int nMoney;//
 	int nHP;//
 	int nHPMax;
+	BOOL bool_ret;
 
 	TAsmRoleInfo()
 	{
@@ -37,6 +56,7 @@ struct TAsmRoleInfo {
 		nMoney = -1;//
 		nHP = -1;//
 		nHPMax = -1;
+		bool_ret = false;
 	};
 };
 
@@ -45,7 +65,8 @@ class CAsmRole
 public:
 	CAsmRole() {};
 	~CAsmRole() {};
-
+public:
+	TAsmHPMP GetHPMP();//人物的当前HPMP最大HPMP
 	bool IsHpAndMp(int nP);
 	TAsmRolePos GetPos();
 	_tstring GetMenPaiForName();

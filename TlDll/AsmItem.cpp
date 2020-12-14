@@ -15,7 +15,7 @@ DWORD GetBaseAddr()
 	return data;
 }
 
-VAsmItem CAsmItem::AsmGetItemData(int nNum)
+VAsmItem CAsmItem::AsmGetItemData()
 {
 	VAsmItem vm_Item;//包裹内物品
 	try
@@ -34,6 +34,12 @@ VAsmItem CAsmItem::AsmGetItemData(int nNum)
 				tItems.uObject = *(DWORD*)(uObj);
 				tItems.uObj = uObj;
 				tItems.nIntdex = i;
+
+				DWORD newObj = *(DWORD*)(uObj + 0x14);
+				tItems.uAttributeObj1 = *(DWORD*)(newObj + 0x0);
+				tItems.uAttributeObj2 = *(DWORD*)(newObj + 0x4);
+				tItems.uAttributeObj3 = *(DWORD*)(newObj + 0x8);
+
 				__asm {
 					mov ecx, uObj
 					mov eax, tItems.uObject
@@ -50,8 +56,8 @@ VAsmItem CAsmItem::AsmGetItemData(int nNum)
 					call[eax + 0x14]
 					mov NameAddr, eax
 				}		
-				tItems.szTypeName = (PCHAR)(NameAddr);	//类别名称
 
+				tItems.szTypeName = (PCHAR)(NameAddr);	//类别名称
 				tItems.nEquipType = GetEquipmentTypeForName(tItems.szTypeName);
 
 				uObj = *(DWORD*)(uObj + 0x2C);//获取物品信息指针
@@ -122,7 +128,7 @@ int CAsmItem::GetEquipmentTypeForName(CString name)
 void CAsmItem::AutoWearEquipment(_tstring itemNames)
 {
 	dbgPrint("穿戴装备列表%s", itemNames.c_str());
-	VAsmItem items = AsmGetItemData(1);
+	VAsmItem items = AsmGetItemData();
 
 	if (itemNames.empty())
 	{
@@ -188,7 +194,7 @@ void CAsmItem::WearEquipment(int nIndex, int nTypeName)
 
 void CAsmItem::AutoSell(_tstring itemNames)
 {
-	VAsmItem items = AsmGetItemData(1);
+	VAsmItem items = AsmGetItemData();
 
 	if (itemNames.empty())
 	{
@@ -236,7 +242,7 @@ void CAsmItem::SellEquipment(DWORD uObj)
 void CAsmItem::AutoDestroy(_tstring itemNames)
 {
 	dbgPrint("销毁物品列表%s", itemNames.c_str());
-	VAsmItem items = AsmGetItemData(1);
+	VAsmItem items = AsmGetItemData();
 
 	if (itemNames.empty())
 	{
@@ -273,4 +279,48 @@ void CAsmItem::Destroy(int nIndex)
 		mov edx, _CALL
 		call edx
 	}
+}
+
+int CAsmItem::AsmGetItemNum(CString name)
+{
+	int nNum = g_pMsg->msg_getnumber("g_GetValue = GetBagItemNum(\"%s\");", name);
+	dbgPrint("AsmGetItemNum %s = %d", name, nNum);
+	return nNum;
+}
+
+//吃药发包
+void CAsmItem::AsmUseHpItem(int nIndex, DWORD ItemObject1, DWORD ItemObject2, DWORD ItemObject3)
+{
+	//吃药封包得Call
+
+	if (g_GameExeBase == 0) return;
+
+	try
+	{
+		DWORD CallBase = g_GameExeBase + CHIYAO_CALL;
+		DWORD CallEcx = g_GameExeBase + CHIYAO_CALL_ECX;
+		if (IsBadReadPtr((DWORD*)CallEcx, 4) == 0)
+			CallEcx = *(DWORD*)CallEcx;
+
+		dbgPrint("nIndex=%X, ItemObject1=%d ItemObject2=%X ItemObject3=%X", nIndex, ItemObject1, ItemObject2, ItemObject3);
+
+		DWORD CallObj = g_GameExeBase + CHIYAO_CALL_OBJ;
+		TAsmSendEx* tAsmSendEx = BasePackerSendEx(CallObj, 0, 0, -1, nIndex, ItemObject3, ItemObject1, ItemObject2, 
+			0x4517, 0xBF800000, 0xBF800000, 0xBF800000);
+
+		dbgPrint("CallBase=%X, CallEcx=%X CallObj=%X tAsmSend=%X", CallBase, CallEcx, CallObj, tAsmSendEx);
+		_asm {
+			mov ecx, [CallEcx]
+			push tAsmSendEx
+			mov eax, CallBase
+			call eax
+		}
+		delete tAsmSendEx;
+		tAsmSendEx = NULL;
+	}
+	catch (const std::exception&)
+	{
+
+	}
+
 }

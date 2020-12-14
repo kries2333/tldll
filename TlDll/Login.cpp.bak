@@ -12,7 +12,6 @@
 #include "AsmPet.h"
 #include "AsmGroundParcel.h"
 #include "AsmItem.h"
-#include "AsmTeam.h"
 #include "AsmStoreItem.h"
 #include "MeKill.h"
 
@@ -54,7 +53,7 @@ void Initial()
 	g_pUser = new CUser();
 	g_pAsmSkill = new CAsmSkill();
 	g_pAsmTask = new CAsmTask();
-	g_pAsmTeam = new CAsmTeam();
+g_pAsmTeam = new CAsmTeam();
 	g_pGroundParcel = new CAsmGroundParcel();
 	g_pAsmItem = new CAsmItem();
 	g_pAsmStoreItem = new CAsmStoreItem();

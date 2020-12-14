@@ -8,17 +8,12 @@ DWORD GetSkillBase()
 {
 	if (g_GameExeBase == 0) return 0;
 	ULONG data = 0;
-	
 	if (IsBadReadPtr((DWORD*)(g_GameExeBase + LROLE_BASE), 4) == 0)
 	{
 		data = *(int*)(g_GameExeBase + LROLE_BASE);
+		if (IsBadReadPtr((DWORD*)(data + 0x58), 4) == 0)
+			data = *(int*)(data + 0x58);
 	}
-
-	if (IsBadReadPtr((DWORD*)(data + 0x58), 4) == 0)
-	{
-		data = *(int*)(data + 0x58);
-	}
-	
 	return data;
 }
 
@@ -37,12 +32,10 @@ bool CAsmSkill::AsmHaveMasterSkill(_tstring  skillName)//返回非零已学会
 
 VAsmSkill CAsmSkill::AsmGetSkillData()
 {
-
-	//dd [[[[[[[0x9FF458]+0x74+]+0x1ec]+0x4]+0x2860]+0x4]+0x14]+0xc]
 	VAsmSkill vm_Skill;//技能容器
 	DWORD data = 0;
 	data = GetSkillBase();
-	if (data == NULL)
+	if (data == 0)
 	{
 		dbgPrint("技能基址错误");
 		return vm_Skill;
@@ -171,42 +164,32 @@ void CAsmSkill::AsmUseSkillCall(int MonsterId, int SkillId)
 		}
 
 		DWORD skillCall = 0;
-		if (IsBadReadPtr((DWORD*)(g_GameExeBase + SKILLS_CALL), 4) == 0)
-		{
-			skillCall = (DWORD)(g_GameExeBase + SKILLS_CALL);
-		}
-
 		DWORD unEcx = 0;
-		if (IsBadReadPtr((DWORD*)(base + 0x150), 4) == 0)
-		{
-			unEcx = *(PULONG)(base + 0x150);
-		}
+		if (IsBadReadPtr((DWORD*)(g_GameExeBase + SKILLS_CALL), 4) == 0)
+			skillCall = (DWORD)(g_GameExeBase + SKILLS_CALL);
 
-		if (skillCall == 0 || unEcx == 0)
-		{
-			return;
-		}
+		
+		if (IsBadReadPtr((DWORD*)(base + 0x150), 4) == 0)
+			unEcx = *(PULONG)(base + 0x150);
 
 		__asm {
-			pushad
-			pushfd
 			push 0xBF800000
 			push 0xBF800000
 			push 0xBF800000
-			push MonsterId
+			mov ebx, MonsterId
+			push ebx
 			push 0xFFFFFFFF
-			push SkillId
+			mov ebx, SkillId
+			push ebx
 			mov ecx, unEcx
-			mov eax, skillCall
-			call eax
-			popfd
-			popad
+			mov ebx, skillCall
+			call ebx
 		}
 
 	}
 	catch (...)
 	{
-		dbgPrint("调用怪物失败:", __FUNCTION__);
+		dbgPrint("调用技能失败:", __FUNCTION__);
 	}
 }
 
@@ -222,21 +205,13 @@ void CAsmSkill::AsmUseSkillCallByPoint(int SkillId, float fx, float fy)
 		}
 
 		DWORD skillCall = 0;
-		DWORD unEcx = 0;
+		DWORD unEcx = NULL;
 		if (IsBadReadPtr((DWORD*)(base + 0x150), 4) == 0)
-		{
 			unEcx = *(DWORD*)(base + 0x150);
-		}
-
-		if (IsBadReadPtr((DWORD*)(unEcx), 4) == 0)
-		{
+		if (unEcx != NULL && IsBadReadPtr((DWORD*)(unEcx), 4) == 0)
 			base = *(DWORD*)(unEcx);
-		}
-
 		if (IsBadReadPtr((DWORD*)(base +0x18), 4) == 0)
-		{
 			skillCall = *(DWORD*)(base + 0x18);
-		}
 
 		//dbgPrint("skillCall=%X unEcx=%X", skillCall, unEcx);
 		if (skillCall == 0 || unEcx == 0)
@@ -245,16 +220,12 @@ void CAsmSkill::AsmUseSkillCallByPoint(int SkillId, float fx, float fy)
 		}
 
 		__asm {
-			pushad
-			pushfd
 			push fy
 			push fx
 			push SkillId
 			mov ecx, unEcx
 			mov eax, skillCall
 			call eax
-			popfd
-			popad
 		}
 
 	}

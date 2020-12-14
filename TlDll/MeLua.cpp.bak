@@ -22,6 +22,7 @@ extern CAsmSkill* g_pAsmSkill;
 extern CAsmItem* g_pAsmItem;
 extern CAsmPet* g_pAsmPet;
 extern CMeKill* g_pMeKill;
+extern CAsmTeam* g_pAsmTeam;
 
 /************************************************************************/
 /////////////////////////////System相关的函数封装//////////////
@@ -984,28 +985,4 @@ int CMeLua::LUA_RoleHMProtection(LuaState* pState)	//角色保护设置
 	}
 
 	return 1;
-}
-
-int CMeLua::LUA_AutoTeam(LuaState* pState)
-{	
-	dbgPrint("LUA_AutoTeam");
-	LuaStack args(pState);
-	if (FUN_AutoTeam()) {
-		pState->PushBoolean(TRUE);
-		return 1;
-	}
-	pState->PushBoolean(FALSE);
-	return 0;
-}
-
-int CMeLua::LUA_CheckTeam(LuaState* pState)
-{
-	dbgPrint("LUA_CheckTeam");
-	LuaStack args(pState);
-	if (FUN_CheckTeam()) {
-		pState->PushBoolean(TRUE);
-		return 1;
-	}
-	pState->PushBoolean(FALSE);
-	return 0;
 }

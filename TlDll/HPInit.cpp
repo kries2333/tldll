@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "HPInit.h"
 #include "Message.h"
-#include "Main.h"
+#include "Me.h"
 #include "CControlsCommon.h"
 #include "Function.h"
 #include <iostream>
 using namespace std;
 
 extern CMessage* g_pMsg;
-extern CMain* g_pMain;
+extern CMe* g_pMe;
 
 void CHPInit::MySendGameInfo(const char* message)
 {

@@ -34,9 +34,25 @@ struct TUserTime
 	};
 };
 
+struct TUserProtect
+{
+	int nType;			//类型
+	int nHpPer;			// 血量低于百分比
+	int nMpPer;			// 气量低于百分比
+	vector<CString> vYaoName;
+
+	TUserProtect()
+	{
+		nType = -1;
+		nHpPer = -1;
+		nMpPer = -1;
+	};
+};
+
 typedef vector<TUserPos> VUserPos;
 typedef vector<_tstring> VUserMonsterName;
 typedef vector<_tstring> VString;
+//typedef vector<TUserProtect> VUserProtect;
 
 _tstring Os_stringOferase(_tstring strSource, _tstring strErase);//移除指定字符或者字符串
 VString stringIntercept(_tstring strSource, _tstring strBegin, int offset, _tstring strEnd);
@@ -65,5 +81,12 @@ public:
 	/************************************************************************/
 	VUserPos vtKillPos;//用户获取挂机点总数
 	VUserPos UserGetPos();
+
+	/************************************************************************/
+	/* 保护设置                                                             */
+	/************************************************************************/
+	TUserProtect tHighProtect;	//快速恢复
+	TUserProtect tLowProtect;   //慢速恢复
 };
 
+BOOL use_item_yao(CString name);

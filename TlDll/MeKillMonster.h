@@ -1,6 +1,6 @@
 #pragma once
 #include "User.h"
-#include "Main.h"
+#include "Me.h"
 #include "Function.h"
 
 class CMeKillMonster : public CFunction

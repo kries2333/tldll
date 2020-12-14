@@ -1,7 +1,7 @@
 #pragma once
 #define BUF_SIZE_RES 1025
 
-class CMain
+class CMe
 {
 public:
 	void CreateLogin(int nNUM);//创建登录线程
@@ -19,14 +19,19 @@ public:
 	void CreateTask(const char* tasks);//创建Task线程
 	void CreateGift();
 	void CreateInfo();
+
+	friend UINT __stdcall Protect_threadfunc(void* p);//保护线程函数
+	void CreatProtect();//创建保护线程
+
 	BOOL OpenShareMemory();	//打开共享内存
 
-private:
+public:
 	HANDLE hUIThread;
 	HANDLE hKillMonsterThread;
 	HANDLE hTaskThread;
 	HANDLE hGiftThread;
 	HANDLE hInfoThread;
+	HANDLE hProtectThread;
 private:
 
 	bool bUiThread;
@@ -38,6 +43,7 @@ public:
 	bool bTaskThread;//任务线程标志
 	bool bGiftThread;
 	bool bInfoThread;
+	bool bProtectRun;
 };
 
 HWND GetWindowHandle();// 获取创建偶句柄
