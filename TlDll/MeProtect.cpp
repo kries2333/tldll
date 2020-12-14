@@ -36,7 +36,7 @@ BOOL use_item_yao(CString name)
 
 void role_buji()
 {
-	g_pCriticalSection->Lock();
+	//g_pCriticalSection->Lock();
 	try
 	{
 		int nUseState = 0;
@@ -79,7 +79,7 @@ void role_buji()
 	{
 
 	}
-	g_pCriticalSection->Unlock();
+	//g_pCriticalSection->Unlock();
 
 	return;
 }

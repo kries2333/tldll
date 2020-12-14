@@ -234,6 +234,7 @@ Login:
 		else
 		{
 			MySendGameInfo("ÒÑµÇÂ¼");
+			return 1;
 		}
 	}
 	return 0;

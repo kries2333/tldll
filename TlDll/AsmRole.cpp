@@ -43,13 +43,13 @@ TAsmRoleInfo CAsmRole::GetRoleInfo()
 		//------------------------------------------
 		if (IsBadReadPtr((CHAR*)(data + 0x2C), 4) == 0)
 			TAsmRoleInfo.szName = (char*)(data + 0x2C);
-		if (IsBadReadPtr((CHAR*)(data + 0xA4), 4) == 0)
+		if (IsBadReadPtr((int*)(data + 0xA4), 4) == 0)
 			TAsmRoleInfo.nMenpai = *(int*)(data + 0xA4);	//ÃÅÅÉ
-		if (IsBadReadPtr((CHAR*)(data + 0x58), 4) == 0)
+		if (IsBadReadPtr((int*)(data + 0x58), 4) == 0)
 			TAsmRoleInfo.nLevel = *(int*)(data + 0x58);		//µÈ¼¶
-		if (IsBadReadPtr((CHAR*)(data + 0x980), 4) == 0)
+		if (IsBadReadPtr((int*)(data + 0x980), 4) == 0)
 			TAsmRoleInfo.nHP = *(int*)(data + 0x980);		//Ñª 0x980
-		if (IsBadReadPtr((CHAR*)(data + 0x9EC), 4) == 0)
+		if (IsBadReadPtr((int*)(data + 0x9EC), 4) == 0)
 			TAsmRoleInfo.nHPMax = *(int*)(data + 0x9EC);	//Ñª 0x980
 
 		switch (TAsmRoleInfo.nMenpai)
@@ -172,9 +172,9 @@ float CAsmRole::GetHpPercent()
 			if (IsBadReadPtr((PULONG)(data + 0x4), 4) == 0)
 				data = *(PULONG)(data + 0x4);
 
-			if (IsBadReadPtr((CHAR*)(data + 0x980), 4) == 0)
+			if (IsBadReadPtr((int*)(data + 0x980), 4) == 0)
 				nHp = *(int*)(data + 0x980);		//Ñª 0x980
-			if (IsBadReadPtr((CHAR*)(data + 0x9EC), 4) == 0)
+			if (IsBadReadPtr((int*)(data + 0x9EC), 4) == 0)
 				nMax = *(int*)(data + 0x9EC);	//Ñª 0x980
 
 			if (nHp > 0 && nMax > 0)

@@ -12,7 +12,7 @@
 #define BAG_BASE			0x3371A8		//背包基址
 
 #define WEAR_CALL			0x33DDEC		//穿戴物品call
-#define DESTROY_CALL		0xB8DF0			//销毁物品call
+#define DESTROY_CALL		0xB98D0			//销毁物品call
 #define DESTROY_ECX			0x3371A8		//销毁物品ecx
 
 #define QICHEN_STATUS		0x3371A8		//骑乘状态
