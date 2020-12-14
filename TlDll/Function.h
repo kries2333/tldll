@@ -48,7 +48,7 @@ public:
 	/************************************************************************/
 	int FUN_GetSceneID(const char* szSceneName);//通过名称获取地图场景ID
 	_tstring FUN_GetSceneName(int nSceneId);
-	BOOL  FUN_RunToTarget(float fx, float fy, float dis = 2); //本地寻路函数
+	//BOOL  FUN_RunToTarget(float fx, float fy, float dis = 2); //本地寻路函数
 	BOOL  FUN_RunToTargetEx(float x, float y, int SceneId, float dis = 2);//跨地图寻路
 	float FUN_GetDistance(float x2, float y2);//获取与目标的距离
 

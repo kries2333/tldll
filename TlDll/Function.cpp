@@ -292,66 +292,149 @@ float CFunction::FUN_MaximumRange(TAsmSkill tAsmSkill)
 
 
 
-BOOL CFunction::FUN_RunToTarget(float fx, float fy, float dis)//跨地图寻路
+//BOOL CFunction::FUN_RunToTarget(float fx, float fy, float dis)//跨地图寻路
+//{
+//	bool bMov = false;
+//	DWORD dwWaitTime = GetTickCount64();//第一次记录时间，人物此时是非跑动状态
+//	DWORD dwEndTime = GetTickCount64();//第一次记录时间，人物此时是非跑动状态
+//	float fOldX = -1, fOldY = -1;
+//	float fCurDistance = FUN_GetDistance(fx, fy);
+//	if (fCurDistance > 30)
+//	{
+//		g_pMsg->CallInOutRide(1);
+//	}
+//
+//	while (g_pMe->bRun)
+//	{
+//		DWORD dwCurTime = GetTickCount64();
+//		
+//		if ((dwCurTime - dwWaitTime) > (180 * 1000)) //如果30秒还没到达退出重新寻路
+//		{
+//			dbgPrint("地图内寻路3分钟没走到目标，可能是走向了未知地点");
+//			return FALSE;
+//		}
+//		TAsmMap role_map = role_curmap();
+//		if (role_map.szName == (CString)"地府")	//判断是否在地府。
+//		{
+//			FUN_DeathResurrection();
+//			return TRUE;
+//		}
+//
+//		TAsmRoleInfo tRoleInfo = g_pAsmRole->GetRoleInfo();
+//		if (tRoleInfo.nState != 2)
+//		{
+//			if (!bMov)
+//			{
+//				g_pMsg->msg_dostring("AutoRunToTarget(%d, %d)", (int)fx, (int)fy);
+//				Sleep(1000);
+//				FUN_AutoMove();
+//				bMov = true;
+//				Sleep(1000);
+//				auto APos = g_pAsmRole->GetPos();
+//				fOldX = APos.fx;
+//				fOldY = APos.fy;
+//			}
+//		}
+//		dbgPrint("寻路计时%d", (dwCurTime - dwEndTime));
+//		if ((dwCurTime - dwEndTime) > (3 * 1000)) //如果30秒还没到达退出重新寻路
+//		{
+//			auto APos = g_pAsmRole->GetPos();
+//			if ((APos.fx <= fOldX || APos.fx >= fOldX) &&
+//				(APos.fy <= fOldY || APos.fy >= fOldY))
+//			{
+//				bMov = false;
+//				fOldX = APos.fx;
+//				fOldY = APos.fy;
+//			}
+//			dwEndTime = GetTickCount64();
+//		}
+//
+//		fCurDistance = FUN_GetDistance(fx, fy);
+//		CString strTemp;
+//		strTemp.Format("地图内移动 距离目标=%f", fCurDistance);
+//		g_pHPInit->MySendGameInfo(strTemp);
+//		if (fCurDistance < dis)//当前的距离小于2可以操作目标了
+//		{
+//			dbgPrint("到达目的地");
+//			g_pMsg->CallInOutRide(0);
+//			return TRUE;
+//		}
+//		Sleep(1000);
+//	}
+//	return FALSE;
+//}
+
+BOOL CFunction::FUN_RunToTargetEx(float fx, float fy, int SceneId, float dis)//跨地图寻路
 {
 	bool bMov = false;
-	DWORD dwWaitTime = GetTickCount64();//第一次记录时间，人物此时是非跑动状态
+	TAsmMap tAsmMap = role_curmap();
 	float fOldX = -1, fOldY = -1;
-	float fCurDistance = FUN_GetDistance(fx, fy);
-	if (fCurDistance > 30)
-	{
-		g_pMsg->CallInOutRide(1);
-	}
+	DWORD dwWaitTime = GetTickCount64();//第一次记录时间，人物此时是非跑动状态
+	DWORD dwEndTime = GetTickCount64();//第一次记录时间，人物此时是非跑动状态
 
 	while (g_pMe->bRun)
 	{
+
 		DWORD dwCurTime = GetTickCount64();
-		
-		if ((dwCurTime - dwWaitTime) > (180 * 1000)) //如果30秒还没到达退出重新寻路
+		if ((dwCurTime - dwWaitTime) > (5 * 60 * 1000)) //如果10分钟还没到达退出重新寻路
 		{
-			dbgPrint("地图内寻路3分钟没走到目标，可能是走向了未知地点");
+			dbgPrint("跨图寻路10分钟没走到目标，可能是走向了未知地点");
 			return FALSE;
 		}
-		TAsmMap role_map = role_curmap();
-		if (role_map.szName == (CString)"地府")	//判断是否在地府。
+
+		if (tAsmMap.szName == (CString)"地府")	//判断是否在地府。
 		{
 			FUN_DeathResurrection();
 			return TRUE;
 		}
-
-
 
 		TAsmRoleInfo tRoleInfo = g_pAsmRole->GetRoleInfo();
 		if (tRoleInfo.nState != 2)
 		{
 			if (!bMov)
 			{
-				g_pMsg->msg_dostring("AutoRunToTarget(%d, %d)", (int)fx, (int)fy);
+				if (SceneId == tAsmMap.nSceneId || SceneId == -1)
+				{
+					float fCurDistance = FUN_GetDistance(fx, fy);
+					if (fCurDistance > 30)
+					{
+						g_pMsg->CallInOutRide(1);
+					}
+
+					g_pMsg->msg_dostring("AutoRunToTarget(%d, %d)", (int)fx, (int)fy);
+				}
+				else if (SceneId != tAsmMap.nSceneId)
+				{
+					dbgPrint("开始跨图寻路 %f, %f, %d", fx, fy, SceneId);
+					g_pMsg->CallInOutRide(1);
+
+					g_pMsg->msg_dostring("AutoRunToTargetEx(%d, %d, tonumber(%d))", (int)fx, (int)fy, SceneId);
+				}
 				Sleep(1000);
 				FUN_AutoMove();
 				bMov = true;
-				Sleep(1000);
 				auto APos = g_pAsmRole->GetPos();
 				fOldX = APos.fx;
 				fOldY = APos.fy;
 			}
 		}
-
-		DWORD dwEndTime = GetTickCount64();
-		if ((dwEndTime - dwCurTime) > (3 * 1000)) //如果30秒还没到达退出重新寻路
+		dbgPrint("寻路计时%d", (dwCurTime - dwEndTime));
+		if ((dwCurTime - dwEndTime) > (5 * 1000)) //如果30秒还没到达退出重新寻路
 		{
 			auto APos = g_pAsmRole->GetPos();
-			if (APos.fx == fOldX && APos.fy == fOldY)
+			if ((APos.fx <= fOldX || APos.fx >= fOldX) &&
+				(APos.fy <= fOldY || APos.fy >= fOldY))
 			{
 				bMov = false;
 				fOldX = APos.fx;
 				fOldY = APos.fy;
 			}
+			dwEndTime = GetTickCount64();
 		}
 
-		fCurDistance = FUN_GetDistance(fx, fy);
+		float fCurDistance = FUN_GetDistance(fx, fy);
 		CString strTemp;
-		strTemp.Format("地图内移动 距离目标=%f", fCurDistance);
+		strTemp.Format("从%s(%d)移动到%s(%d) 距离目标=%f", tAsmMap.szName, tAsmMap.nSceneId, CString(FUN_GetSceneName(SceneId).c_str()), SceneId, fCurDistance);
 		g_pHPInit->MySendGameInfo(strTemp);
 		if (fCurDistance < dis)//当前的距离小于2可以操作目标了
 		{
@@ -359,85 +442,8 @@ BOOL CFunction::FUN_RunToTarget(float fx, float fy, float dis)//跨地图寻路
 			g_pMsg->CallInOutRide(0);
 			return TRUE;
 		}
+
 		Sleep(1000);
-	}
-	return FALSE;
-}
-
-BOOL CFunction::FUN_RunToTargetEx(float fx, float fy, int SceneId, float dis)//跨地图寻路
-{
-	//_asm int 3;
-	bool bMov = false;
-	TAsmMap tAsmMap = role_curmap();
-	float fOldX = -1, fOldY = -1;
-	DWORD dwWaitTime = GetTickCount64();//第一次记录时间，人物此时是非跑动状态
-
-	if (SceneId == tAsmMap.nSceneId || SceneId == -1)
-	{
-		dbgPrint("开始本图寻路");
-		return FUN_RunToTarget(fx, fy);
-	}
-	else if (SceneId != tAsmMap.nSceneId)
-	{
-		dbgPrint("开始跨图寻路 %f, %f, %d", fx, fy, SceneId);
-		g_pMsg->CallInOutRide(1);
-
-		while (g_pMe->bRun)
-		{
-			
-			DWORD dwCurTime = GetTickCount64();
-			if ((dwCurTime - dwWaitTime) > (30 * 10 * 1000)) //如果10分钟还没到达退出重新寻路
-			{
-				dbgPrint("跨图寻路10分钟没走到目标，可能是走向了未知地点");
-				return FALSE;
-			}                                                                                                                                                                                                                                                                                                                               
-
-			if (tAsmMap.szName == (CString)"地府")	//判断是否在地府。
-			{
-				FUN_DeathResurrection();
-				return TRUE;
-			}
-
-			TAsmRoleInfo tRoleInfo = g_pAsmRole->GetRoleInfo();
-			if (tRoleInfo.nState != 2)
-			{
-				if (!bMov)
-				{
-					g_pMsg->msg_dostring("AutoRunToTargetEx(%d, %d, tonumber(%d))", (int)fx, (int)fy, SceneId);
-					Sleep(1000);
-					FUN_AutoMove();
-					bMov = true;
-					auto APos = g_pAsmRole->GetPos();
-					fOldX = APos.fx;
-					fOldY = APos.fy;
-				}
-			}
-
-			DWORD dwEndTime = GetTickCount64();
-			if ((dwEndTime - dwCurTime) > (3 * 1000)) //如果30秒还没到达退出重新寻路
-			{
-				auto APos = g_pAsmRole->GetPos();
-				if (APos.fx == fOldX && APos.fy == fOldY)
-				{
-					bMov = false;
-					fOldX = APos.fx;
-					fOldY = APos.fy;
-				}
-			}
-
-			float fCurDistance = FUN_GetDistance(fx, fy);
-			CString strTemp;
-			strTemp.Format("从%s(%d)移动到%s(%d) 距离目标=%f", tAsmMap.szName, tAsmMap.nSceneId, CString(FUN_GetSceneName(SceneId).c_str()), SceneId, fCurDistance);
-			g_pHPInit->MySendGameInfo(strTemp);
-			if (fCurDistance < dis)//当前的距离小于2可以操作目标了
-			{
-				dbgPrint("到达目的地");
-				g_pMsg->CallInOutRide(0);
-				return TRUE;
-			}
-
-			Sleep(1000);
-		}
 	}
 	return FALSE;
 }
