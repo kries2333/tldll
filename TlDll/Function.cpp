@@ -1668,7 +1668,7 @@ BOOL CFunction::FUN_AutoTeam(int nNum)
 			dbgPrint("队伍人数太少");
 		}
 
-		if (FUN_CheckTeam()) {
+		if (FUN_CheckTeam(nNum)) {
 			g_pHPInit->MySendGameInfo("组队完成");
 			return TRUE;
 			//组队完成
@@ -1680,7 +1680,7 @@ BOOL CFunction::FUN_AutoTeam(int nNum)
 	return FALSE;
 }
 
-BOOL CFunction::FUN_CheckTeam()
+BOOL CFunction::FUN_CheckTeam(int nNum)
 {
 	CString temp;
 	CString roleName;
@@ -1717,7 +1717,7 @@ BOOL CFunction::FUN_CheckTeam()
 		}
 	}
 
-	if (checkCount >= 1) {
+	if (checkCount >= nNum) {
 		return 1;	//人员到齐
 	}
 
