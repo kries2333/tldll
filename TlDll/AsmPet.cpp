@@ -69,8 +69,6 @@ int CAsmPet::GetMaxCount()
 
 int CAsmPet::GetIsFighting()
 {
-	int nPetId = 0;
-	dbgPrint("GetIsFighting");
 	if (g_GameExeBase == 0) return FALSE;
 	ULONG data = 0;
 	data = *(int*)(g_GameExeBase + LROLE_BASE);
@@ -83,7 +81,6 @@ int CAsmPet::GetIsFighting()
 	if (IsBadReadPtr((PULONG)(data + 0x9C0), 4) == 0)
 		data = *(PULONG)(data + 0x9C0);
 
-	//dbgPrint("GetIsFighting data = %X", data);
 	return data;
 }
 

@@ -140,7 +140,7 @@ void CAsmItem::AutoWearEquipment(_tstring itemNames)
 				Sleep(200);
 
 				CString strTemp = g_pMsg->msg_getstring("strTemp", "strTemp = getMessageBoxText();").c_str();
-				dbgPrint("MessageBox_Self_Env strTemp=%s", strTemp);
+				//dbgPrint("MessageBox_Self_Env strTemp=%s", strTemp);
 				if (strTemp.Find("°ó¶¨") != -1)
 				{
 					g_pMsg->msg_dostring("setmetatable(_G, { __index = MessageBox_Self_Env }); MessageBox_Self_OK_Clicked();");
@@ -164,7 +164,7 @@ void CAsmItem::AutoWearEquipment(_tstring itemNames)
 						Sleep(200);
 
 						CString strTemp = g_pMsg->msg_getstring("strTemp", "strTemp = getMessageBoxText();").c_str();
-						dbgPrint("MessageBox_Self_Env strTemp=%s", strTemp);
+						//dbgPrint("MessageBox_Self_Env strTemp=%s", strTemp);
 						if (strTemp.Find("°ó¶¨") != -1)
 						{
 							g_pMsg->msg_dostring("setmetatable(_G, { __index = MessageBox_Self_Env }); MessageBox_Self_OK_Clicked();");
@@ -284,7 +284,7 @@ void CAsmItem::Destroy(int nIndex)
 int CAsmItem::AsmGetItemNum(CString name)
 {
 	int nNum = g_pMsg->msg_getnumber("g_GetValue = GetBagItemNum(\"%s\");", name);
-	dbgPrint("AsmGetItemNum %s = %d", name, nNum);
+	//dbgPrint("AsmGetItemNum %s = %d", name, nNum);
 	return nNum;
 }
 
@@ -302,13 +302,13 @@ void CAsmItem::AsmUseHpItem(int nIndex, DWORD ItemObject1, DWORD ItemObject2, DW
 		if (IsBadReadPtr((DWORD*)CallEcx, 4) == 0)
 			CallEcx = *(DWORD*)CallEcx;
 
-		dbgPrint("nIndex=%X, ItemObject1=%d ItemObject2=%X ItemObject3=%X", nIndex, ItemObject1, ItemObject2, ItemObject3);
+		//dbgPrint("nIndex=%X, ItemObject1=%d ItemObject2=%X ItemObject3=%X", nIndex, ItemObject1, ItemObject2, ItemObject3);
 
 		DWORD CallObj = g_GameExeBase + CHIYAO_CALL_OBJ;
 		TAsmSendEx* tAsmSendEx = BasePackerSendEx(CallObj, 0, 0, -1, nIndex, ItemObject3, ItemObject1, ItemObject2, 
 			0x4517, 0xBF800000, 0xBF800000, 0xBF800000);
 
-		dbgPrint("CallBase=%X, CallEcx=%X CallObj=%X tAsmSend=%X", CallBase, CallEcx, CallObj, tAsmSendEx);
+		//dbgPrint("CallBase=%X, CallEcx=%X CallObj=%X tAsmSend=%X", CallBase, CallEcx, CallObj, tAsmSendEx);
 		_asm {
 			mov ecx, [CallEcx]
 			push tAsmSendEx

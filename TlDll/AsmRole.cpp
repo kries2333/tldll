@@ -290,7 +290,7 @@ void CAsmRole::AsmNpcDialogue(int npcId)
 	}
 	catch (...)
 	{
-		//dPrintA(__FUNCTION__);
+		dbgPrint(__FUNCTION__);
 	}
 }
 
