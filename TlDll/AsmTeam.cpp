@@ -134,20 +134,33 @@ void CAsmTeam::TeamJoin()
     //加入队伍封包
     //g_pMsg->msg_dostring("setmetatable(_G, {__index = Team_Frame_Env}); Team_Button_Frame5_Click();");//加入队伍
     auto RoleInfo = g_pAsmRole->GetRoleInfo();
-
+    //dd [[[[[[0xDC719C]+ 0xAC + 0x40] + 0x0] + 0x4] ] ]
     if (g_GameExeBase == 0) return;
-     
+
     DWORD TeamCall;
     DWORD TeamEcx;
     DWORD TeamData;
     DWORD TeamData1;
+    DWORD InvaiteId;
     int TeamData2;
     TeamCall = (DWORD)(g_GameExeBase + TEAM_CALL);
     TeamEcx = (DWORD)(g_GameExeBase + TEAM_ECX);
     TeamEcx = *(DWORD*)(TeamEcx);
     TeamData = (DWORD)(g_GameExeBase + TEAM_JOIN_DATA);
 
-    dbgPrint("进入队伍Call地址：【%x】 Ecx：【%x】 封包数据：【%x】 人物编号：【%x】", TeamCall, TeamEcx, TeamData, RoleInfo.nRoleCode);
+    InvaiteId = *(DWORD*)(g_GameExeBase + TEAM_INFO);
+    InvaiteId = *(DWORD*)(InvaiteId + 0xEC);
+    InvaiteId = *(DWORD*)(InvaiteId);
+    InvaiteId = *(DWORD*)(InvaiteId + 0x4);
+    InvaiteId = *(DWORD*)(InvaiteId);
+    InvaiteId = *(DWORD*)(InvaiteId);
+    if (IsBadReadPtr((DWORD*)(InvaiteId), 4) == 0)
+        InvaiteId = *(DWORD*)(InvaiteId);
+    else
+        return;
+    
+
+    dbgPrint("进入队伍Call地址：【%x】 Ecx：【%x】 封包数据：【%x】 邀请来自：【%x】", TeamCall, TeamEcx, TeamData, InvaiteId);
     if (TeamCall == 0 || TeamEcx == 0 || TeamData == 0) return;
 
     try
@@ -172,7 +185,7 @@ void CAsmTeam::TeamJoin()
         memcpy(Data + 0xC, &TeamData2, 4);
         TeamData2 = 1;
         memcpy(Data + 0x10, &TeamData2, 4);
-        TeamData2 = RoleInfo.nRoleCode - 1;
+        TeamData2 = InvaiteId;
         memcpy(Data + 0x14, &TeamData2, 4);
 
         TeamData1 = (DWORD)Data;
