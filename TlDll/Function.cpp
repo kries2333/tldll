@@ -1618,7 +1618,7 @@ void CFunction::FUN_PetHMProtection(CString szTypeName, int Per, CString szYaoNa
 	}
 }
 
-BOOL CFunction::FUN_AutoTeam()
+BOOL CFunction::FUN_AutoTeam(int nNum)
 {
 	g_pHPInit->MySendGameInfo("自动组队");
 	int timeOut = 0;

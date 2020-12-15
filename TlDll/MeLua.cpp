@@ -994,9 +994,14 @@ int CMeLua::LUA_AutoTeam(LuaState* pState)
 {	
 	dbgPrint("LUA_AutoTeam");
 	LuaStack args(pState);
-	if (FUN_AutoTeam()) {
-		pState->PushBoolean(TRUE);
-		return 1;
+
+	if (args[1].IsInteger())
+	{
+		int nNum = args[1].GetInteger();
+		if (FUN_AutoTeam()) {
+			pState->PushBoolean(TRUE);
+			return 1;
+		}
 	}
 	pState->PushBoolean(FALSE);
 	return 0;
