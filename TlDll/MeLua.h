@@ -135,6 +135,7 @@ public:
 	//////////////////////////////角色函数封装///////
 	/************************************************************************/
 	int LUA_RoleHMProtection(LuaState* pState);	//角色保护设置
+	int LUA_PetHMProtection(LuaState* pState);	//宠物保护设置
 	
 	int LUA_AutoTeam(LuaState* pState);		//自动组队
 

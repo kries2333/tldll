@@ -3,12 +3,14 @@
 #include "MeKill.h"
 #include "Message.h"
 #include "AsmRole.h"
+#include "AsmPet.h"
 #include "User.h"
 #include "AsmItem.h"
 
 extern CMessage* g_pMsg;
 extern CMe* g_pMe;
 extern CAsmRole* g_pAsmRole;
+extern CAsmPet* g_pAsmPet;
 extern CAsmItem* g_pAsmItem;
 extern CUser* g_pUser;
 extern CCriticalSection* g_pCriticalSection;
@@ -36,7 +38,7 @@ BOOL use_item_yao(CString name)
 
 void role_buji()
 {
-	//g_pCriticalSection->Lock();
+	g_pCriticalSection->Lock();
 	try
 	{
 		int nUseState = 0;
@@ -79,14 +81,25 @@ void role_buji()
 	{
 
 	}
-	//g_pCriticalSection->Unlock();
+	g_pCriticalSection->Unlock();
 
 	return;
 }
 
 void pet_buji()
 {
+	g_pCriticalSection->Lock();
+	try
+	{
 
+	}
+	catch (const std::exception&)
+	{
+
+	}
+	g_pCriticalSection->Unlock();
+
+	return;
 }
 
 UINT __stdcall Protect_threadfunc(void* pType)
@@ -105,7 +118,7 @@ UINT __stdcall Protect_threadfunc(void* pType)
 		else
 		{
 			role_buji();
-			//pet_buji(pUser->nPetHpVal, pUser->nHappyVal);
+			pet_buji();
 		}
 		Sleep(1000);
 	}

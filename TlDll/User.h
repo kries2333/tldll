@@ -87,6 +87,7 @@ public:
 	/************************************************************************/
 	TUserProtect tHighProtect;	//快速恢复
 	TUserProtect tLowProtect;   //慢速恢复
+	TUserProtect tPetProtect;   //宠物恢复
 };
 
 BOOL use_item_yao(CString name);

@@ -164,25 +164,3 @@ void CAsmTask::CancelTask()
 	//	call eax
 	//}
 }
-
-int CAsmTask::Task33556()
-{
-	//if (FUN_RunToTargetEx(159, 156, 2))
-	//{
-	//	g_pMsg->SetAutoRunTargetNPCName("赵天师");//msg的游戏lua函数
-	//	SelectTaskForId(0x33556);
-	//	Sleep(1000);
-	//	CompleteTask(0);
-	//	Sleep(1000);
-	//	AcceptTask();
-	//	Sleep(1000);
-	//	CancelTask();
-	//}
-
-	return 0;
-}
-
-int CAsmTask::Task3354F()
-{
-	return 0;
-}

@@ -36,6 +36,9 @@ struct TAsmItem
 		szTypeName = "";//物品类型名称
 		szDataAttribute = "";//属性说明
 		nIntdex = -1;
+		uAttributeObj1 = 0;
+		uAttributeObj2 = 0;
+		uAttributeObj3 = 0;
 	};
 };
 typedef vector<TAsmItem> VAsmItem;

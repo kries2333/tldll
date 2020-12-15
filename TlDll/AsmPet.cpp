@@ -84,15 +84,11 @@ BOOL CAsmPet::GetIsFighting()
 		data = *(PULONG)(data + 0x9C0);
 
 	dbgPrint("GetIsFighting data = %X", data);
-	if (IsBadReadPtr((PULONG)(data), 4) == 0)
-		nPetId = *(int*)(data);
-
-	dbgPrint("GetIsFighting nPetId = %X", nPetId);
-	if (nPetId == 0)
+	if (data != 0)
 	{
-		return FALSE;
+		return TRUE;
 	}
-	return TRUE;
+	return FALSE;
 }
 
 void CAsmPet::PetGoFight(int nIndex)

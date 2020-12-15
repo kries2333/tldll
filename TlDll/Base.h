@@ -6,7 +6,7 @@
 #define SKILLS_TREE_OFFSET  0xA9C
 #define SKILLS_CALL			0x3DBA0			//技能调用call
 
-#define COLLECT_OREPLANT	0x3B8F0			//打开包裹
+#define COLLECT_OREPLANT	0x3BF10			//打开包裹
 
 #define NPC_CALL			0x3D7D0			//npc对话Call
 #define BAG_BASE			0x3371A8		//背包基址
@@ -20,7 +20,7 @@
 #define PET_BASE			0x3371A8		//宠物数据
 #define PET_OFFSET			0x44388			//宠物偏移
 
-#define SHOP_CALL			0x171950
+#define SHOP_CALL			0x171950		//商店购买物品Call
 #define SHOP_CALL_ECX		0x33DA78
 #define SHOP_CALL_OBJ		0x293C54
 

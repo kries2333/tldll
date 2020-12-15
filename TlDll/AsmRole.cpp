@@ -183,7 +183,7 @@ float CAsmRole::GetHpPercent()
 			if (nHp > 0 && nMax > 0)
 			{
 				p = (float)(nHp) / (float)(nMax);
-				dbgPrint("GetHpPercent = %f hp=%d, max=%d", p, nHp, nMax);
+				//dbgPrint("GetHpPercent = %f hp=%d, max=%d", p, nHp, nMax);
 			}
 		}
 

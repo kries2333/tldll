@@ -318,7 +318,7 @@ int  CMeLua::LUA_MoveTo(LuaState* pState)//移动函数
 		dbgPrint("LUA_MoveTo %f %f %s", x, y, sceneName.c_str());
 
 		int sceneId = FUN_GetSceneID(sceneName.c_str());
-		int nRet = FUN_RunToTargetEx(x, y, sceneId);
+		int nRet = FUN_RunToTargetEx(x, y, sceneId, 5);
 		pState->PushInteger(nRet);
 		return 1;
 	}
@@ -967,6 +967,23 @@ int CMeLua::LUA_RoleHMProtection(LuaState* pState)	//角色保护设置
 		int nPer = args[3].GetInteger();
 		CString szYaoNames = args[4].GetString();
 		FUN_RoleHMProtection(szLp, szTypeName, nPer, szYaoNames);
+		return 0;
+	}
+
+	return 1;
+}
+
+int CMeLua::LUA_PetHMProtection(LuaState* pState)	//宠物保护设置
+{
+	dbgPrint("LUA_PetHMProtection");
+	LuaStack args(pState);
+
+	if (args[1].IsString() && args[2].IsInteger() && args[3].IsString())
+	{
+		CString szTypeName = args[1].GetString();
+		int nPer = args[2].GetInteger();
+		CString szYaoNames = args[3].GetString();
+		FUN_PetHMProtection(szTypeName, nPer, szYaoNames);
 		return 0;
 	}
 
