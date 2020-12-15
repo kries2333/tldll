@@ -1631,9 +1631,9 @@ BOOL CFunction::FUN_AutoTeam(int nNum)
 		teamArr.RemoveAll();
 		temp = g_pMsg->mGameInfo->Team;
 		dbgPrint("组队 temp=%s", temp);
-		if ("" == temp) {
-			return FALSE;		//队伍成员为空
-		}
+		//if ("" == temp) {
+		//	return FALSE;		//队伍成员为空
+		//}
 
 		SplitCStringArr(temp, "|", &teamArr);
 		TAsmRoleInfo role = g_pAsmRole->GetRoleInfo();
