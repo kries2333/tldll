@@ -67,7 +67,7 @@ int CAsmPet::GetMaxCount()
 	return nMaxPetCount;
 }
 
-BOOL CAsmPet::GetIsFighting()
+int CAsmPet::GetIsFighting()
 {
 	int nPetId = 0;
 	dbgPrint("GetIsFighting");
@@ -83,22 +83,15 @@ BOOL CAsmPet::GetIsFighting()
 	if (IsBadReadPtr((PULONG)(data + 0x9C0), 4) == 0)
 		data = *(PULONG)(data + 0x9C0);
 
-	dbgPrint("GetIsFighting data = %X", data);
-	if (data != 0)
-	{
-		return TRUE;
-	}
-	return FALSE;
+	//dbgPrint("GetIsFighting data = %X", data);
+	return data;
 }
 
 void CAsmPet::PetGoFight(int nIndex)
 {
-	if (GetIsFighting() == FALSE)
+	if (GetIsFighting() == 0)
 	{
 		g_pMsg->msg_dostring("Pet:Go_Fight(%d);", nIndex);
 		Sleep(4000);
-	}
-	else {
-		dbgPrint("已经有宠物出战了!");
 	}
 }

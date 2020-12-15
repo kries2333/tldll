@@ -418,7 +418,7 @@ BOOL CFunction::FUN_RunToTargetEx(float fx, float fy, int SceneId, float dis)//ø
 				fOldY = APos.fy;
 			}
 		}
-		dbgPrint("—∞¬∑º∆ ±%d", (dwCurTime - dwEndTime));
+		//dbgPrint("—∞¬∑º∆ ±%d", (dwCurTime - dwEndTime));
 		if ((dwCurTime - dwEndTime) > (5 * 1000)) //»Áπ˚30√Îªπ√ªµΩ¥ÔÕÀ≥ˆ÷ÿ–¬—∞¬∑
 		{
 			auto APos = g_pAsmRole->GetPos();
@@ -439,7 +439,7 @@ BOOL CFunction::FUN_RunToTargetEx(float fx, float fy, int SceneId, float dis)//ø
 		if (fCurDistance < dis)//µ±«∞µƒæ‡¿Î–°”⁄2ø…“‘≤Ÿ◊˜ƒø±Í¡À
 		{
 			dbgPrint("µΩ¥Ôƒøµƒµÿ");
-			g_pMsg->CallInOutRide(0);
+			//g_pMsg->CallInOutRide(0);
 			return TRUE;
 		}
 
@@ -1401,22 +1401,22 @@ void CFunction::FUN_AutoBuy(CString itemNames, CString sceneName, int nPosX, int
 			g_pMsg->msg_dostring("ClickMission(\"%s\")", _talkName);//msgµƒluaœ˚œ¢∫Ø ˝
 			Sleep(2000);
 
-			if (CString("π∫¬Ú’‰ ﬁ”√∆∑").Find(_talkName) != -1)
-			{
-				if (CString("À’÷›").Find(sceneName) != -1)
-				{
-					_tstring szT = itemNames;
-					auto  szTemps = UserSubMonsterName(szT, _T('|'));
-					for (auto temp : szTemps)
-					{
-						auto items = UserSubMonsterName(temp, _T('='));
-						if (items.size() == 2)
-						{
-							g_pAsmStoreItem->BuyPetDrugByName("À’÷›’‰ ﬁµÍ", items[0].c_str(), stoi(items[1].c_str()));
-						}
-					}
-				}
-			}
+			//if (CString("π∫¬Ú’‰ ﬁ”√∆∑").Find(_talkName) != -1)
+			//{
+			//	if (CString("À’÷›").Find(sceneName) != -1)
+			//	{
+			//		_tstring szT = itemNames;
+			//		auto  szTemps = UserSubMonsterName(szT, _T('|'));
+			//		for (auto temp : szTemps)
+			//		{
+			//			auto items = UserSubMonsterName(temp, _T('='));
+			//			if (items.size() == 2)
+			//			{
+			//				g_pAsmStoreItem->BuyPetDrugByName("À’÷›’‰ ﬁµÍ", items[0].c_str(), stoi(items[1].c_str()));
+			//			}
+			//		}
+			//	}
+			//}
 		}
 	}
 }
@@ -1621,6 +1621,7 @@ BOOL CFunction::FUN_AutoTeam()
 	while (timeOut < 600) 
 	{
 		temp = g_pMsg->mGameInfo->Team;
+		dbgPrint("◊È∂” temp=%s", temp);
 		if ("" == temp) {
 			return FALSE;		//∂”ŒÈ≥…‘±Œ™ø’
 		}

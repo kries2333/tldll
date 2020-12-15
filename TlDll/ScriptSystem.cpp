@@ -116,6 +116,9 @@ void CScriptSystem::LUA_ScriptSystemInitial(/*CString strScriptName*/)
 	objGlobal.Register("lua_RoleHMProtection", *MeLua,
 		&CMeLua::LUA_RoleHMProtection);		//设置角色保护
 
+	objGlobal.Register("lua_PetHMProtection", *MeLua,
+		&CMeLua::LUA_PetHMProtection);		//设置宠物保护
+
 	objGlobal.Register("lua_AutoTeam", *MeLua, 
 		&CMeLua::LUA_AutoTeam);			//自动组队
 

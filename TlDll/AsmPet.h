@@ -45,9 +45,9 @@ public:
 	int GetCount();
 	int GetMaxCount();
 	void PetGoFight(int nIndex);
-
+	int GetIsFighting();
 private:
 	DWORD GetBase();
-	int GetIsFighting();
+	
 };
 

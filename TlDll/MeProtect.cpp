@@ -16,9 +16,9 @@ extern CUser* g_pUser;
 extern CCriticalSection* g_pCriticalSection;
 static DWORD PT_HP = 0;
 
-
 BOOL use_item_yao(CString name)
 {
+	dbgPrint("补血%s", name);
 	VAsmItem items = g_pAsmItem->AsmGetItemData();
 	for (auto item : items)
 	{
@@ -91,7 +91,23 @@ void pet_buji()
 	g_pCriticalSection->Lock();
 	try
 	{
-
+		VAsmPet vPets = g_pAsmPet->AsmGetPetData();
+		for (auto pet : vPets)
+		{
+			if (pet.nPetId == g_pAsmPet->GetIsFighting())
+			{
+				dbgPrint("当前出战宠物%s 血量=%d", pet.szName, pet.nCurHP);
+				float fHpCurPer = ((float)pet.nCurHP / (float)pet.nMaxHP) * 100;
+				if (fHpCurPer < g_pUser->tPetProtect.nHpPer)
+				{
+					for (auto tMp : g_pUser->tPetProtect.vYaoName)
+					{
+						use_item_yao(tMp);
+					}
+				}
+			}
+			Sleep(100);
+		}
 	}
 	catch (const std::exception&)
 	{

@@ -55,5 +55,5 @@ void DlgPage4::OnBnClickedButton1()
 	//g_pAsmItem->AsmGetItemData(1);
 	//g_pAsmPet->PetGoFight(0);
 	//g_pAsmStoreItem->BuyPetDrugByName("苏州珍兽店", "后肘肉口粮", 20);
-	use_item_yao("银丹葫芦");
+	use_item_yao("后肘肉口粮");
 }
