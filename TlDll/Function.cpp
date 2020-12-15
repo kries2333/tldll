@@ -138,16 +138,23 @@ bool SplitCStringArr(CString expression, CString delimiter, CStringArray* result
 	if (expression.IsEmpty()) {
 		return false;
 	}
+	/*pos = expression.Find(delimiter, (pos + 1));*/
 	while (true)
 	{
 		pos = expression.Find(delimiter, 0);
 		if (-1 == pos) {
-			(*resultArr).Add(expression);
+			if (!expression.IsEmpty()) {
+				(*resultArr).Add(expression);
+				TRACE("分割结果:%s\n", expression);
+			}
 			break;
 		}
 		else {
-			(*resultArr).Add(expression.Mid(pre_pos, (pos - pre_pos)));
-			expression.Delete(0, pos - pre_pos + 1);
+			if (!expression.IsEmpty()) {
+				(*resultArr).Add(expression.Mid(pre_pos, (pos - pre_pos)));
+				TRACE("分割结果:%s\n", expression.Mid(pre_pos, (pos - pre_pos)));
+				expression.Delete(0, pos - pre_pos + 1);
+			}
 		}
 	}
 	return true;
@@ -1616,10 +1623,12 @@ BOOL CFunction::FUN_AutoTeam()
 	g_pHPInit->MySendGameInfo("自动组队");
 	int timeOut = 0;
 	CString temp;
+	CString text;
 	CString roleName;
 	CStringArray teamArr;		//队员数组
 	while (timeOut < 600) 
 	{
+		teamArr.RemoveAll();
 		temp = g_pMsg->mGameInfo->Team;
 		dbgPrint("组队 temp=%s", temp);
 		if ("" == temp) {
@@ -1629,24 +1638,34 @@ BOOL CFunction::FUN_AutoTeam()
 		SplitCStringArr(temp, "|", &teamArr);
 		TAsmRoleInfo role = g_pAsmRole->GetRoleInfo();
 		roleName = role.szName;
+		dbgPrint("当前队伍成员:%s", temp);
+		if (teamArr.GetCount() >= 2) {
+			if (teamArr.GetAt(0) == roleName) {
+				//是队长 需要邀请队员
 
-		if (teamArr.GetAt(0) == roleName) {
-			//是队长 需要邀请队员
-			for (int i = 1; i < teamArr.GetSize(); i++)
-			{
-				g_pAsmTeam->AsmInvaiteTeam(teamArr.GetAt(i));	//发出邀请
+				for (int i = 1; i < teamArr.GetSize(); i++)
+				{
+					text.Format("邀请:%s", teamArr.GetAt(i));
+					g_pHPInit->MySendGameInfo(text);
+					g_pAsmTeam->AsmInvaiteTeam(teamArr.GetAt(i));	//发出邀请
+					Sleep(3000);
+				}
+			}
+			else {
+				//队员等待组队邀请
+				if (g_pAsmTeam->GetInvite()) {
+					Sleep(1000);
+					g_pHPInit->MySendGameInfo("有组队邀请 进入队伍");
+					g_pAsmTeam->TeamJoin();
+					Sleep(2000);
+				}
+				else {
+					Sleep(2000);
+				}
 			}
 		}
 		else {
-			//队员等待组队邀请
-			if (g_pAsmTeam->GetInvite()) {
-				g_pHPInit->MySendGameInfo("有组队邀请 进入队伍");
-				g_pAsmTeam->TeamJoin();
-				Sleep(1000);
-			}
-			else {
-				Sleep(2000);
-			}
+			dbgPrint("队伍人数太少");
 		}
 
 		if (FUN_CheckTeam()) {
@@ -1698,7 +1717,7 @@ BOOL CFunction::FUN_CheckTeam()
 		}
 	}
 
-	if (checkCount >= 5) {
+	if (checkCount >= 1) {
 		return 1;	//人员到齐
 	}
 

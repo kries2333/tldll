@@ -41,6 +41,9 @@ TAsmRoleInfo CAsmRole::GetRoleInfo()
 		if (IsBadReadPtr((PULONG)(data + 0x4), 4) == 0)
 			data = *(PULONG)(data + 0x4);
 		//------------------------------------------
+		
+		if (IsBadReadPtr((int*)(data + 0x10), 4) == 0)
+			TAsmRoleInfo.nRoleCode = *(int*)(data + 0x10);	//»ÀŒÔ±‡∫≈
 		if (IsBadReadPtr((CHAR*)(data + 0x2C), 4) == 0)
 			TAsmRoleInfo.szName = (char*)(data + 0x2C);
 		if (IsBadReadPtr((int*)(data + 0xA4), 4) == 0)
