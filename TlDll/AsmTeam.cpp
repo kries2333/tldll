@@ -136,7 +136,7 @@ void CAsmTeam::TeamJoin()
     auto RoleInfo = g_pAsmRole->GetRoleInfo();
 
     if (g_GameExeBase == 0) return;
-
+     
     DWORD TeamCall;
     DWORD TeamEcx;
     DWORD TeamData;
