@@ -29,10 +29,11 @@
 #define CHIYAO_CALL_OBJ		0x293D08		//吃药发包数据
 
 #define	TEAM_ECX			0x33DA78		//组队封包CALL_ecx
-#define	TEAM_CALL			0x171500		//组队封包CALL
-#define	TEAM_DATA1			0x290FA0		//组队封包数据
+#define	TEAM_CALL			0x171950		//组队封包CALL
+#define	TEAM_DATA1			0x290FB0		//组队封包数据
 #define	TEAM_INFO			0x33719C		//组队数组基址
 #define TEAM_STATUS			0x33DDF0		//队伍状态
+#define TEAM_JOIN_DATA		0x2A9C98		//加入组队数据
 
 //#define PET_CALL				0x170530	//宠物出战Call
 //

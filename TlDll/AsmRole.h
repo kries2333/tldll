@@ -39,6 +39,7 @@ struct TAsmRoleInfo {
 	int nState;//人物状态
 	int nMenpai;//门派
 	int nRoleID;//人物ID
+	int nRoleCode;	//人物编号
 	int nLevel;
 	int nMoney;//
 	int nHP;//
@@ -52,6 +53,7 @@ struct TAsmRoleInfo {
 		nState = -1;//人物状态
 		nMenpai = -1;//门派
 		nRoleID = -1;//人物ID
+		nRoleCode = -1; //人物编号
 		nLevel = -1;
 		nMoney = -1;//
 		nHP = -1;//

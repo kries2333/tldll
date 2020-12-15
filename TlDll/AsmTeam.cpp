@@ -12,6 +12,7 @@ extern CAsmRole* g_pAsmRole;
 void CAsmTeam::AsmInvaiteTeam(CString Name)
 {
     dbgPrint("邀请组队");
+    if (Name.IsEmpty()) return;
     auto RoleInfo = g_pAsmRole->GetRoleInfo();
 
     if (g_GameExeBase == 0) return;
@@ -36,7 +37,13 @@ void CAsmTeam::AsmInvaiteTeam(CString Name)
         BYTE NameLen;
         NameLen = (BYTE)strlen(Name.GetBuffer());
         ZeroMemory(Data, 40);
-
+        //	+ 0x0 固定赋值一个对象
+        //	+ 0x4 固定赋值为0
+        //	+ 0x8 固定赋值为0
+        //	+ 0xC 固定赋值为 - 1
+        //	+ 0x10位置 是人物ID
+        //	+ 0x14位置 是被邀请人名字长度
+        //  + 0x15位置 是被邀请人的名字
         memcpy(Data, &TeamData, 4);
         TeamData2 = 0;
         memcpy(Data + 0x4, &TeamData2, 4);
@@ -47,22 +54,15 @@ void CAsmTeam::AsmInvaiteTeam(CString Name)
         memcpy(Data + 0x10, &RoleInfo.nRoleID, 4);
         memcpy(Data + 0x14, &NameLen, 1);
         memcpy(Data + 0x15, Name.GetBuffer(), NameLen);
-        //	+ 0x0 固定赋值一个对象
-        //	+ 0x4 固定赋值为0
-        //	+ 0x8 固定赋值为0
-        //	+ 0xC 固定赋值为 - 1
-        //	+ 0x10位置 是人物ID
-        //	+ 0x14位置 是被邀请人名字长度
-        //  + 0x15位置 是被邀请人的名字
         TeamData1 = (DWORD)Data;
         //for (size_t i = 0; i < 40; i++)
         //{
         //	dbgPrint("封包数据:%02X", Data[i]);
         //}
         _asm {//邀请组队
-            mov ecx, [TeamEcx]
+            mov ecx,[TeamEcx]
             push TeamData1
-            mov eax, TeamCall
+            mov eax,TeamCall
             call eax
         }
 
@@ -131,7 +131,69 @@ void CAsmTeam::GetTeamInfo()
 void CAsmTeam::TeamJoin()
 {
     //setmetatable(_G, {__index = Team_Frame_Env}); Team_Button_Frame5_Click();
-    g_pMsg->msg_dostring("setmetatable(_G, {__index = Team_Frame_Env}); Team_Button_Frame5_Click();");//加入队伍
+    //加入队伍封包
+    //g_pMsg->msg_dostring("setmetatable(_G, {__index = Team_Frame_Env}); Team_Button_Frame5_Click();");//加入队伍
+    auto RoleInfo = g_pAsmRole->GetRoleInfo();
+
+    if (g_GameExeBase == 0) return;
+
+    DWORD TeamCall;
+    DWORD TeamEcx;
+    DWORD TeamData;
+    DWORD TeamData1;
+    int TeamData2;
+    TeamCall = (DWORD)(g_GameExeBase + TEAM_CALL);
+    TeamEcx = (DWORD)(g_GameExeBase + TEAM_ECX);
+    TeamEcx = *(DWORD*)(TeamEcx);
+    TeamData = (DWORD)(g_GameExeBase + TEAM_JOIN_DATA);
+
+    dbgPrint("进入队伍Call地址：【%x】 Ecx：【%x】 封包数据：【%x】 人物编号：【%x】", TeamCall, TeamEcx, TeamData, RoleInfo.nRoleCode);
+    if (TeamCall == 0 || TeamEcx == 0 || TeamData == 0) return;
+
+    try
+    {
+        BYTE* Data = (BYTE*)VirtualAlloc(NULL, 32, MEM_COMMIT, PAGE_READWRITE);
+        if (NULL == Data) {
+            return;
+        }
+        ZeroMemory(Data, 32);
+        //00FDEBFC  00D39C98  Game.00D39C98 对象
+        //00FDEC00  00000000 固定0
+        //00FDEC04  00000000 固定0
+        //00FDEC08  FFFFFFFF 固定 - 1
+        //00FDEC0C  00000001 固定1
+        //00FDEC10  0D1E33BF 人物编号
+        memcpy(Data, &TeamData, 4);
+        TeamData2 = 0;
+        memcpy(Data + 0x4, &TeamData2, 4);
+        TeamData2 = 0;
+        memcpy(Data + 0x8, &TeamData2, 4);
+        TeamData2 = -1;
+        memcpy(Data + 0xC, &TeamData2, 4);
+        TeamData2 = 1;
+        memcpy(Data + 0x10, &TeamData2, 4);
+        TeamData2 = RoleInfo.nRoleCode - 1;
+        memcpy(Data + 0x14, &TeamData2, 4);
+
+        TeamData1 = (DWORD)Data;
+        for (size_t i = 0; i < 32; i++)
+        {
+        	dbgPrint("封包数据:%02X", Data[i]);
+        }
+        _asm {//邀请组队
+            mov ecx,TeamEcx
+            push TeamData1
+            mov eax,TeamCall
+            call eax
+        }
+
+        VirtualFree(Data, 24, MEM_COMMIT);
+    }
+    catch (const std::exception&)
+    {
+        dbgPrint("加入队伍失败");
+    }
+
 }
 
 void CAsmTeam::TeamLeave()

@@ -190,7 +190,6 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="1.cpp" />
     <ClCompile Include="AsmGroundParcel.cpp" />
     <ClCompile Include="AsmItem.cpp" />
     <ClCompile Include="AsmMonster.cpp" />
