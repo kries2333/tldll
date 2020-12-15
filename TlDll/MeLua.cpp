@@ -998,7 +998,7 @@ int CMeLua::LUA_AutoTeam(LuaState* pState)
 	if (args[1].IsInteger())
 	{
 		int nNum = args[1].GetInteger();
-		if (FUN_AutoTeam(nNum)) {
+		if (FUN_AutoTeam(nNum-1)) {
 			pState->PushBoolean(TRUE);
 			return 1;
 		}
@@ -1014,7 +1014,7 @@ int CMeLua::LUA_CheckTeam(LuaState* pState)
 	if (args[1].IsInteger())
 	{
 		int nNum = args[1].GetInteger();
-		if (FUN_CheckTeam(nNum)) {
+		if (FUN_CheckTeam(nNum-1)) {
 			pState->PushBoolean(TRUE);
 			return 1;
 		}
