@@ -7,6 +7,7 @@ public:
 	~CAsmStoreItem() {};
 public:
 	void BuyPetDrugByName(CString szSceneName, CString szName, int nNum);
+	void BuyRoleDrugByName(CString szSceneName, CString szName, int nNum);
 private:
 	void AsmBuyStoreDrug(DWORD unStoreObject, int itemId, int nNum);
 };

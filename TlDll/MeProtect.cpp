@@ -18,7 +18,6 @@ static DWORD PT_HP = 0;
 
 BOOL use_item_yao(CString name)
 {
-	dbgPrint("补血%s", name);
 	VAsmItem items = g_pAsmItem->AsmGetItemData();
 	for (auto item : items)
 	{
@@ -96,7 +95,6 @@ void pet_buji()
 		{
 			if (pet.nPetId == g_pAsmPet->GetIsFighting())
 			{
-				dbgPrint("当前出战宠物%s 血量=%d", pet.szName, pet.nCurHP);
 				float fHpCurPer = ((float)pet.nCurHP / (float)pet.nMaxHP) * 100;
 				if (fHpCurPer < g_pUser->tPetProtect.nHpPer)
 				{
@@ -136,7 +134,7 @@ UINT __stdcall Protect_threadfunc(void* pType)
 			role_buji();
 			pet_buji();
 		}
-		Sleep(1000);
+		Sleep(3000);
 	}
 	return 0;
 }

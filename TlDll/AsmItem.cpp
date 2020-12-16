@@ -47,8 +47,6 @@ VAsmItem CAsmItem::AsmGetItemData()
 					mov NameAddr, eax
 				}
 				tItems.szName = (PCHAR)(NameAddr);
-				dbgPrint("AsmGetItemData uObj=%X",
-					uObj);
 
 				__asm {
 					mov ecx, uObj

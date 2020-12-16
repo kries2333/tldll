@@ -51,9 +51,6 @@
     <ClCompile Include="DlgPage1.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="MeKillMonster.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Function.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -168,9 +165,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="DlgPage1.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="MeKillMonster.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Function.h">

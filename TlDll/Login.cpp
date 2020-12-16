@@ -118,7 +118,7 @@ UINT __stdcall Login_threadFunc(void* p)//登录线程函数
 	}
 
 	dbgPrint("卸载模块");
-	//ExitLogin();
+	ExitLogin();
 	//UnDetoursHook();
 	//UnAnserHook();
 	//::FreeLibraryAndExitThread(pMe->hDll, 1);

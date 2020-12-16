@@ -8,9 +8,11 @@
 #include "Me.h"
 #include "ScriptSystem.h"
 #include "FileSystem.h"
+#include "AsmRole.h"
 
 extern CMe *g_pMe;
 extern CFileSystem* g_pFileSystem;
+extern CAsmRole* g_pAsmRole;
 
 // CGUI 对话框
 
@@ -68,6 +70,10 @@ BOOL CGUI::OnInitDialog()
 	m_UITable.SetCurSel(0);
 
 	ModifyStyleEx(WS_EX_APPWINDOW, WS_EX_TOOLWINDOW);//初始化不在任务栏显示
+
+	TAsmRoleInfo role = g_pAsmRole->GetRoleInfo();
+	CString strTemp(role.szName);
+	SetWindowText("角色名:" + strTemp);
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // 异常: OCX 属性页应返回 FALSE
 }
@@ -123,7 +129,7 @@ void CGUI::OnBnClickedButton1()
 
 void CGUI::OnBnClickedBtnStart()
 {
-	g_pMe->CreateTask("野外30-40");
+	g_pMe->CreateTask("刷马贼");
 }
 
 

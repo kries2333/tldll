@@ -13,8 +13,6 @@ public:
 	void EndThread();
 	friend UINT __stdcall UI_ThreadFunc(LPVOID p);//UI线程函数
 	void CreateUI();//创建UI
-	friend UINT __stdcall KillMonster_ThreadFunc(LPVOID p);//杀怪线程函数
-	void CreateKillMonster();//创建杀怪线程
 	friend UINT __stdcall Task_ThreadFunc(void* pType);
 	void CreateTask(const char* tasks);//创建Task线程
 	void CreateGift();
