@@ -211,7 +211,6 @@
     <ClCompile Include="Login.cpp" />
     <ClCompile Include="Me.cpp" />
     <ClCompile Include="MeKill.cpp" />
-    <ClCompile Include="MeKillMonster.cpp" />
     <ClCompile Include="MeLua.cpp" />
     <ClCompile Include="MeProtect.cpp" />
     <ClCompile Include="Message.cpp" />
@@ -255,7 +254,6 @@
     <ClInclude Include="Login.h" />
     <ClInclude Include="Me.h" />
     <ClInclude Include="MeKill.h" />
-    <ClInclude Include="MeKillMonster.h" />
     <ClInclude Include="MeLua.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="MonsterNameDlg.h" />

@@ -71,6 +71,7 @@ UINT __stdcall Info_ThreadFunc(void* p)
 		Sleep(1000 * 5);
 	}
 }
+
 //定时领取礼物
 UINT __stdcall Gift_ThreadFunc(void* p)
 {
@@ -87,17 +88,17 @@ UINT __stdcall Gift_ThreadFunc(void* p)
 		if (g_pMsg != NULL)
 		{
 			g_pMsg->msg_dostring("setmetatable(_G, {__index = FreshmanWatch_Env}); FreshmanWatch_Bn2Click();");
+			Sleep(1000);
 			for (int i = 0; i < 20; i++)
 			{
 				CString strTemp = g_pMsg->msg_getstring("ItemName", " ItemName = PlayerPackage:GetBagItemName(%d)", i).c_str();
-				
+				Sleep(1000);
 				if (strTemp.Find("翅膀", 0) != -1 ||
 					strTemp.Find("珍兽蛋", 0) != -1 ||
 					strTemp.Find("江湖乾坤袋", 0) != -1) {
 					g_pMsg->msg_dostring("setmetatable(_G, { __index = Packet_Env }); Packet_ItemBtnClicked(1, %d);", i + 1);
 					Sleep(1000);
 				}
-				Sleep(100);
 			}
 
 			CString strTemp = g_pMsg->msg_getstring("MyMonCanCommitString", "setmetatable(_G, {__index = QuitRelative_Env}); MyMonCanCommitString = QuitRelative_Text:GetText()").c_str();
@@ -164,26 +165,16 @@ void CMe::CreateLogin(int nNUM)//创建登录线程
 {
 	bGiftThread = true;
 	HANDLE	hlg = (HANDLE)_beginthreadex(NULL, 0, &Login_threadFunc, (void*)nNUM, 0, NULL);
-	::CloseHandle(hlg);
+	if (hlg != NULL)
+	{
+		::CloseHandle(hlg);
+	}
 }
 
 void CMe::CreateUI()	//创建模态对话框
 {
 	bUiThread = true;
 	hUIThread = (HANDLE)_beginthreadex(NULL, 0, &UI_ThreadFunc, this, 0, NULL);
-}
-
-void CMe::CreateKillMonster()//创建打怪线程
-{
-	if (hKillMonsterThread)//杀怪线程
-	{
-		::CloseHandle(hKillMonsterThread);
-		hKillMonsterThread = nullptr;
-	}
-
-	//bRun = true;
-	bKillMonsterThread = true;
-	hKillMonsterThread = (HANDLE)_beginthreadex(NULL, 0, &KillMonster_ThreadFunc, this, 0, NULL);
 }
 
 //执行任务脚本
@@ -215,7 +206,7 @@ void CMe::CreateInfo()	//创建Task线程
 }
 
 //执行领取礼物
-void CMe::CreateGift()	//创建Task线程
+void CMe::CreateGift()
 {
 	if (hGiftThread)
 	{
@@ -227,8 +218,8 @@ void CMe::CreateGift()	//创建Task线程
 	hGiftThread = (HANDLE)_beginthreadex(nullptr, 0, &Gift_ThreadFunc, 0, 0, nullptr);
 }
 
-
-void CMe::CreatProtect()//创建保护线程
+// 创建保护线程
+void CMe::CreatProtect()
 {
 	if (hProtectThread)//任务线程停止时可能要等待很久
 	{

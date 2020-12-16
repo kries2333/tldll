@@ -1169,23 +1169,15 @@ void CFunction::FUN_AttackMonster(_tstring monsterName, _tstring sceneName, floa
 	{
 		return;
 	}
-	//static _tstring strTemp;
-	//if (strTemp != monsterName)
-	{
-		//strTemp = monsterName;
-		int sceneId = FUN_GetSceneID(sceneName.c_str());
-		if (FUN_RunToTargetEx(x, y, sceneId)) {
-			TAsmMonster tAsmMonster = FUN_GetMonsterByName(monsterName.c_str(), 0, 1);
-			if (tAsmMonster.nMonsterId != -1)
-			{
-				dbgPrint("FUN_KillMonsterByNameID %d", tAsmMonster.nMonsterId);
-				FUN_UseSkillKillMonster(tAsmMonster);//开始技能打怪;
-			}
+	int sceneId = FUN_GetSceneID(sceneName.c_str());
+	if (FUN_RunToTargetEx(x, y, sceneId)) {
+		TAsmMonster tAsmMonster = FUN_GetMonsterByName(monsterName.c_str(), 0, 1);
+		if (tAsmMonster.nMonsterId != -1)
+		{
+			dbgPrint("FUN_KillMonsterByNameID %d", tAsmMonster.nMonsterId);
+			FUN_UseSkillKillMonster(tAsmMonster);//开始技能打怪;
 		}
 	}
-
-	//FUN_MisKillMonsterByName(monsterName);
-
 }
 
 //加入门派
@@ -1392,9 +1384,9 @@ void CFunction::FUN_DeathResurrection()
 		}
 		Sleep(1000);
 	}
-	g_pHPInit->MySendGameInfo("角色复活失败");
 }
 
+//自动买药
 void CFunction::FUN_AutoBuy(CString itemNames, CString sceneName, int nPosX, int nPosY, CString npcName, CString _talkName)
 {
 	dbgPrint("FUN_AutoBuy itemNames=%s, _talkName=%s", itemNames, _talkName);
@@ -1403,27 +1395,39 @@ void CFunction::FUN_AutoBuy(CString itemNames, CString sceneName, int nPosX, int
 	if (FUN_RunToTargetEx(nPosX, nPosY, nSceneId)) {
 
 		g_pMsg->SetAutoRunTargetNPCName(npcName); //移动到NPC
-		if (g_pMsg->IsNpcDialog())
+		Sleep(1000);
+		//if (g_pMsg->IsNpcDialog())
 		{
-			g_pMsg->msg_dostring("ClickMission(\"%s\")", _talkName);//msg的lua消息函数
-			Sleep(2000);
+			if (_talkName == "")
+			{
+				
+				_tstring szT = itemNames;
+				auto  szTemps = UserSubMonsterName(szT, _T('|'));
+				for (auto temp : szTemps)
+				{
+					auto items = UserSubMonsterName(temp, _T('='));
+					if (items.size() == 2)
+					{
+						g_pAsmStoreItem->BuyRoleDrugByName(npcName, items[0].c_str(), stoi(items[1].c_str()));
+					}
+				}
+			} 
+			else if (CString("购买珍兽用品").Find(_talkName) != -1)
+			{
+				g_pMsg->msg_dostring("ClickMission(\"%s\")", _talkName);//msg的lua消息函数
+				Sleep(2000);
 
-			//if (CString("购买珍兽用品").Find(_talkName) != -1)
-			//{
-			//	if (CString("苏州").Find(sceneName) != -1)
-			//	{
-			//		_tstring szT = itemNames;
-			//		auto  szTemps = UserSubMonsterName(szT, _T('|'));
-			//		for (auto temp : szTemps)
-			//		{
-			//			auto items = UserSubMonsterName(temp, _T('='));
-			//			if (items.size() == 2)
-			//			{
-			//				g_pAsmStoreItem->BuyPetDrugByName("苏州珍兽店", items[0].c_str(), stoi(items[1].c_str()));
-			//			}
-			//		}
-			//	}
-			//}
+				_tstring szT = itemNames;
+				auto  szTemps = UserSubMonsterName(szT, _T('|'));
+				for (auto temp : szTemps)
+				{
+					auto items = UserSubMonsterName(temp, _T('='));
+					if (items.size() == 2)
+					{
+						g_pAsmStoreItem->BuyPetDrugByName(npcName, items[0].c_str(), stoi(items[1].c_str()));
+					}
+				}
+			}
 		}
 	}
 }
