@@ -1637,7 +1637,7 @@ BOOL CFunction::FUN_AutoTeam(int nNum)
 		dbgPrint("组队 temp=%s", temp);
 		//if ("" == temp) {
 		//	return FALSE;		//队伍成员为空
-		//}
+		//} 
 
 		SplitCStringArr(temp, "|", &teamArr);
 		TAsmRoleInfo role = g_pAsmRole->GetRoleInfo();
