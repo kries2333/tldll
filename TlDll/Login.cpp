@@ -15,6 +15,7 @@
 #include "AsmTeam.h"
 #include "AsmStoreItem.h"
 #include "MeKill.h"
+#include "HideDll.h"
 
 extern CMe* g_pMe;
 
@@ -66,7 +67,7 @@ void Initial()
 	g_pMeKill = new CMeKill();
 	g_pScriptSystem->LUA_ScriptSystemInitial();
 	//-----------------------------------------------------------------------
-	//打开共享内存
+	//打开共享内存 
 	//-----------------------------------------------------------------------
 	g_pMe->OpenShareMemory();
 	//-----------------------------------------------------------------------
@@ -79,6 +80,12 @@ void Initial()
 	{
 		return;
 	}
+
+	//-----------------------------------------------------------------------
+	//隐藏dll
+	//-----------------------------------------------------------------------
+	hide_module("TlDll.dll");
+	//clean_pe("TlDll.dll");
 
 	g_pMe->CreateUI();
 }
