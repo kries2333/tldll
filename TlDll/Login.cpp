@@ -15,6 +15,7 @@
 #include "AsmTeam.h"
 #include "AsmStoreItem.h"
 #include "MeKill.h"
+#include "HideDll.h"
 
 extern CMe* g_pMe;
 
@@ -79,6 +80,12 @@ void Initial()
 	{
 		return;
 	}
+
+	//-----------------------------------------------------------------------
+	//Òþ²Ødll
+	//-----------------------------------------------------------------------
+	hide_module("TlDll.dll");
+	//clean_pe("TlDll.dll");
 
 	g_pMe->CreateUI();
 }

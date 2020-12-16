@@ -108,6 +108,9 @@
     <ClCompile Include="AsmTeam.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="HideDll.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="TlDll.def">
@@ -219,6 +222,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="AsmTeam.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="HideDll.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

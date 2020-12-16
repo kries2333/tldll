@@ -207,6 +207,7 @@
     <ClCompile Include="CGUI.cpp" />
     <ClCompile Include="DlgPage1.cpp" />
     <ClCompile Include="FileSystem.cpp" />
+    <ClCompile Include="HideDll.cpp" />
     <ClCompile Include="HPInit.cpp" />
     <ClCompile Include="Login.cpp" />
     <ClCompile Include="Me.cpp" />
@@ -251,6 +252,7 @@
     <ClInclude Include="DlgPage1.h" />
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="HideDll.h" />
     <ClInclude Include="HPInit.h" />
     <ClInclude Include="Login.h" />
     <ClInclude Include="Me.h" />
