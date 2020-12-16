@@ -307,7 +307,7 @@ BOOL CFunction::FUN_RunToTargetEx(float fx, float fy, int SceneId, float dis)//¿
 
 	while (g_pMe->bRun)
 	{
-
+		g_pMe->bPauseProtect = true;	//ÔÝÍ£³ÔÒ©±£»¤
 		DWORD dwCurTime = GetTickCount64();
 		if ((dwCurTime - dwWaitTime) > (5 * 60 * 1000)) //Èç¹û10·ÖÖÓ»¹Ã»µ½´ïÍË³öÖØÐÂÑ°Â·
 		{
@@ -350,7 +350,7 @@ BOOL CFunction::FUN_RunToTargetEx(float fx, float fy, int SceneId, float dis)//¿
 			}
 		}
 		dbgPrint("Ñ°Â·¼ÆÊ±%d", (dwCurTime - dwEndTime));
-		if ((dwCurTime - dwEndTime) > (10 * 1000)) //Èç¹û5ÃëÃ»ÓÐÒÆ¶¯¾ÍÖØÐÂÒÆ¶¯
+		if ((dwCurTime - dwEndTime) > (5 * 1000)) //Èç¹û5ÃëÃ»ÓÐÒÆ¶¯¾ÍÖØÐÂÒÆ¶¯
 		{
 			auto APos = g_pAsmRole->GetPos();
 			if (((int)APos.fx == nOldX) &&
@@ -372,6 +372,7 @@ BOOL CFunction::FUN_RunToTargetEx(float fx, float fy, int SceneId, float dis)//¿
 		if (fCurDistance < dis)//µ±Ç°µÄ¾àÀëÐ¡ÓÚ2¿ÉÒÔ²Ù×÷Ä¿±êÁË
 		{
 			dbgPrint("µ½´ïÄ¿µÄµØ");
+			g_pMe->bPauseProtect = false; //Æô¶¯³ÔÒ©±£»¤
 			//g_pMsg->CallInOutRide(0);
 			return TRUE;
 		}

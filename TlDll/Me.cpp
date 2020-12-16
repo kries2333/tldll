@@ -227,7 +227,7 @@ void CMe::CreatProtect()
 		hProtectThread = nullptr;
 	}
 	bProtectRun = true;
-	//hTryThread = (HANDLE)_beginthreadex(NULL, 0, &Try_threadfunc, this, 0, NULL);
+	bPauseProtect = false;
 	hProtectThread = (HANDLE)_beginthreadex(NULL, 0, &Protect_threadfunc, this, 0, NULL);
 }
 

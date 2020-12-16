@@ -18,6 +18,7 @@ static DWORD PT_HP = 0;
 
 BOOL use_item_yao(CString name)
 {
+	g_pCriticalSection->Lock();
 	VAsmItem items = g_pAsmItem->AsmGetItemData();
 	for (auto item : items)
 	{
@@ -28,11 +29,14 @@ BOOL use_item_yao(CString name)
 			{
 				PT_HP = GetTickCount64();
 				g_pMsg->CallInOutRide(0);
+				dbgPrint("use_item_yao item=%s", item.szName);
 				g_pAsmItem->AsmUseHpItem(item.nIntdex, item.uAttributeObj1, item.uAttributeObj2, item.uAttributeObj3);
 				return TRUE;
 			}
 		}
 	}
+	g_pCriticalSection->Unlock();
+	return FALSE;
 }
 
 void role_buji()
@@ -120,6 +124,11 @@ UINT __stdcall Protect_threadfunc(void* pType)
 {
 	while (g_pMe->bProtectRun)
 	{
+		if (g_pMe->bPauseProtect)
+		{
+			Sleep(5000);
+			continue;
+		}
 		auto ARoleInfo = g_pAsmRole->GetRoleInfo();
 		if (!ARoleInfo.bool_ret)
 		{

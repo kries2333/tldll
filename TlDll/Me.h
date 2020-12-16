@@ -42,6 +42,7 @@ public:
 	bool bGiftThread;
 	bool bInfoThread;
 	bool bProtectRun;
+	bool bPauseProtect;	//在移动的时候暂停吃药保护，防止走走停停
 };
 
 HWND GetWindowHandle();// 获取创建偶句柄
