@@ -22,10 +22,10 @@ void CAsmTeam::AsmInvaiteTeam(CString Name)
     DWORD TeamData;
     DWORD TeamData1;
     int TeamData2;
-    TeamCall = (DWORD)(g_GameExeBase + TEAM_CALL);
-    TeamEcx = (DWORD)(g_GameExeBase + TEAM_ECX);
+    TeamCall = (DWORD)(g_GameExeBase + 邀请组队CALL);
+    TeamEcx = (DWORD)(g_GameExeBase + 邀请组队CALL_ECX);
     TeamEcx = *(DWORD*)(TeamEcx);
-    TeamData = (DWORD)(g_GameExeBase + TEAM_DATA1);
+    TeamData = (DWORD)(g_GameExeBase + 邀请组队封包数据);
     dbgPrint("Call地址：【%x】 Ecx：【%x】 封包数据：【%x】", TeamCall, TeamEcx, TeamData);
     if (TeamCall == 0 || TeamEcx == 0 || TeamData == 0) return;
     try
@@ -84,7 +84,7 @@ void CAsmTeam::GetTeamInfo()
 
     try
     {
-        Obj = *(DWORD*)(g_GameExeBase + TEAM_INFO);
+        Obj = *(DWORD*)(g_GameExeBase + 组队数组);
         Obj = *(DWORD*)(Obj + 0xBC);
 
         int teamCount = g_pMsg->msg_getnumber("g_GetValue = DataPool:GetTeamMemberCount();");//获取所有数量
@@ -143,12 +143,12 @@ void CAsmTeam::TeamJoin()
     DWORD TeamData1;
     DWORD InvaiteId;
     int TeamData2;
-    TeamCall = (DWORD)(g_GameExeBase + TEAM_CALL);
-    TeamEcx = (DWORD)(g_GameExeBase + TEAM_ECX);
+    TeamCall = (DWORD)(g_GameExeBase + 加入队伍CALL);
+    TeamEcx = (DWORD)(g_GameExeBase + 加入队伍CALL_ECX);
     TeamEcx = *(DWORD*)(TeamEcx);
-    TeamData = (DWORD)(g_GameExeBase + TEAM_JOIN_DATA);
+    TeamData = (DWORD)(g_GameExeBase + 加入队伍封包数据对象);
 
-    InvaiteId = *(DWORD*)(g_GameExeBase + TEAM_INFO);
+    InvaiteId = *(DWORD*)(g_GameExeBase + 组队数组);
     InvaiteId = *(DWORD*)(InvaiteId + 0xEC);
     InvaiteId = *(DWORD*)(InvaiteId);
     InvaiteId = *(DWORD*)(InvaiteId + 0x4);
@@ -228,7 +228,7 @@ bool CAsmTeam::GetTeamExist()
     if (g_GameExeBase == 0) return false;
     try
     {
-        Obj = *(DWORD*)(g_GameExeBase + TEAM_STATUS);
+        Obj = *(DWORD*)(g_GameExeBase + 是否存在队伍标识);
         Data = *(DWORD*)(Obj + 0xAC);
         if (1 == Data)
             return true;
@@ -251,7 +251,7 @@ bool CAsmTeam::GetInvite()
 
     try
     {
-        Obj = *(DWORD*)(g_GameExeBase + TEAM_INFO);
+        Obj = *(DWORD*)(g_GameExeBase + 组队数组);
         Data = *(DWORD*)(Obj + 0xFC);
         if (1 == Data) 
             return true;

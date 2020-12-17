@@ -4,10 +4,12 @@
 #include "AsmSkill.h"
 #include "Function.h"
 #include "AsmRole.h"
+#include "FileSystem.h"
 
 extern CGUI *g_pUI;
 extern CAsmSkill* g_pAsmSkill;
 extern CAsmRole* g_pAsmRole;
+extern CFileSystem* g_pFileSystem;
 
 _tstring Os_stringOferase(_tstring strSource, _tstring strErase)//移除指定字符或者字符串
 {
@@ -103,32 +105,67 @@ VUserPos CUser::UserGetPos()//用户获取挂机点总数
 }
 
 //////////////////////////////////技能////////////////////////////////////
-VAsmSkill CUser::UserGetSkill()//获取技能
+VUserSkill CUser::UserGetSkill()//获取技能
 {
-	int nCount = g_pUI->m_Page2.m_SkillList.GetItemCount();
-	VAsmSkill l_AsmSkill;
+	VAsmSkill l_AsmSkill = g_pAsmSkill->AsmGetSkillData();
+	CString szMenPai = g_pAsmRole->GetMenPaiForName();
+	dbgPrint("szMenPai = %s", szMenPai);
 
-	int nMenPai = g_pAsmRole->GetMenPaiForId();
-	TAsmSkill nSkill;
-	if (nMenPai == 8) {
-		nSkill.szName = "落英剑";
-		nSkill.nSkillId = 521;
-		nSkill.fMax = 15.0;
-		l_AsmSkill.push_back(nSkill);
-	}
-	else if (nMenPai == 4)
+	CString strPath = CString(g_pFileSystem->Module.c_str()) + "通用技能释放.ini";
+	CString strTags = "使用姿态|起手式|群攻技能|状态buff|自身buff";
+
+	VUserSkill vUserSkill;
+	
+	CString strTemp;
+
+	_tstring ss = strTags;
+	VUserMonsterName  vTags = UserSubMonsterName(ss, _T('|'));
+	for (size_t i = 0; i < vTags.size(); i++)
 	{
-		nSkill.szName = "貂蝉拜月";
-		nSkill.nSkillId = 401;
-		nSkill.fMax = 15.0;
-		l_AsmSkill.push_back(nSkill);
+		GetPrivateProfileString(szMenPai, vTags[i].c_str(), "", strTemp.GetBuffer(MAX_PATH), MAX_PATH, strPath);
+		_tstring szTemp = strTemp;
+		auto  vString = UserSubMonsterName(szTemp, _T('|'));
+		dbgPrint("vString = %d", vString.size());
+		if (vString.size() == 0)
+		{
+			TUserSkill tUserSkill;
+			tUserSkill.nType = i + 1;
+			tUserSkill.nSkillId = -1;
+			vUserSkill.push_back(tUserSkill);
+		}
+		else if (vString.size() == 1) 
+		{
+			TUserSkill tUserSkill;
+			tUserSkill.nType = i + 1;
+			for (auto skill : l_AsmSkill)
+			{
+				if (skill.szName == strTemp)
+				{
+					tUserSkill.tAsmSkill = skill;
+					tUserSkill.nSkillId = skill.nSkillId;
+					break;
+				}
+			}
+			vUserSkill.push_back(tUserSkill);
+		}
+		else
+		{
+			for (auto v : vString)
+			{
+				TUserSkill tUserSkill;
+				tUserSkill.nType = i + 1;
+				for (auto skill : l_AsmSkill)
+				{
+					if (CString(skill.szName) == CString(v.c_str()))
+					{
+						tUserSkill.tAsmSkill = skill;
+						tUserSkill.nSkillId = skill.nSkillId;
+						break;
+					}
+				}
+				vUserSkill.push_back(tUserSkill);
+			}
+		}
 	}
-	else
-	{
-		nSkill.szName = "普通攻击";
-		nSkill.nSkillId = 0;
-		nSkill.fMax = 2.0;
-		l_AsmSkill.push_back(nSkill);
-	}
-	return l_AsmSkill;
+	return vUserSkill;
 }

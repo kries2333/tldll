@@ -11,7 +11,7 @@ DWORD GetBaseAddr()
 {
 	if (g_GameExeBase == 0) return 0;
 	ULONG data = 0;
-	data = *(int*)(g_GameExeBase + BAG_BASE);
+	data = *(int*)(g_GameExeBase + 背包基址);
 	return data;
 }
 
@@ -179,7 +179,7 @@ void CAsmItem::WearEquipment(int nIndex, int nTypeName)
 {
 
 	if (g_GameExeBase == 0) return;
-	DWORD base = g_GameExeBase + WEAR_CALL;
+	DWORD base = g_GameExeBase + 穿戴CALL;
 	_asm {
 		push nTypeName
 		push nIndex
@@ -226,7 +226,7 @@ void CAsmItem::AutoSell(_tstring itemNames)
 void CAsmItem::SellEquipment(DWORD uObj)
 {
 	if (g_GameExeBase == 0) return;
-	DWORD base = g_GameExeBase + WEAR_CALL;
+	DWORD base = g_GameExeBase + 穿戴CALL;
 	_asm {
 		mov edx, base
 		mov ecx, [edx]
@@ -265,8 +265,8 @@ void CAsmItem::AutoDestroy(_tstring itemNames)
 void CAsmItem::Destroy(int nIndex)
 {
 	if (g_GameExeBase == 0) return;
-	DWORD _CALL = g_GameExeBase + DESTROY_CALL;
-	DWORD _ECX = g_GameExeBase + DESTROY_ECX;
+	DWORD _CALL = g_GameExeBase + 销毁CALL;
+	DWORD _ECX = g_GameExeBase + 销毁CALL_ECX;
 	_asm {
 		mov eax, _ECX
 		mov ecx, [eax]
@@ -295,14 +295,14 @@ void CAsmItem::AsmUseHpItem(int nIndex, DWORD ItemObject1, DWORD ItemObject2, DW
 
 	try
 	{
-		DWORD CallBase = g_GameExeBase + CHIYAO_CALL;
-		DWORD CallEcx = g_GameExeBase + CHIYAO_CALL_ECX;
+		DWORD CallBase = g_GameExeBase + 吃药CALL;
+		DWORD CallEcx = g_GameExeBase + 吃药CALL_ECX;
 		if (IsBadReadPtr((DWORD*)CallEcx, 4) == 0)
 			CallEcx = *(DWORD*)CallEcx;
 
 		//dbgPrint("nIndex=%X, ItemObject1=%d ItemObject2=%X ItemObject3=%X", nIndex, ItemObject1, ItemObject2, ItemObject3);
 
-		DWORD CallObj = g_GameExeBase + CHIYAO_CALL_OBJ;
+		DWORD CallObj = g_GameExeBase + 吃药封包数据对象;
 		TAsmSendEx* tAsmSendEx = BasePackerSendEx(CallObj, 0, 0, -1, nIndex, ItemObject3, ItemObject1, ItemObject2, 
 			0x4517, 0xBF800000, 0xBF800000, 0xBF800000);
 

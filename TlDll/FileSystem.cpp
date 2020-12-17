@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "FileSystem.h"
 
-extern CFileSystem* pFileSystem;
-
 //写日志文件函数
 void WriteLog(CString& Cstr)
 {
@@ -59,7 +57,8 @@ void CFileSystem::MyGetFilePath(HMODULE hModule)
 	TCHAR* szBuffer = new TCHAR[MAX_PATH * 2];
 	::GetModuleFileName(hModule, szBuffer, MAX_PATH * 2);
 	if (!_tcscmp(szBuffer, _T("")))
-	{//获取模块路径
+	{
+		//获取模块路径
 		//dbgPrint(_T("GetModuleFileName Error %d"), GetLastError());
 	}
 	//查找字符串最左侧的'\'字符

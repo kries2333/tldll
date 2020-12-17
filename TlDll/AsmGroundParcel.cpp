@@ -8,7 +8,7 @@ DWORD AsmGetEnvTreeBase()
 {
 	if (g_GameExeBase == 0) return 0;
 	ULONG data = 0;
-	data = *(int*)(g_GameExeBase + LROLE_BASE);
+	data = *(int*)(g_GameExeBase + 人物基址);
 	if (IsBadReadPtr((int*)data + 0x4c, 4) == 0) {
 		data = *(DWORD*)(data + 0x4c);
 	}
@@ -22,7 +22,7 @@ DWORD GetRoleBase()
 {
 	if (g_GameExeBase == 0) return 0;
 	ULONG data = 0;
-	data = *(int*)(g_GameExeBase + LROLE_BASE);
+	data = *(int*)(g_GameExeBase + 人物基址);
 	data = *(int*)(data + 0x58);
 	return data;
 }

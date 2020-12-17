@@ -370,7 +370,7 @@ int CMessage::GetCurMountID()//µ±Ç°×øÆïid
 int CMessage::getlua_state()
 {
 	int L = 0;
-	DWORD base = GameBase + LLUASTATE_BASE;
+	DWORD base = GameBase + LÖ¸Õë;
 	try
 	{
 		while (!L)

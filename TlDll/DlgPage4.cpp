@@ -13,6 +13,7 @@
 #include "AsmTask.h"
 #include "AsmPet.h"
 #include "Function.h"
+#include "User.h"
 
 extern CAsmGroundParcel* g_pGroundParcel;
 extern CAsmRole* g_pAsmRole;
@@ -20,6 +21,7 @@ extern CAsmItem* g_pAsmItem;
 extern CAsmTask* g_pAsmTask;
 extern CMessage* g_pMsg;
 extern CAsmPet* g_pAsmPet;
+extern CUser* g_pUser;
 extern CAsmStoreItem* g_pAsmStoreItem;
 
 // DlgPage4 对话框
@@ -55,5 +57,9 @@ void DlgPage4::OnBnClickedButton1()
 	//g_pAsmItem->AsmGetItemData(1);
 	//g_pAsmPet->PetGoFight(0);
 	//g_pAsmStoreItem->BuyPetDrugByName("苏州珍兽店", "后肘肉口粮", 20);
-	use_item_yao("后肘肉口粮");
+	VUserSkill vs = g_pUser->UserGetSkill();
+	for (auto v : vs)
+	{
+		dbgPrint("技能配置表 type=%d 名字=%s Id=%d", v.nType, v.tAsmSkill.szName, v.nSkillId);
+	}
 }

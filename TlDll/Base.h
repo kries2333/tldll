@@ -1,51 +1,45 @@
 #include <Windows.h>
 
-#define LROLE_BASE			0x336F78		//人物基址#pragma once
-#define LLUASTATE_BASE		0x33E83C		//lua状态L指针 
+#define 人物基址 0x336F78 //0x746F78
+#define L指针 0x33E83C //0x74E83C
 
 #define SKILLS_TREE_OFFSET  0xA9C
-#define SKILLS_CALL			0x3DBA0			//技能调用call
+#define 技能CALL 0x3DB70 //0x44DB70
 
 #define COLLECT_OREPLANT	0x3BF10			//打开包裹
 
-#define NPC_CALL			0x3D7D0			//npc对话Call
-#define BAG_BASE			0x3371A8		//背包基址
+#define 对话CALL 0x3DDC0 //0x44DDC0
+#define 背包基址 0x3371A8 //0x7471A8
 
-#define WEAR_CALL			0x33DDEC		//穿戴物品call
-#define DESTROY_CALL		0xB98D0			//销毁物品call
-#define DESTROY_ECX			0x3371A8		//销毁物品ecx
+#define 穿戴CALL 0x33DDEC //0x74DDEC
+#define 销毁CALL 0xB9910 //0x4C9910
+#define 销毁CALL_ECX 0x3371A8 //0x7471A8
 
 #define QICHEN_STATUS		0x3371A8		//骑乘状态
 
-#define PET_BASE			0x3371A8		//宠物数据
-#define PET_OFFSET			0x44388			//宠物偏移
+#define 珍兽基址 0x3371A8 //0x7471A8
+#define 珍兽基址偏移 0xFFC34388 //0x44388
 
-#define SHOP_CALL			0x171950		//商店购买物品Call
-#define SHOP_CALL_ECX		0x33DA78
-#define SHOP_CALL_OBJ		0x293C54
+#define 商店购买CALL 0x171A20 //0x581A20
+#define 商店购买CALL_ECX 0x33DA78 //0x74DA78
+#define 商店购买封包数据对象 0x293C3C //0x6A3C3C
 
-#define CHIYAO_CALL			SHOP_CALL
-#define CHIYAO_CALL_ECX		SHOP_CALL_ECX
-#define CHIYAO_CALL_OBJ		0x293D08		//吃药发包数据
+#define 吃药CALL			商店购买CALL
+#define 吃药CALL_ECX		商店购买CALL_ECX
+#define 吃药封包数据对象 0x293CF0 //0x6A3CF0
 
-#define	TEAM_ECX			0x33DA78		//组队封包CALL_ecx
-#define	TEAM_CALL			0x171950		//组队封包CALL
-#define	TEAM_DATA1			0x290FB0		//组队封包数据
-#define	TEAM_INFO			0x33719C		//组队数组基址
-#define TEAM_STATUS			0x33DDF0		//队伍状态
-#define TEAM_JOIN_DATA		0x2A9C98		//加入组队数据
+#define 邀请组队CALL_ECX 0x33DA78 //0x74DA78
+#define 邀请组队CALL 0x171A20 //0x581A20
+#define 邀请组队封包数据 0x290F98 //0x6A0F98
+#define 加入队伍CALL 0x171A20 //0x581A20
 
-//#define PET_CALL				0x170530	//宠物出战Call
-//
+#define 加入队伍CALL_ECX 0x33DA78 //0x74DA78
 
-//#define TASK_INFO 0x3373B8
-//#define TASK_ECX 0x33719C
-//#define TASK_SELECT_CALL 0x49FA0
-//#define TASK_COMPLETE_CALL 0x4A330
-//#define TASK_ACCEPT_CALL 0x4A180
+#define 加入队伍封包数据对象 0x2A9C80 //0x6B9C80
 
-//#define TASK_CONTINUE_CALL 0x4A230
-//#define TASK_CANCEL_CALL 0x4A1A0
+#define 组队数组 0x33719C //0x74719C
+#define 是否存在队伍标识 0x33DDF0 //0x74DDF0
+
 
 struct TAsmSend
 {

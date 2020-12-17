@@ -1489,25 +1489,36 @@ void CFunction::FUN_UseSkillKillMonster(TAsmMonster tAsmMonster)
 		{
 			return;
 		}
-		for (auto Skill : g_pUser->vUserSkill)
+		for (auto skill : g_pUser->vUserSkill)
 		{
-			FUN_UseAttackSkill(Skill, tAsmMonster);//多种类型技能区分
+			FUN_UseAttackSkill(skill, tAsmMonster);//多种类型技能区分
 			if (FUN_IsMonsterDie(&tAsmMonster) == false || !g_pMe->bRun)//false为死亡
 			{
 				//dbgPrint(_T("怪物已被消灭"));
 				return;
 			}
+			Sleep(500);
 		}
 		Sleep(100);
 	}
 }
 
-void CFunction::FUN_UseAttackSkill(TAsmSkill tAsmSkill/*CString SkillName*/, TAsmMonster tAsmMonster)//使用攻击技能
+void CFunction::FUN_UseAttackSkill(TUserSkill tUserSkill/*CString SkillName*/, TAsmMonster tAsmMonster)//使用攻击技能
 {
 	auto ARoleInfo = g_pAsmRole->GetRoleInfo();
 	if (ARoleInfo.nState != 7)
 	{
-		FUN_UseMovAttackSkill(tAsmSkill, tAsmMonster);//使用攻击技能
+		if (tUserSkill.nSkillId != -1)
+		{
+			if (tUserSkill.nType == 1)	//需要冷却时间得攻击
+			{
+				//FUN_UseMovAttackSkill(tUserSkill.tAsmSkill, tAsmMonster);//使用攻击技能
+			}
+			else if (tUserSkill.nType == 2)
+			{
+				FUN_UseMovAttackSkill(tUserSkill.tAsmSkill, tAsmMonster);//使用攻击技能
+			}
+		}
 	}
 }
 

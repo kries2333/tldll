@@ -166,6 +166,6 @@ protected:
 
 	BOOL FUN_KillMonsterByName(VUserMonsterName vm_UserMonsterName);
 	void FUN_UseSkillKillMonster(TAsmMonster tAsmMonster);
-	void FUN_UseAttackSkill(TAsmSkill tAsmSkill/*CString SkillName*/, TAsmMonster tAsmMonster);
+	void FUN_UseAttackSkill(TUserSkill tAsmSkill/*CString SkillName*/, TAsmMonster tAsmMonster);
 };
 

@@ -10,7 +10,7 @@ DWORD CAsmRole::GetRoleBase()
 {
 	if (g_GameExeBase == 0) return 0;
 	ULONG data = 0;
-	data = *(int*)(g_GameExeBase + LROLE_BASE);
+	data = *(int*)(g_GameExeBase + 人物基址);
 	if (IsBadReadPtr((int*)data + 0x58, 4) == 0) {
 		data = *(int*)(data + 0x58);
 		return data;
@@ -58,7 +58,7 @@ TAsmRoleInfo CAsmRole::GetRoleInfo()
 		switch (TAsmRoleInfo.nMenpai)
 		{
 		case 0:
-			TAsmRoleInfo.szMenpai = "少林派";
+			TAsmRoleInfo.szMenpai = "少林";
 			break;
 		case 1:
 			TAsmRoleInfo.szMenpai = "明教";
@@ -67,22 +67,22 @@ TAsmRoleInfo CAsmRole::GetRoleInfo()
 			TAsmRoleInfo.szMenpai = "丐帮";
 			break;
 		case 3:
-			TAsmRoleInfo.szMenpai = "武当派";
+			TAsmRoleInfo.szMenpai = "武当";
 			break;
 		case 4:
-			TAsmRoleInfo.szMenpai = "峨嵋派";
+			TAsmRoleInfo.szMenpai = "峨嵋";
 			break;
 		case 5:
-			TAsmRoleInfo.szMenpai = "星宿派";
+			TAsmRoleInfo.szMenpai = "星宿";
 			break;
 		case 6:
-			TAsmRoleInfo.szMenpai = "天龙派";
+			TAsmRoleInfo.szMenpai = "天龙";
 			break;
 		case 7:
-			TAsmRoleInfo.szMenpai = "天山派";
+			TAsmRoleInfo.szMenpai = "天山";
 			break;
 		case 8:
-			TAsmRoleInfo.szMenpai = "逍遥派";
+			TAsmRoleInfo.szMenpai = "逍遥";
 			break;
 		case 9:
 			TAsmRoleInfo.szMenpai = "无门派";
@@ -202,42 +202,10 @@ int	CAsmRole::GetMenPaiForId()
 	return role.nMenpai;
 }
 
-_tstring CAsmRole::GetMenPaiForName()
+CString CAsmRole::GetMenPaiForName()
 {
-	int menpaiId = 0;
-	_tstring strMenPai = "";
-	try
-	{
-		ULONG data = 0;
-		data = GetRoleBase();
-		if (data == 0)
-		{
-			return "";
-		}
-
-		if (IsBadReadPtr((int*)data + 0xA4, 4) == 0) {
-			menpaiId = *(int*)(data + 0xA4);
-		}
-	}
-	catch (...)
-	{
-		//dPrintA(__FUNCTION__);
-	}
-	switch (menpaiId)
-	{
-	case 4:
-		strMenPai = "峨眉";
-		break;
-	case 8:
-		strMenPai = "逍遥";
-		break;
-	case 9:
-		strMenPai = "无门派";
-		break;
-	default:
-		break;
-	}
-
+	TAsmRoleInfo tAsmRoleInfo = GetRoleInfo();
+	CString strMenPai(tAsmRoleInfo.szMenpai);
 	return strMenPai;
 }
 
@@ -272,7 +240,7 @@ void CAsmRole::AsmNpcDialogue(int npcId)
 {
 	try
 	{
-		DWORD npcCall = (g_GameExeBase + NPC_CALL);
+		DWORD npcCall = (g_GameExeBase + 对话CALL);
 		DWORD base = GetRoleBase();
 		if (IsBadReadPtr((DWORD*)(base + 0x150), 4) == 0)
 		{

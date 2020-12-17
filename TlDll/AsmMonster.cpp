@@ -8,7 +8,7 @@ DWORD CAsmMonster::AsmGetEnvTreeBase()
 {
 	if (g_GameExeBase == 0) return 0;
 	ULONG data = 0;
-	data = *(int*)(g_GameExeBase + LROLE_BASE);
+	data = *(int*)(g_GameExeBase + ÈËÎï»ùÖ·);
 	if (IsBadReadPtr((int*)data + 0x4c, 4) == 0) {
 		data = *(DWORD*)(data + 0x4c);
 	}

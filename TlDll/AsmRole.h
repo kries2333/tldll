@@ -71,7 +71,7 @@ public:
 	TAsmHPMP GetHPMP();//人物的当前HPMP最大HPMP
 	bool IsHpAndMp(int nP);
 	TAsmRolePos GetPos();
-	_tstring GetMenPaiForName();
+	CString GetMenPaiForName();
 	int	GetMenPaiForId();
 	TAsmRoleInfo GetRoleInfo();
 	DWORD GetRoleBase();

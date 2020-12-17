@@ -49,10 +49,18 @@ struct TUserProtect
 	};
 };
 
+struct TUserSkill
+{
+	int			nType;		//1: 使用姿态, 2:起手式 3：群攻技能 4:状态buff 5:自身buff
+	int			nSkillId;	//技能id
+	TAsmSkill	tAsmSkill;
+};
+
 typedef vector<TUserPos> VUserPos;
 typedef vector<_tstring> VUserMonsterName;
 typedef vector<_tstring> VString;
 //typedef vector<TUserProtect> VUserProtect;
+typedef vector<TUserSkill> VUserSkill;
 
 _tstring Os_stringOferase(_tstring strSource, _tstring strErase);//移除指定字符或者字符串
 VString stringIntercept(_tstring strSource, _tstring strBegin, int offset, _tstring strEnd);
@@ -73,8 +81,10 @@ public:
 	/************************************************************************/
 	/* 技能界面                                                             */
 	/************************************************************************/
-	VAsmSkill vUserSkill;//获取用户设置技能
-	VAsmSkill UserGetSkill();//获取技能
+	//VAsmSkill vUserSkill;//获取用户设置技能
+	//VAsmSkill UserGetSkill();//获取技能
+	VUserSkill vUserSkill;	//获取用户设置技能
+	VUserSkill UserGetSkill(); //获取技能
 
 	/************************************************************************/
 	/* 挂机中心                                                             */

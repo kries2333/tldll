@@ -87,14 +87,14 @@ void CAsmStoreItem::AsmBuyStoreDrug(DWORD unStoreId, int itemId, int nNum)
 
 	try
 	{
-		DWORD CallBase = g_GameExeBase + SHOP_CALL;
-		DWORD CallEcx = g_GameExeBase + SHOP_CALL_ECX;
+		DWORD CallBase = g_GameExeBase + 商店购买CALL;
+		DWORD CallEcx = g_GameExeBase + 商店购买CALL_ECX;
 		if (IsBadReadPtr((DWORD*)CallEcx, 4) == 0)
 			CallEcx = *(DWORD*)CallEcx;
 
 		dbgPrint("unStoreObject=%X, itemId=%d nNum=%d", unStoreId, itemId, nNum);
 
-		DWORD CallObj = g_GameExeBase + SHOP_CALL_OBJ;
+		DWORD CallObj = g_GameExeBase + 商店购买封包数据对象;
 		TAsmSend* tAsmSend = BasePackerSend(CallObj, 0, 0, -1, itemId, unStoreId, 0, 0, nNum, 0);
 
 		dbgPrint("CallBase=%X, CallEcx=%X CallObj=%X tAsmSend=%X", CallBase, CallEcx, CallObj, tAsmSend);

@@ -8,9 +8,9 @@ DWORD GetSkillBase()
 {
 	if (g_GameExeBase == 0) return 0;
 	ULONG data = 0;
-	if (IsBadReadPtr((DWORD*)(g_GameExeBase + LROLE_BASE), 4) == 0)
+	if (IsBadReadPtr((DWORD*)(g_GameExeBase + ÈËÎï»ùÖ·), 4) == 0)
 	{
-		data = *(int*)(g_GameExeBase + LROLE_BASE);
+		data = *(int*)(g_GameExeBase + ÈËÎï»ùÖ·);
 		if (IsBadReadPtr((DWORD*)(data + 0x58), 4) == 0)
 			data = *(int*)(data + 0x58);
 	}
@@ -154,6 +154,7 @@ void CAsmSkill::AsmGetSkillInfo(TAsmTree* pTree, VAsmSkill& vm_Skill)//¼¼ÄÜÊôÐÔÐ
 
 void CAsmSkill::AsmUseSkillCall(int MonsterId, int SkillId)
 {
+	dbgPrint("AsmUseSkillCall SkillId=%d", SkillId);
 	try
 	{
 		DWORD base = GetSkillBase();
@@ -165,8 +166,8 @@ void CAsmSkill::AsmUseSkillCall(int MonsterId, int SkillId)
 
 		DWORD skillCall = 0;
 		DWORD unEcx = 0;
-		if (IsBadReadPtr((DWORD*)(g_GameExeBase + SKILLS_CALL), 4) == 0)
-			skillCall = (DWORD)(g_GameExeBase + SKILLS_CALL);
+		if (IsBadReadPtr((DWORD*)(g_GameExeBase + ¼¼ÄÜCALL), 4) == 0)
+			skillCall = (DWORD)(g_GameExeBase + ¼¼ÄÜCALL);
 
 		
 		if (IsBadReadPtr((DWORD*)(base + 0x150), 4) == 0)

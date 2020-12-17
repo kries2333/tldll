@@ -9,9 +9,9 @@ extern CMessage* g_pMsg;
 DWORD CAsmPet::GetBase()
 {
 	if (g_GameExeBase == 0) return 0;
-	DWORD data = *(DWORD*)(g_GameExeBase + PET_BASE);
-	if (IsBadReadPtr((int*)data + PET_OFFSET, 4) == 0) {
-		data = *(DWORD*)(data + PET_OFFSET);
+	DWORD data = *(DWORD*)(g_GameExeBase + ÕäÊŞ»ùÖ·);
+	if (IsBadReadPtr((int*)data + ÕäÊŞ»ùÖ·Æ«ÒÆ, 4) == 0) {
+		data = *(DWORD*)(data + ÕäÊŞ»ùÖ·Æ«ÒÆ);
 		return data;
 	}
 	return 0;
@@ -71,7 +71,7 @@ int CAsmPet::GetIsFighting()
 {
 	if (g_GameExeBase == 0) return FALSE;
 	ULONG data = 0;
-	data = *(int*)(g_GameExeBase + LROLE_BASE);
+	data = *(int*)(g_GameExeBase + ÈËÎï»ùÖ·);
 	if (IsBadReadPtr((int*)data + 0x58, 4) == 0)
 		data = *(int*)(data + 0x58);
 	if (IsBadReadPtr((PULONG)(data + 0x144), 4) == 0)
