@@ -2,6 +2,7 @@
 #include "FileSystem.h"
 #include <vector>
 #include <string>
+#include <map>
 using namespace std;
 
 //技能信息结构
@@ -9,7 +10,6 @@ struct  TAsmSkill
 {
 	unsigned  unTree;//二叉树节点：当前技能对应的二叉树节点指针
 	unsigned  unObject;//技能对象：当前技能对应的技能对象
-
 	int nSkillId;// +0技能编号
 	int	nMenPai;//  +8门派编号
 	char* szName;//	+C技能名称
@@ -52,21 +52,44 @@ struct  TAsmSkill
 	};
 };
 
-typedef vector<TAsmSkill> VAsmSkill;
+struct  TAsmSkillXinFa {
+	unsigned  unTree;//二叉树节点：当前技能对应的二叉树节点指针
+	unsigned  unObject;//技能对象：当前技能对应的技能对象
+	char* szName;   //心法名称
+	int nId;		//心法ID
+	int nNowLv;		//心法等级
+	TAsmSkillXinFa()
+	{
+		unTree = 0;
+		unObject = 0;
+		szName = "";
+		nId = 0;
+		nNowLv = 0;
+	}
+};
 
+typedef vector<TAsmSkill> VAsmSkill;
+typedef vector<TAsmSkillXinFa> VAsmSkillXinFa;
 class CAsmSkill
 {
 public:
-	CAsmSkill() {};
-	~CAsmSkill() {};
+	CAsmSkill();
+	~CAsmSkill();
 
 public:
 	VAsmSkill AsmGetSkillData();//取角色技能信息
+	VAsmSkillXinFa AsmGetXinFaSkillData();//取角色心法信息
 	bool AsmHaveMasterSkill(_tstring  skillName);//已经掌握的技能
 	void AsmUseSkillCall(int MonsterId, int SkillId);//使用技能CALL
 	void AsmUseSkillCallByPoint(int SkillId, float fx, float fy);//通过点击地面某一点释放技能
+	
+	bool SkillStudy(CString SkillName);
+
+	map<CString, CString> m_SkillClass;		//技能分类
 private:
 	void AsmSkillTraverse(TAsmTree* pTree, VAsmSkill& vm_Skill, DWORD* pCount);//技能遍历
+	void AsmSkillXinFaTraverse(TAsmTree* pTree, VAsmSkillXinFa& vm_XinFaSkill, DWORD* pCount);//心法遍历
 	void AsmGetSkillInfo(TAsmTree* pTree, VAsmSkill& vm_Skill);//技能属性信息
+	void AsmGetSkillXinFaInfo(TAsmTree* pTree, VAsmSkillXinFa& vm_XinFaSkill);//技能属性信息
 };
 

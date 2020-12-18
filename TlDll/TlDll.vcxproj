@@ -228,6 +228,7 @@
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="res\TlDll.rc2" />
     <None Include="System.lua" />
     <None Include="TlDll.def" />

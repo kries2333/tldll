@@ -84,6 +84,7 @@
 #define 离开队伍数据对象 0x27AFE4 //0x68AFE4
 
 #define SKILLS_TREE_OFFSET  0xA9C
+#define SKILLSXINFA_TREE_OFFSET	0xA94		//心法技能偏移
 
 #define COLLECT_OREPLANT	0x3BF10			//打开包裹
 
