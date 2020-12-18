@@ -141,9 +141,12 @@ VUserSkill CUser::UserGetSkill()//获取技能
 			{
 				if (skill.szName == strTemp)
 				{
-					tUserSkill.tAsmSkill = skill;
-					tUserSkill.nSkillId = skill.nSkillId;
-					break;
+					if (g_pAsmSkill->SkillStudy(skill.szName))
+					{
+						tUserSkill.tAsmSkill = skill;
+						tUserSkill.nSkillId = skill.nSkillId;
+						break;
+					}
 				}
 			}
 			vUserSkill.push_back(tUserSkill);
@@ -158,9 +161,12 @@ VUserSkill CUser::UserGetSkill()//获取技能
 				{
 					if (CString(skill.szName) == CString(v.c_str()))
 					{
-						tUserSkill.tAsmSkill = skill;
-						tUserSkill.nSkillId = skill.nSkillId;
-						break;
+						if (g_pAsmSkill->SkillStudy(skill.szName))
+						{
+							tUserSkill.tAsmSkill = skill;
+							tUserSkill.nSkillId = skill.nSkillId;
+							break;
+						}
 					}
 				}
 				vUserSkill.push_back(tUserSkill);

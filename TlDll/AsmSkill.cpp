@@ -396,14 +396,16 @@ bool CAsmSkill::SkillStudy(CString SkillName)
 	for (int i = 0; i < SkillXinFa.size(); i++)
 	{
 		if (strcmp(SkillXinFa.at(i).szName, itor->second.GetBuffer()) == 0) {
-			int nowLv = SkillXinFa.at(i).nNowLv; //获取当前心法等级
+			nowLv = SkillXinFa.at(i).nNowLv; //获取当前心法等级
+			break;
 		}
 	}
 
 	for (int i = 0; i < Skill.size(); i++)
 	{
 		if (strcmp(Skill.at(i).szName, SkillName.GetBuffer()) == 0) {
-			int needLv = Skill.at(i).nXinFaLevel; //获取当前需要心法等级
+			needLv = Skill.at(i).nXinFaLevel; //获取当前需要心法等级
+			break;
 		}
 	}
 
