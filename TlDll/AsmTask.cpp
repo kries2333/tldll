@@ -82,10 +82,6 @@ void CAsmTask::AsmGetTaskInfo(TAsmTree* pTree, VAsmTask& vm_Task)
 
 void CAsmTask::GetMissionId(CString mission)
 {
-	//GetMissionId(mission)
-	//_tstring nMissionId = g_pMsg->msg_getstring("g_GetValue", "g_GetValue = GetMissionId(\"%s\")", mission.c_str());
-	//dbgPrint("GetMissionId=%s", nMissionId.c_str());
-
 	CString strInfo = g_pMsg->msg_getstring("g_GetValue", "g_GetValue = GetAvailableMissionList()").c_str();
 	dbgPrint("GetMissionId=%s", strInfo);
 }

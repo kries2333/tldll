@@ -92,3 +92,19 @@ void CAsmPet::PetGoFight(int nIndex)
 		Sleep(4000);
 	}
 }
+
+TAsmPet CAsmPet::GetPetForName(CString szName)
+{
+	TAsmPet tPet;
+
+	VAsmPet vPets = AsmGetPetData();
+	for (auto pet : vPets)
+	{
+		if (szName == pet.szName)
+		{
+			tPet = pet;
+			break;
+		}
+	}
+	return tPet;
+}

@@ -663,7 +663,7 @@ VString CFunction::FUN_GetTaskInfo(_tstring taskName)
 {
 	VString tempStr;
 	_tstring strInfo = g_pMsg->msg_getstring("GetTaskInfoString", "GetTaskInfoString = MissionTaskInfo(\"%s\")", taskName.c_str());
-	dbgPrint("FUN_GetTaskInfo = %s", strInfo.c_str());
+	//dbgPrint("FUN_GetTaskInfo = %s", strInfo.c_str());
 	if (!strInfo.empty())
 	{
 		tempStr = stringIntercept(strInfo, "{", 9, "}");
@@ -674,21 +674,21 @@ VString CFunction::FUN_GetTaskInfo(_tstring taskName)
 _tstring CFunction::FUN_GetMissionTaskKillMonsterInfo(_tstring taskName)
 {
 	_tstring strInfo = g_pMsg->msg_getstring("GetMonsterInfo", "GetMonsterInfo = MissionTaskKillMonsterInfo(\"%s\")", taskName.c_str());
-	dbgPrint("FUN_GetMissionTaskKillMonsterInfo = %s", strInfo.c_str());
+	//dbgPrint("FUN_GetMissionTaskKillMonsterInfo = %s", strInfo.c_str());
 	return strInfo;
 }
 
 _tstring CFunction::FUN_GetAvailableTaskInfo(_tstring taskName)
 {
 	_tstring strInfo = g_pMsg->msg_getstring("MyMonOutString", "MyMonOutString = MissionOutlinetext(\"%s\")", taskName.c_str());
-	dbgPrint("FUN_GetAvailableTaskInfo taskName = %s  strInfo=%s", taskName.c_str(), strInfo.c_str());
+	//dbgPrint("FUN_GetAvailableTaskInfo taskName = %s  strInfo=%s", taskName.c_str(), strInfo.c_str());
 	return strInfo;
 }
 
 _tstring CFunction::FUN_GetMissionFinishInfo(_tstring taskName)
 {
 	_tstring strInfo = g_pMsg->msg_getstring("MissionFinishString", "MissionFinishString = GetMissionFinishInfo(\"%s\")", taskName.c_str());
-	dbgPrint("FUN_GetMissionFinishInfo taskName = %s  strInfo=%s", taskName.c_str(), strInfo.c_str());
+	//dbgPrint("FUN_GetMissionFinishInfo taskName = %s  strInfo=%s", taskName.c_str(), strInfo.c_str());
 	return strInfo;
 }
 

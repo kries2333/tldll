@@ -31,7 +31,7 @@ TAsmSkill CAsmSkill::AsmHaveMasterSkill(CString  skillName)//返回非零已学会
 		{
 			for (int j = 0; j < vSkillXinFa.size(); j++)
 			{
-				dbgPrint("获取心法等级:%s  角色心法等级: %d = %d", skillName, vSkill[i].nXinFaLevel, vSkillXinFa[j].nNowLv);
+				//dbgPrint("获取心法等级:%s  角色心法等级: %d = %d", skillName, vSkill[i].nXinFaLevel, vSkillXinFa[j].nNowLv);
 				if (vSkillXinFa[j].szName == XF)
 				{
 					if (vSkillXinFa[j].nNowLv >= vSkill[i].nXinFaLevel)

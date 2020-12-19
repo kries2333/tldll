@@ -46,6 +46,7 @@ public:
 	int GetMaxCount();
 	void PetGoFight(int nIndex);
 	int GetIsFighting();
+	TAsmPet GetPetForName(CString szName);
 private:
 	DWORD GetBase();
 	

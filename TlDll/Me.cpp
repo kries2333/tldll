@@ -9,6 +9,7 @@
 #include "User.h"
 #include "AsmTask.h"
 #include "AsmRole.h"
+#include "AsmPet.h"
 #include "HPInit.h"
 
 CGUI* g_pUI;
@@ -20,6 +21,7 @@ extern CUser* g_pUser;
 extern CAsmTask* g_pAsmTask;
 extern CHPInit* g_pHPInit;
 extern CAsmRole* g_pAsmRole;
+extern CAsmPet* g_pAsmPet;
 
 HWND g_Gamehwnd;
 CString g_GameTitle;
@@ -93,8 +95,22 @@ UINT __stdcall Gift_ThreadFunc(void* p)
 			{
 				CString strTemp = g_pMsg->msg_getstring("ItemName", " ItemName = PlayerPackage:GetBagItemName(%d)", i).c_str();
 				Sleep(1000);
+				if (strTemp.Find("珍兽蛋", 0) != -1)	//如果背包里有宠物蛋，就放生所有宠物,然后获取松鼠宝宝
+				{
+					TAsmPet tPet = g_pAsmPet->GetPetForName("松鼠宝宝");
+					if (tPet.nPetId == 0)
+					{
+						for (int j = 0; j < g_pAsmPet->GetCount(); j++)
+						{
+							g_pMsg->msg_dostring("setmetatable(_G, { __index = Pet_Env }); Pet_Free_Clicked();");
+							Sleep(1000);
+						}
+						g_pMsg->msg_dostring("setmetatable(_G, { __index = Packet_Env }); Packet_ItemBtnClicked(1, %d);", i + 1);
+					}
+
+				}
+
 				if (strTemp.Find("翅膀", 0) != -1 ||
-					strTemp.Find("珍兽蛋", 0) != -1 ||
 					strTemp.Find("江湖乾坤袋", 0) != -1) {
 					g_pMsg->msg_dostring("setmetatable(_G, { __index = Packet_Env }); Packet_ItemBtnClicked(1, %d);", i + 1);
 					Sleep(1000);
