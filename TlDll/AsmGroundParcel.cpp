@@ -148,7 +148,7 @@ void CAsmGroundParcel::AsmOpenGroundParcelById(DWORD ParcelId)//打开地面包裹
 {
 	try
 	{
-		DWORD bagCall = (g_GameExeBase + COLLECT_OREPLANT);
+		DWORD bagCall = (g_GameExeBase + 地面包裹CALL);
 		DWORD base = GetRoleBase();
 		if (IsBadReadPtr((DWORD*)(base+0x150), 4) == 0)
 		{

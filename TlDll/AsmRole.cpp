@@ -271,7 +271,7 @@ int CAsmRole::GetQiChenStatus()
 	if (g_GameExeBase == 0) return 0;
 	try
 	{
-		DWORD base = g_GameExeBase + QICHEN_STATUS;
+		DWORD base = g_GameExeBase + ×øÆï×´Ì¬;
 		if (IsBadReadPtr((DWORD*)(base), 4) == 0) {
 			base = *(DWORD*)(base);
 			base = *(DWORD*)(base + 0x4452C + 0x4);

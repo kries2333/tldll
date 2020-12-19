@@ -86,10 +86,6 @@
 #define SKILLS_TREE_OFFSET  0xA9C
 #define SKILLSXINFA_TREE_OFFSET	0xA94		//心法技能偏移
 
-#define COLLECT_OREPLANT	0x3BF10			//打开包裹
-
-#define QICHEN_STATUS		0x3371A8		//骑乘状态
-
 #define 吃药CALL			商店购买CALL
 #define 吃药CALL_ECX		商店购买CALL_ECX
 
