@@ -90,7 +90,7 @@ public:
 	float FUN_MaximumRange(TAsmSkill tAsmSkill);
 
 	//判断是否学习技能
-	bool FUN_IsSkillName(_tstring taskName);
+	bool FUN_IsSkillName(CString taskName);
 
 	bool FUN_SkillUseIDPos(int nSkillId, float x, float y);
 

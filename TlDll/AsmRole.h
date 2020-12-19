@@ -44,6 +44,8 @@ struct TAsmRoleInfo {
 	int nMoney;//
 	int nHP;//
 	int nHPMax;
+	int nMP;//
+	int nMPMax;
 	BOOL bool_ret;
 
 	TAsmRoleInfo()
@@ -58,6 +60,8 @@ struct TAsmRoleInfo {
 		nMoney = -1;//
 		nHP = -1;//
 		nHPMax = -1;
+		nMP = -1;//
+		nMPMax = -1;
 		bool_ret = false;
 	};
 };

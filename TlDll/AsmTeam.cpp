@@ -26,7 +26,7 @@ void CAsmTeam::AsmInvaiteTeam(CString Name)
     TeamEcx = (DWORD)(g_GameExeBase + 邀请组队CALL_ECX);
     TeamEcx = *(DWORD*)(TeamEcx);
     TeamData = (DWORD)(g_GameExeBase + 邀请组队封包数据);
-    dbgPrint("Call地址：【%x】 Ecx：【%x】 封包数据：【%x】", TeamCall, TeamEcx, TeamData);
+    //dbgPrint("Call地址：【%x】 Ecx：【%x】 封包数据：【%x】", TeamCall, TeamEcx, TeamData);
     if (TeamCall == 0 || TeamEcx == 0 || TeamData == 0) return;
     try
     {
@@ -189,10 +189,10 @@ void CAsmTeam::TeamJoin()
         memcpy(Data + 0x14, &TeamData2, 4);
 
         TeamData1 = (DWORD)Data;
-        for (size_t i = 0; i < 32; i++)
-        {
-        	dbgPrint("封包数据:%02X", Data[i]);
-        }
+        //for (size_t i = 0; i < 32; i++)
+        //{
+        //	//dbgPrint("封包数据:%02X", Data[i]);
+        //}
         _asm {//邀请组队
             mov ecx,TeamEcx
             push TeamData1

@@ -54,6 +54,10 @@ TAsmRoleInfo CAsmRole::GetRoleInfo()
 			TAsmRoleInfo.nHP = *(int*)(data + 0x980);		//血 0x980
 		if (IsBadReadPtr((int*)(data + 0x9EC), 4) == 0)
 			TAsmRoleInfo.nHPMax = *(int*)(data + 0x9EC);	//血 0x980
+		if (IsBadReadPtr((int*)(data + 0x984), 4) == 0)
+			TAsmRoleInfo.nMP = *(int*)(data + 0x984);		//气 0x980
+		if (IsBadReadPtr((int*)(data + 0x9F0), 4) == 0)
+			TAsmRoleInfo.nMPMax = *(int*)(data + 0x9F0);	//气 0x980
 
 		switch (TAsmRoleInfo.nMenpai)
 		{
@@ -306,6 +310,12 @@ TAsmHPMP CAsmRole::GetHPMP()
 				tAsmHPMP.nCurmp = *(int*)(data + 0x984);		//气 0x980
 			if (IsBadReadPtr((int*)(data + 0x9F0), 4) == 0)
 				tAsmHPMP.nMaxmp = *(int*)(data + 0x9F0);	//气 0x980
+
+
+			dbgPrint("当前血量=%d 最大血量=%d 蓝量=%d 最大蓝量=%d", tAsmHPMP.nCurhp, 
+				tAsmHPMP.nMaxhp, 
+				tAsmHPMP.nCurmp,
+				tAsmHPMP.nMaxmp);
 
 			tAsmHPMP.bool_ret = true;
 		}

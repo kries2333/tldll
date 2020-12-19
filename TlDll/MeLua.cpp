@@ -746,15 +746,15 @@ int CMeLua::LUA_IsSkillName(LuaState* pState)	//判断是否学习了技能
 
 	if (args[1].IsString())
 	{
-		_tstring skillName = args[1].GetString();
-		if (!FUN_IsSkillName(skillName))
+		CString skillName = args[1].GetString();
+		if (FUN_IsSkillName(skillName))
 		{
-			pState->PushBoolean(FALSE);
+			pState->PushBoolean(TRUE);
 			return 1;
 		}
 	}
 
-	return pState->PushBoolean(TRUE);
+	pState->PushBoolean(FALSE);
 	return 0;
 }
 

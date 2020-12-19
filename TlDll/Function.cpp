@@ -349,7 +349,7 @@ BOOL CFunction::FUN_RunToTargetEx(float fx, float fy, int SceneId, float dis)//¿
 				bMov = true;
 			}
 		}
-		dbgPrint("Ñ°Â·¼ÆÊ±%d", (dwCurTime - dwEndTime));
+		//dbgPrint("Ñ°Â·¼ÆÊ±%d", (dwCurTime - dwEndTime));
 		if ((dwCurTime - dwEndTime) > (5 * 1000)) //Èç¹û5ÃëÃ»ÓÐÒÆ¶¯¾ÍÖØÐÂÒÆ¶¯
 		{
 			auto APos = g_pAsmRole->GetPos();
@@ -697,9 +697,14 @@ void CFunction::FUN_Levelup()
 	g_pMsg->msg_dostring("setmetatable(_G, {__index = ActionSkill_Env}); SelfEquip_AskLevelup();");
 }
 
-bool CFunction::FUN_IsSkillName(_tstring taskName)
+bool CFunction::FUN_IsSkillName(CString taskName)
 {
-	return g_pAsmSkill->AsmHaveMasterSkill(taskName);
+	TAsmSkill tAsmSkill = g_pAsmSkill->AsmHaveMasterSkill(taskName);
+	if (tAsmSkill.nSkillId != -1)
+	{
+		return TRUE;
+	}
+	return FALSE;
 }
 
 bool CFunction::FUN_SkillUseIDPos(int nSkillId, float x, float y)
@@ -1491,12 +1496,26 @@ void CFunction::FUN_UseSkillKillMonster(TAsmMonster tAsmMonster)
 		}
 		for (auto skill : g_pUser->vUserSkill)
 		{
-			FUN_UseAttackSkill(skill, tAsmMonster);//¶àÖÖÀàÐÍ¼¼ÄÜÇø·Ö
-			if (FUN_IsMonsterDie(&tAsmMonster) == false || !g_pMe->bRun)//falseÎªËÀÍö
+			float nCurMp = (float)ARoleInfo.nMP / (float)ARoleInfo.nMPMax;
+			if (nCurMp * 100 > 5)
 			{
-				//dbgPrint(_T("¹ÖÎïÒÑ±»ÏûÃð"));
-				return;
+				FUN_UseAttackSkill(skill, tAsmMonster);//¶àÖÖÀàÐÍ¼¼ÄÜÇø·Ö
+				if (FUN_IsMonsterDie(&tAsmMonster) == false || !g_pMe->bRun)//falseÎªËÀÍö
+				{
+					//dbgPrint(_T("¹ÖÎïÒÑ±»ÏûÃð"));
+					return;
+				}
 			}
+			else {
+				skill = g_pUser->vUserSkill.at(g_pUser->vUserSkill.size() - 1);	//°Ñ²»·ÑÀ¶µÃ¼¼ÄÜ·Å×îºóÒ»¸ö
+				FUN_UseAttackSkill(skill, tAsmMonster);//¶àÖÖÀàÐÍ¼¼ÄÜÇø·Ö
+				if (FUN_IsMonsterDie(&tAsmMonster) == false || !g_pMe->bRun)//falseÎªËÀÍö
+				{
+					//dbgPrint(_T("¹ÖÎïÒÑ±»ÏûÃð"));
+					return;
+				}
+			}
+
 			Sleep(500);
 		}
 		Sleep(100);
@@ -1524,8 +1543,8 @@ void CFunction::FUN_UseAttackSkill(TUserSkill tUserSkill/*CString SkillName*/, T
 
 void CFunction::FUN_RoleHMProtection(CString szLp, CString szTypeName, int Per, CString szYaoNames)
 {
-	dbgPrint("FUN_RoleHMProtection szTypeName=%s Per=%d szYaoNames=%s", szTypeName, Per, szYaoNames);
-	if (szLp == "ËÙ»Ø¸´")
+	dbgPrint("FUN_RoleHMProtection szLp=%s, szTypeName=%s Per=%d szYaoNames=%s", szLp, szTypeName, Per, szYaoNames);
+	if (szLp == "ËÙ»Ö¸´")
 	{
 		if (szTypeName == "ÑªÁ¿")
 		{
@@ -1548,7 +1567,7 @@ void CFunction::FUN_RoleHMProtection(CString szLp, CString szTypeName, int Per, 
 			g_pUser->tHighProtect.nMpPer = Per;
 		}
 	}
-	else if (szLp == "Âý»Ø¸´")
+	else if (szLp == "Âý»Ö¸´")
 	{
 		if (szTypeName == "ÑªÁ¿")
 		{

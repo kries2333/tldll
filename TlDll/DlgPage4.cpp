@@ -23,6 +23,7 @@ extern CMessage* g_pMsg;
 extern CAsmPet* g_pAsmPet;
 extern CUser* g_pUser;
 extern CAsmStoreItem* g_pAsmStoreItem;
+extern CAsmSkill* g_pAsmSkill;
 
 // DlgPage4 对话框
 
@@ -62,4 +63,11 @@ void DlgPage4::OnBnClickedButton1()
 	{
 		dbgPrint("技能配置表 type=%d 名字=%s Id=%d", v.nType, v.tAsmSkill.szName, v.nSkillId);
 	}
+	//VAsmSkillXinFa SkillXinFa = g_pAsmSkill->AsmGetXinFaSkillData();
+
+	//for (auto XinFa : SkillXinFa)
+	//{
+	//	dbgPrint("获取心法等级:%s = %d", XinFa.szName, XinFa.nNowLv);
+
+	//}
 }

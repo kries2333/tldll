@@ -18,7 +18,7 @@ static DWORD PT_HP = 0;
 
 BOOL use_item_yao(CString name)
 {
-	g_pCriticalSection->Lock();
+	//g_pCriticalSection->Lock();
 	VAsmItem items = g_pAsmItem->AsmGetItemData();
 	for (auto item : items)
 	{
@@ -31,17 +31,17 @@ BOOL use_item_yao(CString name)
 				g_pMsg->CallInOutRide(0);
 				dbgPrint("use_item_yao item=%s", item.szName);
 				g_pAsmItem->AsmUseHpItem(item.nIntdex, item.uAttributeObj1, item.uAttributeObj2, item.uAttributeObj3);
-				return TRUE;
+				break;
 			}
 		}
 	}
-	g_pCriticalSection->Unlock();
+	//g_pCriticalSection->Unlock();
 	return FALSE;
 }
 
 void role_buji()
 {
-	g_pCriticalSection->Lock();
+	//g_pCriticalSection->Lock();
 	try
 	{
 		int nUseState = 0;
@@ -50,6 +50,14 @@ void role_buji()
 		{
 			float fHpCurPer = ((float)AHPMP.nCurhp / (float)AHPMP.nMaxhp) * 100;
 			float fMpCurPer = ((float)AHPMP.nCurmp / (float)AHPMP.nMaxmp) * 100;
+
+			dbgPrint("µ±Ç°Hp = %d Mp = %d", (int)fHpCurPer, (int)fMpCurPer);
+			dbgPrint("¸ß»Ö¸´Hp = %d", g_pUser->tHighProtect.nHpPer);
+			dbgPrint("¸ß»Ö¸´Mp = %d", g_pUser->tHighProtect.nMpPer);
+
+			dbgPrint("µÍ»Ö¸´Hp = %d", g_pUser->tLowProtect.nHpPer);
+			dbgPrint("µÍ»Ö¸´Mp = %d", g_pUser->tLowProtect.nMpPer);
+
 			if ((int)fHpCurPer <= g_pUser->tHighProtect.nHpPer) //¿ìËÙ»Ö¸´µÄ²¹ÑªÒ©
 			{
 				for (auto tHp : g_pUser->tHighProtect.vYaoName)
@@ -64,11 +72,11 @@ void role_buji()
 					use_item_yao(tMp);
 				}
 			}
-			else if ((int)fMpCurPer <= g_pUser->tLowProtect.nHpPer) //ÂýËÙ»Ö¸´µÄ²¹ÑªÒ©
+			else if ((int)fHpCurPer <= g_pUser->tLowProtect.nHpPer) //ÂýËÙ»Ö¸´µÄ²¹ÑªÒ©
 			{
-				for (auto tMp : g_pUser->tLowProtect.vYaoName)
+				for (auto tHp : g_pUser->tLowProtect.vYaoName)
 				{
-					use_item_yao(tMp);
+					use_item_yao(tHp);
 				}
 			}
 			else if ((int)fMpCurPer <= g_pUser->tLowProtect.nMpPer) //ÂýËÙ»Ö¸´µÄ²¹ÆøÒ©
@@ -84,14 +92,14 @@ void role_buji()
 	{
 
 	}
-	g_pCriticalSection->Unlock();
+	//g_pCriticalSection->Unlock();
 
 	return;
 }
 
 void pet_buji()
 {
-	g_pCriticalSection->Lock();
+	//g_pCriticalSection->Lock();
 	try
 	{
 		VAsmPet vPets = g_pAsmPet->AsmGetPetData();
@@ -115,7 +123,7 @@ void pet_buji()
 	{
 
 	}
-	g_pCriticalSection->Unlock();
+	//g_pCriticalSection->Unlock();
 
 	return;
 }

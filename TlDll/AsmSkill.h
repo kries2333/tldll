@@ -79,17 +79,14 @@ public:
 public:
 	VAsmSkill AsmGetSkillData();//取角色技能信息
 	VAsmSkillXinFa AsmGetXinFaSkillData();//取角色心法信息
-	bool AsmHaveMasterSkill(_tstring  skillName);//已经掌握的技能
+	TAsmSkill AsmHaveMasterSkill(CString  skillName); //返回非零已学会
 	void AsmUseSkillCall(int MonsterId, int SkillId);//使用技能CALL
 	void AsmUseSkillCallByPoint(int SkillId, float fx, float fy);//通过点击地面某一点释放技能
-	
-	bool SkillStudy(CString SkillName);
-
-	map<CString, CString> m_SkillClass;		//技能分类
 private:
 	void AsmSkillTraverse(TAsmTree* pTree, VAsmSkill& vm_Skill, DWORD* pCount);//技能遍历
 	void AsmSkillXinFaTraverse(TAsmTree* pTree, VAsmSkillXinFa& vm_XinFaSkill, DWORD* pCount);//心法遍历
 	void AsmGetSkillInfo(TAsmTree* pTree, VAsmSkill& vm_Skill);//技能属性信息
 	void AsmGetSkillXinFaInfo(TAsmTree* pTree, VAsmSkillXinFa& vm_XinFaSkill);//技能属性信息
+	map<CString, CString> m_SkillClass;		//技能分类
 };
 

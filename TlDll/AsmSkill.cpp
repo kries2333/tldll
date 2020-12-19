@@ -17,17 +17,33 @@ DWORD GetSkillBase()
 	return data;
 }
 
-bool CAsmSkill::AsmHaveMasterSkill(_tstring  skillName)//·µ»Ø·ÇÁãÒÑÑ§»á
+TAsmSkill CAsmSkill::AsmHaveMasterSkill(CString  skillName)//·µ»Ø·ÇÁãÒÑÑ§»á
 {
+	TAsmSkill tAsmSkill;
+	VAsmSkillXinFa vSkillXinFa = AsmGetXinFaSkillData();
 	VAsmSkill vSkill = AsmGetSkillData();
+
+	CString XF = m_SkillClass[skillName];
+
 	for (int i = 0; i < vSkill.size(); i++)
 	{
 		if (vSkill[i].szName == skillName)
 		{
-			return TRUE;
+			for (int j = 0; j < vSkillXinFa.size(); j++)
+			{
+				//dbgPrint("»ñÈ¡ÐÄ·¨µÈ¼¶:%s  ½ÇÉ«ÐÄ·¨µÈ¼¶: %d = %d", skillName, vSkill[i].nXinFaLevel, vSkillXinFa[j].nNowLv);
+				if (vSkillXinFa[j].szName == XF)
+				{
+					if (vSkillXinFa[j].nNowLv >= vSkill[i].nXinFaLevel)
+					{
+						tAsmSkill = vSkill[i];
+						return tAsmSkill;
+					}
+				}
+			}
 		}
 	}
-	return FALSE;
+	return tAsmSkill;
 }
 
 CAsmSkill::CAsmSkill()
@@ -74,7 +90,7 @@ VAsmSkill CAsmSkill::AsmGetSkillData()
 
 	try
 	{
-		dbgPrint("»ñÈ¡½ÇÉ«¼¼ÄÜ");
+		//dbgPrint("»ñÈ¡½ÇÉ«¼¼ÄÜ");
 
 		DWORD dwTree = 0;
 		
@@ -99,7 +115,7 @@ VAsmSkill CAsmSkill::AsmGetSkillData()
 			dwTree = *(PULONG)(data + 0x4);
 		}
 		
-		dbgPrint("½ÇÉ«¼¼ÄÜ¶þ²æÊ÷¶ÔÏóÈë¿Ú:%x", dwTree);
+		//dbgPrint("½ÇÉ«¼¼ÄÜ¶þ²æÊ÷¶ÔÏóÈë¿Ú:%x", dwTree);
 		DWORD dwCount = 0;
 		if (dwTree != NULL)
 		{
@@ -256,6 +272,7 @@ void CAsmSkill::AsmGetSkillInfo(TAsmTree* pTree, VAsmSkill& vm_Skill)//¼¼ÄÜÊôÐÔÐ
 			//tSkill.nTargetType = *(int*)(tSkill.unObject + 0xDC);//+DC 0: Ä¿±ê±ØÐëÊÇÍæ¼Ò 1:Ä¿±ê±ØÐëÊÇ³èÎï 2:Ä¿±ê±ØÐëÊÇ¹ÖÎï
 			//tSkill.szDescription = (char*)(*(PUINT)(tSkill.unObject + 0x150));//¼¼ÄÜÃèÊöÐÅÏ¢
 			//tSkill.nPassiveFlag = *(int*)(tSkill.unObject + 0x154);//Ö÷¶¯ÊÍ·Å »¹ÊÇ×Ô¶¯ÊÍ·Å
+			tSkill.nXinFaLevel = *(int*)(tSkill.unObject + 0x14);// ÐÄ·¨Æ«ÒÆ
 			vm_Skill.push_back(tSkill);
 			//dbgPrint("¼¼ÄÜÐÅÏ¢ szName=%s, nSkillId=%d, fMin=%f, fMax=%f", 
 			//	tSkill.szName, tSkill.nSkillId, tSkill.fMin, tSkill.fMax);
@@ -271,6 +288,7 @@ void CAsmSkill::AsmGetSkillXinFaInfo(TAsmTree* pTree, VAsmSkillXinFa& vm_XinFaSk
 {
 	try
 	{
+		DWORD nowObj;
 		TAsmSkillXinFa tSkillXinFa;
 		tSkillXinFa.unObject = *(PUINT)((UINT)pTree + 0x14);
 		tSkillXinFa.unTree = (UINT)pTree;
@@ -279,8 +297,9 @@ void CAsmSkill::AsmGetSkillXinFaInfo(TAsmTree* pTree, VAsmSkillXinFa& vm_XinFaSk
 		{
 			//////////////////////////////////////////////////////////////////////////
 			tSkillXinFa.nId = *(int*)(tSkillXinFa.unTree + 0x10);// ¼¼ÄÜid
-			tSkillXinFa.szName = (char*)(*(PUINT)(tSkillXinFa.unObject + 0xC));//+ÐÄ·¨Ãû³Æ
-			tSkillXinFa.nNowLv = *(int*)(tSkillXinFa.unObject + 0x3C); //ÐÄ·¨µÈ¼¶
+			tSkillXinFa.nNowLv = *(int*)(tSkillXinFa.unTree + 0x20); //ÐÄ·¨µÈ¼¶
+			nowObj = *(PDWORD)(tSkillXinFa.unObject + 0x8);
+			tSkillXinFa.szName = (char*)(PDWORD)(nowObj);//+ÐÄ·¨Ãû³Æ
 			vm_XinFaSkill.push_back(tSkillXinFa);
 		}
 	}
@@ -372,45 +391,4 @@ void CAsmSkill::AsmUseSkillCallByPoint(int SkillId, float fx, float fy)
 	{
 		dbgPrint("µ÷ÓÃ¹ÖÎïÊ§°Ü:", __FUNCTION__);
 	}
-}
-
-
-bool CAsmSkill::SkillStudy(CString SkillName)
-{
-	if (SkillName.IsEmpty()) return false;
-
-	int nowLv = 0;
-	int needLv = 0;
-	VAsmSkillXinFa SkillXinFa;
-	VAsmSkill Skill;
-	map<CString, CString> *pSkillClass;	//ÃÅÅÉÐÄ·¨·ÖÀàMAP
-
-	SkillXinFa = AsmGetXinFaSkillData();
-	Skill = AsmGetSkillData();
-
-	map<CString, CString>::iterator itor = m_SkillClass.find(SkillName); //»ñÈ¡µ±Ç°¼¼ÄÜµÄÐÄ·¨
-	if (itor == m_SkillClass.end()) {
-		return false;
-	}
-
-	for (int i = 0; i < SkillXinFa.size(); i++)
-	{
-		if (strcmp(SkillXinFa.at(i).szName, itor->second.GetBuffer()) == 0) {
-			nowLv = SkillXinFa.at(i).nNowLv; //»ñÈ¡µ±Ç°ÐÄ·¨µÈ¼¶
-			break;
-		}
-	}
-
-	for (int i = 0; i < Skill.size(); i++)
-	{
-		if (strcmp(Skill.at(i).szName, SkillName.GetBuffer()) == 0) {
-			needLv = Skill.at(i).nXinFaLevel; //»ñÈ¡µ±Ç°ÐèÒªÐÄ·¨µÈ¼¶
-			break;
-		}
-	}
-
-	if (nowLv > needLv) {
-		return true;
-	}
-	return false;
 }

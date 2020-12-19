@@ -30,7 +30,7 @@ UINT __stdcall UI_ThreadFunc(LPVOID p)
 
 	Sleep(2000);
 	g_pMe->CreateTask(g_pMsg->mGameInfo->LuaScript);
-	g_pMe->CreatProtect();
+	//g_pMe->CreatProtect();
 	g_pMe->CreateInfo();
 	g_pMe->CreateGift();
 	

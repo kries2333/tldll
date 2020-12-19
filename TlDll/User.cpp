@@ -125,7 +125,6 @@ VUserSkill CUser::UserGetSkill()//获取技能
 		GetPrivateProfileString(szMenPai, vTags[i].c_str(), "", strTemp.GetBuffer(MAX_PATH), MAX_PATH, strPath);
 		_tstring szTemp = strTemp;
 		auto  vString = UserSubMonsterName(szTemp, _T('|'));
-		dbgPrint("vString = %d", vString.size());
 		if (vString.size() == 0)
 		{
 			TUserSkill tUserSkill;
@@ -135,41 +134,29 @@ VUserSkill CUser::UserGetSkill()//获取技能
 		}
 		else if (vString.size() == 1) 
 		{
-			TUserSkill tUserSkill;
-			tUserSkill.nType = i + 1;
-			for (auto skill : l_AsmSkill)
+			TAsmSkill tAsmSkill = g_pAsmSkill->AsmHaveMasterSkill(strTemp);
+			if (tAsmSkill.nSkillId != -1)
 			{
-				if (skill.szName == strTemp)
-				{
-					if (g_pAsmSkill->SkillStudy(skill.szName))
-					{
-						tUserSkill.tAsmSkill = skill;
-						tUserSkill.nSkillId = skill.nSkillId;
-						break;
-					}
-				}
+				TUserSkill tUserSkill;
+				tUserSkill.nType = i + 1;
+				tUserSkill.tAsmSkill = tAsmSkill;
+				tUserSkill.nSkillId = tAsmSkill.nSkillId;
+				vUserSkill.push_back(tUserSkill);
 			}
-			vUserSkill.push_back(tUserSkill);
 		}
 		else
 		{
 			for (auto v : vString)
 			{
-				TUserSkill tUserSkill;
-				tUserSkill.nType = i + 1;
-				for (auto skill : l_AsmSkill)
+				TAsmSkill tAsmSkill = g_pAsmSkill->AsmHaveMasterSkill(v.c_str());
+				if (tAsmSkill.nSkillId != -1)
 				{
-					if (CString(skill.szName) == CString(v.c_str()))
-					{
-						if (g_pAsmSkill->SkillStudy(skill.szName))
-						{
-							tUserSkill.tAsmSkill = skill;
-							tUserSkill.nSkillId = skill.nSkillId;
-							break;
-						}
-					}
+					TUserSkill tUserSkill;
+					tUserSkill.nType = i + 1;
+					tUserSkill.tAsmSkill = tAsmSkill;
+					tUserSkill.nSkillId = tAsmSkill.nSkillId;
+					vUserSkill.push_back(tUserSkill);
 				}
-				vUserSkill.push_back(tUserSkill);
 			}
 		}
 	}

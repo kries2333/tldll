@@ -51,6 +51,7 @@ struct TUserProtect
 
 struct TUserSkill
 {
+	bool		bNormal;	//标识没蓝得时候使用攻击方式
 	int			nType;		//1: 使用姿态, 2:起手式 3：群攻技能 4:状态buff 5:自身buff
 	int			nSkillId;	//技能id
 	TAsmSkill	tAsmSkill;
