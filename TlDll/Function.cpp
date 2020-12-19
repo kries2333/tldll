@@ -581,7 +581,7 @@ bool CFunction::FUN_IsMonsterDie(TAsmMonster* ptAsmMonster)//false为死亡
 		{
 			if ((*ptAsmMonster).nMonsterId == m.nMonsterId)
 			{
-				if (m.fMonsterHp > 0)
+				if (m.fMonsterHp > 0.02)
 				{
 					*ptAsmMonster = m;//取得怪物当前的数据,有时候，会超出距离，要取得最新信息判断
 					return true;
