@@ -547,6 +547,7 @@ void CFunction::FUN_UseMovAttackSkill(TAsmSkill tAsmSkill, TAsmMonster tAsmMonst
 {
 	if (FUN_MovToMonster(tAsmMonster, tAsmSkill))//怪物在射程内
 	{
+		g_pMsg->CallInOutRide(0);
 		g_pAsmSkill->AsmUseSkillCall(tAsmMonster.nMonsterId, tAsmSkill.nSkillId);//使用此技能
 	}
 }
@@ -699,11 +700,26 @@ void CFunction::FUN_Levelup()
 
 bool CFunction::FUN_IsSkillName(CString taskName)
 {
-	TAsmSkill tAsmSkill = g_pAsmSkill->AsmHaveMasterSkill(taskName);
-	if (tAsmSkill.nSkillId != -1)
+	int nMenPai = g_pAsmRole->GetMenPaiForId();
+	if (nMenPai == 9)
 	{
-		return TRUE;
+		VAsmSkill asmSkills =  g_pAsmSkill->AsmGetSkillData();
+		for (auto skill : asmSkills)
+		{
+			if (taskName.Find(skill.szName) != -1)
+			{
+				return TRUE;
+			}
+		}
 	}
+	else {
+		TAsmSkill tAsmSkill = g_pAsmSkill->AsmHaveMasterSkill(taskName);
+		if (tAsmSkill.nSkillId != -1)
+		{
+			return TRUE;
+		}
+	}
+
 	return FALSE;
 }
 
