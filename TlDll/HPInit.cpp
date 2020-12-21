@@ -197,8 +197,9 @@ Login:
 			}
 			else if (isCreateRole)//目前没有角色，需要创建
 			{
-				MySendGameInfo("当前无角色请勾选创建");
-				return 0;
+				MySendGameInfo("请手动创建角色后继续");
+				Sleep(2000);
+				TimeSleepEX = 0;
 		
 			//	MySendGameInfo("创建角色");
 			//	g_pMsg->msg_dostring("setmetatable(_G, {__index = LoginSelectServerQuest_Env}); SelectServerQuest_Bn1Click();");//选择角色后的确定
