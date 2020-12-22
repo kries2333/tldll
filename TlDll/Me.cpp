@@ -10,6 +10,7 @@
 #include "AsmTask.h"
 #include "AsmRole.h"
 #include "AsmPet.h"
+#include "AsmItem.h"
 #include "HPInit.h"
 
 CGUI* g_pUI;
@@ -22,6 +23,7 @@ extern CAsmTask* g_pAsmTask;
 extern CHPInit* g_pHPInit;
 extern CAsmRole* g_pAsmRole;
 extern CAsmPet* g_pAsmPet;
+extern CAsmItem* g_pAsmItem;
 
 HWND g_Gamehwnd;
 CString g_GameTitle;
@@ -32,7 +34,7 @@ UINT __stdcall UI_ThreadFunc(LPVOID p)
 
 	Sleep(2000);
 	g_pMe->CreateTask(g_pMsg->mGameInfo->LuaScript);
-	//g_pMe->CreatProtect();
+	g_pMe->CreatProtect();
 	g_pMe->CreateInfo();
 	g_pMe->CreateGift();
 	
@@ -81,6 +83,8 @@ UINT __stdcall Gift_ThreadFunc(void* p)
 	{
 		return 0;
 	}
+
+
 	while (true)
 	{
 		if (!g_pMe->bGiftThread)
@@ -89,35 +93,85 @@ UINT __stdcall Gift_ThreadFunc(void* p)
 		}
 		if (g_pMsg != NULL)
 		{
+			TAsmRoleInfo tAsmRole = g_pAsmRole->GetRoleInfo();
+			if (tAsmRole.bool_ret)
+			{
+				if (tAsmRole.nLevel >= 10 && tAsmRole.nLevel <= 12)
+				{
+					int nBagNum = g_pAsmItem->GetBagItemBlankNum();
+
+					dbgPrint("领取坐骑 背包剩余%d", nBagNum);
+					
+					//领取登录奖励，登录的时候领取一次
+					if (nBagNum > 5)
+					{
+						g_pMsg->msg_dostring("setmetatable(_G, { __index = MiniMap_Env }); MiniMap_XinShouNewBtnClk();");
+						Sleep(500);
+
+						g_pMsg->msg_dostring("setmetatable(_G, {__index = XinShouNew_Env}); XinShouNew_SevenDay_Click(1);");
+						Sleep(500);
+
+						g_pMsg->msg_dostring("setmetatable(_G, {__index = XinShouNew_Env}); XinShouNew_SevenDay_GetPrize();");
+						Sleep(500);
+
+						g_pMsg->msg_dostring("setmetatable(_G, { __index = XinShouNew_Env }); XinShouNew_Close();");
+						Sleep(500);
+					}
+				}
+			}
+
 			g_pMsg->msg_dostring("setmetatable(_G, {__index = FreshmanWatch_Env}); FreshmanWatch_Bn2Click();");
-			Sleep(1000);
+			Sleep(500);
 			for (int i = 0; i < 20; i++)
 			{
 				CString strTemp = g_pMsg->msg_getstring("ItemName", " ItemName = PlayerPackage:GetBagItemName(%d)", i).c_str();
-				Sleep(1000);
+				Sleep(500);
 				if (strTemp.Find("珍兽蛋", 0) != -1)	//如果背包里有宠物蛋，就放生所有宠物,然后获取松鼠宝宝
 				{
+					dbgPrint("背包里有珍兽蛋");
 					TAsmPet tPet = g_pAsmPet->GetPetForName("松鼠宝宝");
 					if (tPet.nPetId == 0)
 					{
-						for (int j = 0; j < g_pAsmPet->GetCount(); j++)
+						int nCurPetCount = g_pAsmPet->GetCount();
+						dbgPrint("当前宠物数=%d", nCurPetCount);
+						for (int j = 0; j < nCurPetCount; j++)
 						{
-							g_pMsg->msg_dostring("setmetatable(_G, { __index = Pet_Env }); Pet_Free_Clicked();");
-							Sleep(1000);
+							dbgPrint("宠物先需要休息");
+							g_pMsg->msg_dostring("Pet:Go_Relax(%d);", j);
+							Sleep(500);
+
+							dbgPrint("宠物放生");
+							g_pMsg->msg_dostring("Pet:Free_Confirm(%d);", j);
+							Sleep(500);
+
+							g_pMsg->msg_dostring("setmetatable(_G, { __index = MessageBox_Self_Env }); MessageBox_Self_OK_Clicked();");
+							Sleep(500);
+							
 						}
 						g_pMsg->msg_dostring("setmetatable(_G, { __index = Packet_Env }); Packet_ItemBtnClicked(1, %d);", i + 1);
+						Sleep(500);
 					}
+				}
 
+				if (strTemp.Find("坐骑：如意熊") != -1)
+				{
+					g_pMsg->msg_dostring("setmetatable(_G, { __index = Packet_Env }); Packet_ItemBtnClicked(1, %d);", i + 1);
+					Sleep(500);
+
+					int nIndex = g_pAsmItem->AsmGetItemNum("翅膀：幻羽");
+					g_pAsmItem->Destroy(nIndex);
 				}
 
 				if (strTemp.Find("翅膀", 0) != -1 ||
 					strTemp.Find("江湖乾坤袋", 0) != -1) {
 					g_pMsg->msg_dostring("setmetatable(_G, { __index = Packet_Env }); Packet_ItemBtnClicked(1, %d);", i + 1);
-					Sleep(1000);
+					Sleep(500);
 				}
+				Sleep(100);
 			}
 
 			CString strTemp = g_pMsg->msg_getstring("MyMonCanCommitString", "setmetatable(_G, {__index = QuitRelative_Env}); MyMonCanCommitString = QuitRelative_Text:GetText()").c_str();
+			Sleep(500);
 			//dbgPrint("服务器的连接 strTemp=%s", strTemp);
 			if (strTemp.Find("服务器的连接") != -1)
 			{
@@ -160,6 +214,7 @@ void CMe::EndThread()
 	bTaskThread = false;
 	bGiftThread = false;
 	bInfoThread = false;
+	bProtectThread = false;
 	if (hTaskThread)//任务线程停止时可能要等待很久
 	{
 		::CloseHandle(hTaskThread);
@@ -174,6 +229,12 @@ void CMe::EndThread()
 	{
 		::CloseHandle(hInfoThread);
 		hInfoThread = nullptr;
+	}
+
+	if (bProtectThread)
+	{
+		::CloseHandle(hProtectThread);
+		hProtectThread = nullptr;
 	}
 }
 
@@ -242,7 +303,7 @@ void CMe::CreatProtect()
 		::CloseHandle(hProtectThread);
 		hProtectThread = nullptr;
 	}
-	bProtectRun = true;
+	bProtectThread = true;
 	bPauseProtect = false;
 	hProtectThread = (HANDLE)_beginthreadex(NULL, 0, &Protect_threadfunc, this, 0, NULL);
 }

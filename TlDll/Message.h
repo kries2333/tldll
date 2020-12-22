@@ -82,6 +82,7 @@ private:
 
 public:
 	void UseItemName(_tstring itemName);
+	int GetBagItemBlankNum();
 
 public:
 	bool IsWindowShow(const char* str);

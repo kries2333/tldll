@@ -124,12 +124,19 @@ VUserSkill CUser::UserGetSkill()//获取技能
 	{
 		GetPrivateProfileString(szMenPai, vTags[i].c_str(), "", strTemp.GetBuffer(MAX_PATH), MAX_PATH, strPath);
 		_tstring szTemp = strTemp;
+		dbgPrint("UserGetSkill szTemp=%s", szTemp.c_str());
 		auto  vString = UserSubMonsterName(szTemp, _T('|'));
-		if (vString.size() == 0)
+		if (strTemp == "普通攻击")
 		{
+			TAsmSkill tAsmSkill;
+			tAsmSkill.fMax = 2;
+			tAsmSkill.fMin = 0;
+			tAsmSkill.nSkillId = 0;
+
 			TUserSkill tUserSkill;
 			tUserSkill.nType = i + 1;
-			tUserSkill.nSkillId = -1;
+			tUserSkill.nSkillId = 0;
+			tUserSkill.tAsmSkill = tAsmSkill;
 			vUserSkill.push_back(tUserSkill);
 		}
 		else if (vString.size() == 1) 
@@ -141,6 +148,8 @@ VUserSkill CUser::UserGetSkill()//获取技能
 				tUserSkill.nType = i + 1;
 				tUserSkill.tAsmSkill = tAsmSkill;
 				tUserSkill.nSkillId = tAsmSkill.nSkillId;
+
+				dbgPrint("UserGetSkill nType=%d tAsmSkill=%s nSkillId=%d", tUserSkill.nType, tAsmSkill.szName, tAsmSkill.nSkillId);
 				vUserSkill.push_back(tUserSkill);
 			}
 		}
@@ -155,6 +164,7 @@ VUserSkill CUser::UserGetSkill()//获取技能
 					tUserSkill.nType = i + 1;
 					tUserSkill.tAsmSkill = tAsmSkill;
 					tUserSkill.nSkillId = tAsmSkill.nSkillId;
+					dbgPrint("UserGetSkill nType=%d tAsmSkill=%s nSkillId=%d", tUserSkill.nType, tAsmSkill.szName, tAsmSkill.nSkillId);
 					vUserSkill.push_back(tUserSkill);
 				}
 			}

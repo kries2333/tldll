@@ -140,5 +140,7 @@ public:
 	int LUA_AutoTeam(LuaState* pState);		//自动组队
 
 	int LUA_CheckTeam(LuaState* pState);	//校验队伍
+
+	int LUA_AutoCleanBag(LuaState* pState);
 };
 

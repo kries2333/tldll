@@ -57,15 +57,22 @@ VAsmPet CAsmPet::AsmGetPetData()
 
 int CAsmPet::GetCount()
 {
-	int nCount = g_pMsg->msg_getnumber("Pet:Other_GetPet_Count();");
+	int nCount = 0;
+	VAsmPet vPet = AsmGetPetData();
+	for (size_t i = 0; i < vPet.size(); i++)
+	{
+		if (vPet[i].nPetId != 0) {
+			nCount++;
+		}
+	}
 	return nCount;
 }
 
-int CAsmPet::GetMaxCount()
-{
-	int nMaxPetCount = g_pMsg->msg_getnumber("GetOtherCurMaxPetCount();");
-	return nMaxPetCount;
-}
+//int CAsmPet::GetMaxCount()
+//{
+//	int nMaxPetCount = g_pMsg->msg_getnumber("GetOtherCurMaxPetCount();");
+//	return nMaxPetCount;
+//}
 
 int CAsmPet::GetIsFighting()
 {

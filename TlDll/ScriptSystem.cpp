@@ -124,6 +124,9 @@ void CScriptSystem::LUA_ScriptSystemInitial(/*CString strScriptName*/)
 
 	objGlobal.Register("lua_CheckTeam", *MeLua,
 		&CMeLua::LUA_CheckTeam);			//检查队伍
+
+	objGlobal.Register("lua_AutoCleanBag", *MeLua,
+		&CMeLua::LUA_AutoCleanBag);			//清理背包
 	//======以上为对外接口=============================================
 
 	//========以下测试接口使用，发布需要屏蔽=============================================

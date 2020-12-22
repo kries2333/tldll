@@ -15,15 +15,26 @@ DWORD GetBaseAddr()
 	return data;
 }
 
-VAsmItem CAsmItem::AsmGetItemData()
+VAsmItem CAsmItem::AsmGetItemData(int nPage)
 {
 	VAsmItem vm_Item;//包裹内物品
 	try
 	{
 		int nIndex = 0;
-		int nCount = 20;
 		DWORD NameAddr = 0;
-		for (int i = nIndex; i < nCount; i++)
+		int nBegin = 0;
+		int nEnd = 0;
+		if (nPage == -1)
+		{
+			nBegin = 0;
+			nEnd = 60;
+		}
+		else
+		{
+			nBegin = nPage * 20;
+			nEnd = (nPage + 1) * 20;
+		}
+		for (int i = nBegin; i < nEnd; i++)
 		{
 			DWORD uObj = GetBaseAddr();
 			uObj = *(DWORD*)(uObj + 0xF90);//道具背包格子总数
@@ -68,6 +79,8 @@ VAsmItem CAsmItem::AsmGetItemData()
 				{
 					tItems.uLevel = *(DWORD*)(uObj + 0x20);
 				}
+				dbgPrint("背包物品 类别=%s 名称=%s 等级=%d 位置=%d",
+					tItems.szTypeName, tItems.szName, tItems.uLevel, tItems.nIntdex);
 				vm_Item.push_back(tItems);
 			}
 		}
@@ -126,7 +139,7 @@ int CAsmItem::GetEquipmentTypeForName(CString name)
 void CAsmItem::AutoWearEquipment(_tstring itemNames)
 {
 	dbgPrint("穿戴装备列表%s", itemNames.c_str());
-	VAsmItem items = AsmGetItemData();
+	VAsmItem items = AsmGetItemData(-1);
 
 	if (itemNames.empty())
 	{
@@ -190,11 +203,11 @@ void CAsmItem::WearEquipment(int nIndex, int nTypeName)
 	}
 }
 
-void CAsmItem::AutoSell(_tstring itemNames)
+void CAsmItem::ItemSell(CString itemNames)
 {
-	VAsmItem items = AsmGetItemData();
+	VAsmItem items = AsmGetItemData(-1);
 
-	if (itemNames.empty())
+	if (itemNames.IsEmpty())
 	{
 		for (auto item : items)
 		{
@@ -204,7 +217,8 @@ void CAsmItem::AutoSell(_tstring itemNames)
 		}
 	}
 	else {
-		auto  vstr = UserSubMonsterName(itemNames, _T('|'));
+		_tstring strItems = itemNames;
+		auto  vstr = UserSubMonsterName(strItems, _T('|'));
 		for (auto item : items)
 		{
 			if (item.nEquipType != -1)
@@ -240,7 +254,7 @@ void CAsmItem::SellEquipment(DWORD uObj)
 void CAsmItem::AutoDestroy(_tstring itemNames)
 {
 	dbgPrint("销毁物品列表%s", itemNames.c_str());
-	VAsmItem items = AsmGetItemData();
+	VAsmItem items = AsmGetItemData(0);
 
 	if (itemNames.empty())
 	{
@@ -321,4 +335,10 @@ void CAsmItem::AsmUseHpItem(int nIndex, DWORD ItemObject1, DWORD ItemObject2, DW
 
 	}
 
+}
+
+int CAsmItem::GetBagItemBlankNum()
+{
+	VAsmItem vAsmItem = AsmGetItemData(0);
+	return 20 - vAsmItem.size();
 }

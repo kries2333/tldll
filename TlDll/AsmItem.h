@@ -52,14 +52,15 @@ public:
 	BYTE byTwoCount = 0;//材料背包格子总数
 	BYTE byThreeCount = 0;//任务背包格子总数
 public:
-	VAsmItem  AsmGetItemData();
+	VAsmItem  AsmGetItemData(int nPage);
 	void AutoWearEquipment(_tstring itemNames);
 	void WearEquipment(int nIndex, int nTypeName);
-	void AutoSell(_tstring itemNames);
+	void ItemSell(CString itemNames);
 	void SellEquipment(DWORD uObj);
 	void AutoDestroy(_tstring itemNames);
 	void Destroy(int nIndex);
 	int  AsmGetItemNum(CString name);
+	int GetBagItemBlankNum();
 
 	void AsmUseHpItem(int nIndex, DWORD ItemObject1, DWORD ItemObject2, DWORD ItemObject3);
 private:

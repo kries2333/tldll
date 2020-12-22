@@ -187,16 +187,12 @@ int  CMeLua::LUA_GetSceneId(LuaState* pState)
 //»ñÈ¡ÃÅÅÉ
 int CMeLua::LUA_GetMenPaiName(LuaState* pState)
 {
+	dbgPrint("LUA_GetMenPaiName");
 	LuaStack args(pState);
-	TAsmRoleInfo info = g_pAsmRole->GetRoleInfo();
-	switch (info.nMenpai)
-	{
-	case 8:
-		pState->PushString("åÐÒ£");
-		break;
-	default:
-		break; 
-	}
+
+	CString strMenPai = g_pAsmRole->GetMenPaiForName();
+	_tstring strTemp = strMenPai;
+	pState->PushString(strTemp.c_str());
 	return 1;
 }
 
@@ -857,8 +853,8 @@ int CMeLua::LUA_AutoSell(LuaState* pState)
 		int nPosX = args[3].GetInteger();
 		int nPosY = args[4].GetInteger();
 		CString npcName = args[5].GetString();
-		CString _talkName = args[6].GetString();
-		FUN_AutoSell(sceneName, nPosX, nPosY, npcName, _talkName);
+		CString talkName = args[6].GetString();
+		FUN_AutoSell(sceneName, nPosX, nPosY, npcName, talkName);
 		return 1;
 	}
 
@@ -1020,5 +1016,22 @@ int CMeLua::LUA_CheckTeam(LuaState* pState)
 		}
 	}
 	pState->PushBoolean(FALSE);
+	return 0;
+}
+
+int CMeLua::LUA_AutoCleanBag(LuaState* pState)
+{
+	dbgPrint("LUA_AutoCleanBag");
+	LuaStack args(pState);
+	if (args[1].IsString() && args[2].IsInteger() && args[3].IsInteger() && args[4].IsString() && args[5].IsString())
+	{
+		CString strSceneName	= args[1].GetString();
+		int		nPosX		= args[2].GetInteger();
+		int		nPosY		= args[3].GetInteger();
+		CString strNpcName = args[4].GetString();
+		CString strTalkName = args[5].GetString();
+		FUN_AutoCleanBag(strSceneName, nPosX, nPosY, strNpcName, strTalkName);
+		return 1;
+	}
 	return 0;
 }

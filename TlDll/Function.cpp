@@ -478,49 +478,56 @@ TAsmMonster CFunction::FUN_GetMonsterByName(_tstring MonsterName, int nMonsterTy
 
 void CFunction::FUN_MisKillMonsterByName(_tstring MonsterName)
 {
-	TAsmSkill tAsmSkill;
-	int nMenPaiId = g_pAsmRole->GetMenPaiForId();
-	if (nMenPaiId == 8)	//逍遥派
-	{
-		tAsmSkill.nSkillId = 521;
-		tAsmSkill.fMax = 15.0;
-	}
-	else {
-		tAsmSkill.nSkillId = 0;
-		tAsmSkill.fMax = 2.0;
-	}
-	//宠物出战打怪
-	g_pAsmPet->PetGoFight(0);
+	//TAsmSkill tAsmSkill;
+	//int nMenPaiId = g_pAsmRole->GetMenPaiForId();
+	//if (nMenPaiId == 8)	//逍遥派
+	//{
+	//	tAsmSkill.nSkillId = 521;
+	//	tAsmSkill.fMax = 15.0;
+	//}
+	//else {
+	//	tAsmSkill.nSkillId = 0;
+	//	tAsmSkill.fMax = 2.0;
+	//}
+	////宠物出战打怪
+	//g_pAsmPet->PetGoFight(0);
 
-	auto AMonster = g_pAsmMonster->AsmGetMonsterData();//获取角色周边范围内的怪物
-	for (auto m : AMonster)
-	{
-		if (((CString)m.szName).Find(MonsterName.c_str()) != -1)
-		{
-			if (m.nAttack == 0)
-			{
-				for (size_t i = 0; i < 60; i++)	//循环60次大概1分钟，如果还没怪物就得重新选择
-				{
-					float nHp = g_pAsmMonster->GetHp(m);
-					if (nHp <= 0) {
-						return;
-					}
-					FUN_UseMovAttackSkill(tAsmSkill, m);
-					CString strTemp;
-					strTemp.Format("目标怪物=%s 剩余血量=%f", m.szName, nHp);
-					g_pHPInit->MySendGameInfo(strTemp);
-					dbgPrint(strTemp);
-					if (g_pAsmRole->GetHpPercent() <= 0) {
-						dbgPrint("角色死亡");
-						return;
-					}
+	//auto AMonster = g_pAsmMonster->AsmGetMonsterData();//获取角色周边范围内的怪物
+	//for (auto m : AMonster)
+	//{
+	//	if (((CString)m.szName).Find(MonsterName.c_str()) != -1)
+	//	{
+	//		if (m.nAttack == 0)
+	//		{
+	//			for (size_t i = 0; i < 60; i++)	//循环60次大概1分钟，如果还没怪物就得重新选择
+	//			{
+	//				float nHp = g_pAsmMonster->GetHp(m);
+	//				if (nHp <= 0) {
+	//					return;
+	//				}
+	//				FUN_UseMovAttackSkill(tAsmSkill, m);
+	//				CString strTemp;
+	//				strTemp.Format("目标怪物=%s 剩余血量=%f", m.szName, nHp);
+	//				g_pHPInit->MySendGameInfo(strTemp);
+	//				dbgPrint(strTemp);
+	//				if (g_pAsmRole->GetHpPercent() <= 0) {
+	//					dbgPrint("角色死亡");
+	//					return;
+	//				}
 
-					Sleep(500);
-				}
-			}
-		}
-		Sleep(100);
-	}	
+	//				Sleep(500);
+	//			}
+	//		}
+	//	}
+	//	Sleep(100);
+	//}	
+
+	TAsmMonster tAsmMonster = FUN_GetMonsterByName(MonsterName.c_str(), 0, 1);
+	if (tAsmMonster.nMonsterId != -1)
+	{
+		dbgPrint("FUN_KillMonsterByNameID %d", tAsmMonster.nMonsterId);
+		FUN_UseSkillKillMonster(tAsmMonster);//开始技能打怪;
+	}
 }
 
 bool  CFunction::FUN_MinDistanceObject(float* fdistance, float fx, float fy)	//true是最近的
@@ -547,7 +554,6 @@ void CFunction::FUN_UseMovAttackSkill(TAsmSkill tAsmSkill, TAsmMonster tAsmMonst
 {
 	if (FUN_MovToMonster(tAsmMonster, tAsmSkill))//怪物在射程内
 	{
-		g_pMsg->CallInOutRide(0);
 		g_pAsmSkill->AsmUseSkillCall(tAsmMonster.nMonsterId, tAsmSkill.nSkillId);//使用此技能
 	}
 }
@@ -581,7 +587,7 @@ bool CFunction::FUN_IsMonsterDie(TAsmMonster* ptAsmMonster)//false为死亡
 		{
 			if ((*ptAsmMonster).nMonsterId == m.nMonsterId)
 			{
-				if (m.fMonsterHp > 0.02)
+				if ((*ptAsmMonster).fMonsterHp >= 0.01)
 				{
 					*ptAsmMonster = m;//取得怪物当前的数据,有时候，会超出距离，要取得最新信息判断
 					return true;
@@ -799,7 +805,7 @@ bool CFunction::FUN_TaskAccep(_tstring taskName, _tstring npcName, _tstring scen
 				Sleep(500);
 
 				g_pMsg->MissionQuestAccept_Clicked();
-				Sleep(200);
+				Sleep(500);
 				return TRUE;
 			}
 			else {
@@ -996,6 +1002,14 @@ bool CFunction::FUN_ExecuteTaskKill(_tstring taskName, int nType, int nMonsterTy
 				}
 
 				FUN_MisKillMonsterByName(monsterName);
+
+				TAsmMonster tAsmMonster = FUN_GetMonsterByName(monsterName.c_str(), 0, 1);
+				if (tAsmMonster.nMonsterId != -1)
+				{
+					dbgPrint("FUN_KillMonsterByNameID %d", tAsmMonster.nMonsterId);
+					FUN_UseSkillKillMonster(tAsmMonster);//开始技能打怪;
+				}
+
 				if (bPickUp) //是否拾取
 				{
 					Sleep(1000);
@@ -1039,13 +1053,13 @@ void CFunction::FUN_TaskSuccess(_tstring taskName, _tstring npcName, _tstring sc
 				Sleep(500);
 
 				g_pMsg->QuestFrameMissionContinue();	//NPC对话中执行继续
-				Sleep(200);
+				Sleep(500);
 
 				g_pMsg->QuestFrameMissionComplete(0);
-				Sleep(200);
+				Sleep(500);
 
 				g_pMsg->MissionQuestAccept_Clicked();
-				Sleep(200);
+				Sleep(500);
 				return;
 			}
 		}
@@ -1413,9 +1427,9 @@ void CFunction::FUN_AutoBuy(CString itemNames, CString sceneName, int nPosX, int
 }
 
 //卖物品
-void CFunction::FUN_AutoSell(CString sceneName, int nPosX, int nPosY, CString npcName, CString _talkName)
+void CFunction::FUN_AutoSell(CString sceneName, int nPosX, int nPosY, CString npcName, CString talkName)
 {
-	dbgPrint("FUN_AutoSell _talkName=%s", _talkName);
+	dbgPrint("FUN_AutoSell _talkName=%s", talkName);
 	int nSceneId = FUN_GetSceneID(sceneName);
 
 	if (FUN_RunToTargetEx(nPosX, nPosY, nSceneId)) {
@@ -1423,7 +1437,7 @@ void CFunction::FUN_AutoSell(CString sceneName, int nPosX, int nPosY, CString np
 		g_pMsg->SetAutoRunTargetNPCName(npcName); //移动到NPC
 		if (g_pMsg->IsNpcDialog())
 		{
-			g_pMsg->msg_dostring("ClickMission(\"%s\")", _talkName);//msg的lua消息函数
+			g_pMsg->msg_dostring("ClickMission(\"%s\")", talkName);//msg的lua消息函数
 			Sleep(2000);
 		}
 	}
@@ -1503,6 +1517,8 @@ BOOL CFunction::FUN_KillMonsterByName(VUserMonsterName vm_UserMonsterName)
 
 void CFunction::FUN_UseSkillKillMonster(TAsmMonster tAsmMonster)
 {
+	g_pUser->vUserSkill = g_pUser->UserGetSkill(); //重新获取技能设置
+
 	while (g_pMe->bRun)
 	{
 		auto ARoleInfo = g_pAsmRole->GetRoleInfo();
@@ -1510,29 +1526,23 @@ void CFunction::FUN_UseSkillKillMonster(TAsmMonster tAsmMonster)
 		{
 			return;
 		}
+
+		g_pMsg->CallInOutRide(0);
+
+		g_pAsmPet->PetGoFight(0);
+
+		CString strTemp;
+		strTemp.Format("目标怪物=%s 剩余血量=%f", tAsmMonster.szName, tAsmMonster.fMonsterHp);
+
 		for (auto skill : g_pUser->vUserSkill)
 		{
-			float nCurMp = (float)ARoleInfo.nMP / (float)ARoleInfo.nMPMax;
-			if (nCurMp * 100 > 5)
+			FUN_UseAttackSkill(skill, tAsmMonster);//多种类型技能区分
+			if (FUN_IsMonsterDie(&tAsmMonster) == false || !g_pMe->bRun)//false为死亡
 			{
-				FUN_UseAttackSkill(skill, tAsmMonster);//多种类型技能区分
-				if (FUN_IsMonsterDie(&tAsmMonster) == false || !g_pMe->bRun)//false为死亡
-				{
-					//dbgPrint(_T("怪物已被消灭"));
-					return;
-				}
+				dbgPrint(_T("怪物已被消灭"));
+				return;
 			}
-			else {
-				skill = g_pUser->vUserSkill.at(g_pUser->vUserSkill.size() - 1);	//把不费蓝得技能放最后一个
-				FUN_UseAttackSkill(skill, tAsmMonster);//多种类型技能区分
-				if (FUN_IsMonsterDie(&tAsmMonster) == false || !g_pMe->bRun)//false为死亡
-				{
-					//dbgPrint(_T("怪物已被消灭"));
-					return;
-				}
-			}
-
-			Sleep(500);
+			Sleep(100);
 		}
 		Sleep(100);
 	}
@@ -1562,15 +1572,18 @@ void CFunction::FUN_RoleHMProtection(CString szLp, CString szTypeName, int Per, 
 	dbgPrint("FUN_RoleHMProtection szLp=%s, szTypeName=%s Per=%d szYaoNames=%s", szLp, szTypeName, Per, szYaoNames);
 	if (szLp == "速恢复")
 	{
+		TUserProtect tUserProtect;
 		if (szTypeName == "血量")
 		{
 			_tstring szTemp = szYaoNames;
 			auto  vString = UserSubMonsterName(szTemp, _T('|'));
 			for (auto v : vString)
 			{
-				g_pUser->tHighProtect.vYaoName.push_back(v.c_str());
+				tUserProtect.vYaoName.push_back(v.c_str());
 			}
-			g_pUser->tHighProtect.nHpPer = Per;
+			tUserProtect.nType = 1;
+			tUserProtect.nPType = 1;
+			tUserProtect.nPer = Per;
 		}
 		else if (szTypeName == "蓝量")
 		{
@@ -1578,22 +1591,28 @@ void CFunction::FUN_RoleHMProtection(CString szLp, CString szTypeName, int Per, 
 			auto  vString = UserSubMonsterName(szTemp, _T('|'));
 			for (auto v : vString)
 			{
-				g_pUser->tHighProtect.vYaoName.push_back(v.c_str());
+				tUserProtect.vYaoName.push_back(v.c_str());
 			}
-			g_pUser->tHighProtect.nMpPer = Per;
+			tUserProtect.nType = 1;
+			tUserProtect.nPType = 2;
+			tUserProtect.nPer = Per;
 		}
+		g_pUser->vRoleProtect.push_back(tUserProtect);
 	}
 	else if (szLp == "慢恢复")
 	{
+		TUserProtect tUserProtect;
 		if (szTypeName == "血量")
 		{
 			_tstring szTemp = szYaoNames;
 			auto  vString = UserSubMonsterName(szTemp, _T('|'));
 			for (auto v : vString)
 			{
-				g_pUser->tLowProtect.vYaoName.push_back(v.c_str());
+				tUserProtect.vYaoName.push_back(v.c_str());
 			}
-			g_pUser->tLowProtect.nHpPer = Per;
+			tUserProtect.nType = 2;
+			tUserProtect.nPType = 1;
+			tUserProtect.nPer = Per;
 		}
 		else if (szTypeName == "蓝量")
 		{
@@ -1601,10 +1620,13 @@ void CFunction::FUN_RoleHMProtection(CString szLp, CString szTypeName, int Per, 
 			auto  vString = UserSubMonsterName(szTemp, _T('|'));
 			for (auto v : vString)
 			{
-				g_pUser->tLowProtect.vYaoName.push_back(v.c_str());
+				tUserProtect.vYaoName.push_back(v.c_str());
 			}
-			g_pUser->tLowProtect.nMpPer = Per;
+			tUserProtect.nType = 2;
+			tUserProtect.nPType = 2;
+			tUserProtect.nPer = Per;
 		}
+		g_pUser->vRoleProtect.push_back(tUserProtect);
 	}
 	else
 	{
@@ -1617,13 +1639,17 @@ void CFunction::FUN_PetHMProtection(CString szTypeName, int Per, CString szYaoNa
 	dbgPrint("FUN_PetHMProtection szTypeName=%s Per=%d szYaoNames=%s", szTypeName, Per, szYaoNames);
 	if (szTypeName == "血量")
 	{
+		TUserProtect tPetProtect;
 		_tstring szTemp = szYaoNames;
 		auto  vString = UserSubMonsterName(szTemp, _T('|'));
 		for (auto v : vString)
 		{
-			g_pUser->tPetProtect.vYaoName.push_back(v.c_str());
+			tPetProtect.vYaoName.push_back(v.c_str());
 		}
-		g_pUser->tPetProtect.nHpPer = Per;
+		tPetProtect.nType = 1;
+		tPetProtect.nPType = 1;
+		tPetProtect.nPer = Per;
+		g_pUser->vPetProtect.push_back(tPetProtect);
 	}
 }
 
@@ -1731,4 +1757,10 @@ BOOL CFunction::FUN_CheckTeam(int nNum)
 	}
 
 	return 0;
+}
+
+//清理背包
+void CFunction::FUN_AutoCleanBag(CString strSceneName, int nPosX, int nPosY, CString strNpcName, CString strTalkName)
+{
+	FUN_AutoSell(strSceneName, nPosX, nPosY, strNpcName, strTalkName);
 }

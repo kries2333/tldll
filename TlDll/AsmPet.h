@@ -43,7 +43,7 @@ public:
 
 	VAsmPet AsmGetPetData();
 	int GetCount();
-	int GetMaxCount();
+	//int GetMaxCount();
 	void PetGoFight(int nIndex);
 	int GetIsFighting();
 	TAsmPet GetPetForName(CString szName);

@@ -315,6 +315,7 @@ void CMessage::QuestFrameMissionContinue()//NPC对话选项继续按钮
 {
 	CString strTemp = g_pMsg->msg_getstring("g_GetValue", "setmetatable(_G, {__index = Quest_Env}); g_GetValue = Quest_Button_Continue:GetText()").c_str();
 	//dbgPrint("QuestFrameMissionContinue strTemp=%s", strTemp);
+	Sleep(500);
 	if (strTemp.Find("继续") != -1) 
 	{
 		msg_dostring("setmetatable(_G, {__index = Quest_Env});QuestFrameMissionContinue();");
@@ -330,7 +331,7 @@ void CMessage::MissionContinue_Clicked()//NPC对话选项完成按钮
 void CMessage::QuestFrameMissionComplete(int nRewardItemID) //选择奖励物品 完成对话
 {
 	CString strTemp = g_pMsg->msg_getstring("g_GetValue", "setmetatable(_G, {__index = Quest_Env}); g_GetValue = Quest_Button_Continue:GetText()").c_str();
-	//dbgPrint("QuestFrameMissionComplete strTemp=%s", strTemp);
+	Sleep(500);
 	if (strTemp.Find("完成") != -1)
 	{
 		//g_pAsmTask->CompleteTask(nRewardItemID);
@@ -346,10 +347,9 @@ void CMessage::Quest_OnHidden()//NPC对话选项关闭
 void CMessage::MissionQuestAccept_Clicked()//接受任务
 {
 	CString strTemp = g_pMsg->msg_getstring("g_GetValue", "setmetatable(_G, {__index = Quest_Env}); g_GetValue = Quest_Button_Accept:GetText()").c_str();
-	//dbgPrint("MissionQuestAccept_Clicked strTemp=%s", strTemp);
+	Sleep(500);
 	if (strTemp.Find("接受") != -1)
 	{
-		//g_pAsmTask->AcceptTask();
 		msg_dostring("setmetatable(_G, {__index = Quest_Env});QuestAccept_Clicked();");
 	}
 	
@@ -670,4 +670,17 @@ void CMessage::CallInOutRide(int nValue)//召唤找回坐骑
 			Sleep(5000);
 		}
 	}
+}
+
+int CMessage::GetBagItemBlankNum()
+{
+	int nCount = 0;
+	for (int i = 0; i < 100; i++)
+	{
+		CString itemName = msg_getstring("ItemName", " ItemName = PlayerPackage:GetBagItemName(%d)", i).c_str();
+		if (itemName != "") {
+			nCount++;
+		}
+	}
+	return nCount;
 }

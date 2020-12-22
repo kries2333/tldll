@@ -129,7 +129,10 @@ void CGUI::OnBnClickedButton1()
 
 void CGUI::OnBnClickedBtnStart()
 {
-	g_pMe->CreateTask("刷马贼");
+	//g_pMe->CreateTask("自动30级");
+	//g_pMe->CreatProtect();
+	//g_pMe->CreateInfo();
+	g_pMe->CreateGift();
 }
 
 

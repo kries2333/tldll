@@ -136,6 +136,8 @@ public:
 
 	void FUN_AutoStorage(_tstring sceneName, int nPosX, int nPosY, _tstring npcName, _tstring _talkName);
 
+	void FUN_AutoCleanBag(CString strSceneName, int nPosX, int nPosY, CString strNpcName, CString strTalkName);
+
 	//×Ô¶¯»Ö¸´½ÇÉ«×´Ì¬
 	void FUN_AutoRoleStatus(int nPercentage);
 

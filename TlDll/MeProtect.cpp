@@ -19,7 +19,7 @@ static DWORD PT_HP = 0;
 BOOL use_item_yao(CString name)
 {
 	//g_pCriticalSection->Lock();
-	VAsmItem items = g_pAsmItem->AsmGetItemData();
+	VAsmItem items = g_pAsmItem->AsmGetItemData(0);
 	for (auto item : items)
 	{
 		if (name.Find(item.szName) != -1)
@@ -50,40 +50,47 @@ void role_buji()
 		{
 			float fHpCurPer = ((float)AHPMP.nCurhp / (float)AHPMP.nMaxhp) * 100;
 			float fMpCurPer = ((float)AHPMP.nCurmp / (float)AHPMP.nMaxmp) * 100;
+			dbgPrint("role_buji fHpCurPer=%f, fMpCurPer=%f", fHpCurPer, fMpCurPer);
+			for (size_t i = 0; i < g_pUser->vRoleProtect.size(); i++)
+			{
+				if (g_pUser->vRoleProtect[i].nType == 2 &&
+					g_pUser->vRoleProtect[i].nPType == 1 &&
+					g_pUser->vRoleProtect[i].nPer >= fHpCurPer)
+				{
+					for (size_t j = 0; j < g_pUser->vRoleProtect[i].vYaoName.size(); j++)
+					{
+						use_item_yao(g_pUser->vRoleProtect[i].vYaoName[j]);
+					}
 
-			dbgPrint("µ±Ç°Hp = %d Mp = %d", (int)fHpCurPer, (int)fMpCurPer);
-			dbgPrint("¸ß»Ö¸´Hp = %d", g_pUser->tHighProtect.nHpPer);
-			dbgPrint("¸ß»Ö¸´Mp = %d", g_pUser->tHighProtect.nMpPer);
+				}
+				else if (g_pUser->vRoleProtect[i].nType == 2 &&
+					g_pUser->vRoleProtect[i].nPType == 2 &&
+					g_pUser->vRoleProtect[i].nPer >= fMpCurPer)
+				{
+					for (size_t j = 0; j < g_pUser->vRoleProtect[i].vYaoName.size(); j++)
+					{
+						use_item_yao(g_pUser->vRoleProtect[i].vYaoName[j]);
+					}
 
-			dbgPrint("µÍ»Ö¸´Hp = %d", g_pUser->tLowProtect.nHpPer);
-			dbgPrint("µÍ»Ö¸´Mp = %d", g_pUser->tLowProtect.nMpPer);
+				}
+				else if (g_pUser->vRoleProtect[i].nType == 1 &&
+					g_pUser->vRoleProtect[i].nPType == 1 &&
+					g_pUser->vRoleProtect[i].nPer >= fHpCurPer)
+				{
+					for (size_t j = 0; j < g_pUser->vRoleProtect[i].vYaoName.size(); j++)
+					{
+						use_item_yao(g_pUser->vRoleProtect[i].vYaoName[j]);
+					}
 
-			if ((int)fHpCurPer <= g_pUser->tHighProtect.nHpPer) //¿ìËÙ»Ö¸´µÄ²¹ÑªÒ©
-			{
-				for (auto tHp : g_pUser->tHighProtect.vYaoName)
-				{
-					use_item_yao(tHp);
 				}
-			}
-			else if ((int)fMpCurPer <= g_pUser->tHighProtect.nMpPer) //¿ìËÙ»Ö¸´µÄ²¹ÆøÒ©
-			{
-				for (auto tMp : g_pUser->tHighProtect.vYaoName)
+				else if (g_pUser->vRoleProtect[i].nType == 1 &&
+					g_pUser->vRoleProtect[i].nPType == 2 &&
+					g_pUser->vRoleProtect[i].nPer >= fMpCurPer)
 				{
-					use_item_yao(tMp);
-				}
-			}
-			else if ((int)fHpCurPer <= g_pUser->tLowProtect.nHpPer) //ÂýËÙ»Ö¸´µÄ²¹ÑªÒ©
-			{
-				for (auto tHp : g_pUser->tLowProtect.vYaoName)
-				{
-					use_item_yao(tHp);
-				}
-			}
-			else if ((int)fMpCurPer <= g_pUser->tLowProtect.nMpPer) //ÂýËÙ»Ö¸´µÄ²¹ÆøÒ©
-			{
-				for (auto tMp : g_pUser->tLowProtect.vYaoName)
-				{
-					use_item_yao(tMp);
+					for (size_t j = 0; j < g_pUser->vRoleProtect[i].vYaoName.size(); j++)
+					{
+						use_item_yao(g_pUser->vRoleProtect[i].vYaoName[j]);
+					}
 				}
 			}
 		}
@@ -108,11 +115,21 @@ void pet_buji()
 			if (pet.nPetId == g_pAsmPet->GetIsFighting())
 			{
 				float fHpCurPer = ((float)pet.nCurHP / (float)pet.nMaxHP) * 100;
-				if (fHpCurPer < g_pUser->tPetProtect.nHpPer)
+				dbgPrint("pet_buji fHpCurPer=%f", fHpCurPer);
+				for (size_t i = 0; i < g_pUser->vPetProtect.size(); i++)
 				{
-					for (auto tMp : g_pUser->tPetProtect.vYaoName)
+					dbgPrint("pet_buji nType=%d, nPType=%d, nPer=%d", g_pUser->vPetProtect[i].nType,
+						g_pUser->vPetProtect[i].nPType,
+						g_pUser->vPetProtect[i].nPer);
+
+					if (g_pUser->vPetProtect[i].nType == 1 &&
+						g_pUser->vPetProtect[i].nPType == 1 &&
+						g_pUser->vPetProtect[i].nPer >= fHpCurPer)
 					{
-						use_item_yao(tMp);
+						for (size_t j = 0; j < g_pUser->vPetProtect[i].vYaoName.size(); j++)
+						{
+							use_item_yao(g_pUser->vPetProtect[i].vYaoName[j]);
+						}
 					}
 				}
 			}
@@ -130,27 +147,15 @@ void pet_buji()
 
 UINT __stdcall Protect_threadfunc(void* pType)
 {
-	while (g_pMe->bProtectRun)
+	while (g_pMe->bProtectThread)
 	{
 		if (g_pMe->bPauseProtect)
 		{
 			Sleep(5000);
 			continue;
 		}
-		auto ARoleInfo = g_pAsmRole->GetRoleInfo();
-		if (!ARoleInfo.bool_ret)
-		{
-			continue;
-		}
-		if (ARoleInfo.nState == 9)//ËÀÍö×´Ì¬
-		{
-			g_pMsg->msg_dostring("setmetatable(_G, { __index = Relive_Env });Relive_Out_Ghost();");
-		}
-		else
-		{
-			role_buji();
-			pet_buji();
-		}
+		role_buji();
+		pet_buji();
 		Sleep(3000);
 	}
 	return 0;

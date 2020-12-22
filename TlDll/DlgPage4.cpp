@@ -55,19 +55,6 @@ END_MESSAGE_MAP()
 
 void DlgPage4::OnBnClickedButton1()
 {
-	//g_pAsmItem->AsmGetItemData(1);
-	//g_pAsmPet->PetGoFight(0);
-	//g_pAsmStoreItem->BuyPetDrugByName("苏州珍兽店", "后肘肉口粮", 20);
-	VUserSkill vs = g_pUser->UserGetSkill();
-	for (auto v : vs)
-	{
-		dbgPrint("技能配置表 type=%d 名字=%s Id=%d", v.nType, v.tAsmSkill.szName, v.nSkillId);
-	}
-	//VAsmSkillXinFa SkillXinFa = g_pAsmSkill->AsmGetXinFaSkillData();
-
-	//for (auto XinFa : SkillXinFa)
-	//{
-	//	dbgPrint("获取心法等级:%s = %d", XinFa.szName, XinFa.nNowLv);
-
-	//}
+	//g_pAsmItem->AsmGetItemData();
+	g_pUser->UserGetSkill();
 }

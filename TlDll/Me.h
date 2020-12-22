@@ -41,7 +41,7 @@ public:
 	bool bTaskThread;//任务线程标志
 	bool bGiftThread;
 	bool bInfoThread;
-	bool bProtectRun;
+	bool bProtectThread;
 	bool bPauseProtect;	//在移动的时候暂停吃药保护，防止走走停停
 };
 

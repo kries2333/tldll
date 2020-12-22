@@ -32,11 +32,11 @@ struct  TAsmSkill
 	{
 		unTree = 0;
 		unObject = 0;
-		nSkillId = 0;
+		nSkillId = -1;
 		nMenPai = 0;
 		szName = "";
-		nXinFaLevel = 0;
-		nSkillType = 0;
+		nXinFaLevel = -1;
+		nSkillType = -1;
 		nCoolTimeID = 0;
 		nSubType = 0;
 		fMin = 0;

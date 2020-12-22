@@ -36,16 +36,15 @@ struct TUserTime
 
 struct TUserProtect
 {
-	int nType;			//类型
-	int nHpPer;			// 血量低于百分比
-	int nMpPer;			// 气量低于百分比
+	int nType;			//类型 1快速 2慢速
+	int nPType;			//血量类型  1:血量 2:气量
+	int nPer;			// 血量低于百分比
 	vector<CString> vYaoName;
 
 	TUserProtect()
 	{
 		nType = -1;
-		nHpPer = -1;
-		nMpPer = -1;
+		nPer = -1;
 	};
 };
 
@@ -60,7 +59,7 @@ struct TUserSkill
 typedef vector<TUserPos> VUserPos;
 typedef vector<_tstring> VUserMonsterName;
 typedef vector<_tstring> VString;
-//typedef vector<TUserProtect> VUserProtect;
+typedef vector<TUserProtect> VUserProtect;
 typedef vector<TUserSkill> VUserSkill;
 
 _tstring Os_stringOferase(_tstring strSource, _tstring strErase);//移除指定字符或者字符串
@@ -96,9 +95,10 @@ public:
 	/************************************************************************/
 	/* 保护设置                                                             */
 	/************************************************************************/
-	TUserProtect tHighProtect;	//快速恢复
-	TUserProtect tLowProtect;   //慢速恢复
-	TUserProtect tPetProtect;   //宠物恢复
+	//TUserProtect tHighProtect;	//快速恢复
+	//TUserProtect tLowProtect;   //慢速恢复
+	VUserProtect vRoleProtect;
+	VUserProtect vPetProtect;   //宠物恢复
 };
 
 BOOL use_item_yao(CString name);

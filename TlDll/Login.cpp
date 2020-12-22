@@ -96,7 +96,7 @@ void ExitLogin()//卸载dll
 	//g_pMe->bKillThread = false;
 	g_pMe->bRun = false;//寻路状态
 	g_pMe->bTaskThread = false;//任务线程标志
-	g_pMe->bProtectRun = false;
+	g_pMe->bProtectThread = false;
 	g_pMe->bPauseProtect = false;
 
 	if (g_pMe->hProtectThread)//保护线程
