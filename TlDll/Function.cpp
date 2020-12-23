@@ -803,14 +803,14 @@ bool CFunction::FUN_TaskAccep(_tstring taskName, _tstring npcName, _tstring scen
 				Sleep(500);
 
 				g_pMsg->MissionQuestAccept_Clicked();
-				Sleep(500);
+				Sleep(200);
 				return TRUE;
 			}
 			else {
 				dbgPrint("对话框没显示");
 			}
 		}
-		Sleep(1000);
+		Sleep(500);
 	}
 
 	return FALSE;
@@ -1051,17 +1051,17 @@ void CFunction::FUN_TaskSuccess(_tstring taskName, _tstring npcName, _tstring sc
 				Sleep(500);
 
 				g_pMsg->QuestFrameMissionContinue();	//NPC对话中执行继续
-				Sleep(500);
+				Sleep(200);
 
 				g_pMsg->QuestFrameMissionComplete(0);
-				Sleep(500);
+				Sleep(200);
 
 				g_pMsg->MissionQuestAccept_Clicked();
-				Sleep(500);
+				Sleep(200);
 				return;
 			}
 		}
-		Sleep(1000);
+		Sleep(500);
 	}
 
 }
@@ -1169,13 +1169,13 @@ void CFunction::FUN_JoinRace(CString strRaceName, CString strNpcName, int sceneI
 				Sleep(500);
 
 				g_pMsg->QuestFrameMissionContinue();
-				Sleep(500);
+				Sleep(200);
 
 				//g_pMsg->QuestFrameMissionComplete(0);
 				//Sleep(500);
 
 				g_pMsg->MissionQuestAccept_Clicked();
-				Sleep(500);
+				Sleep(200);
 				return;
 			}
 
@@ -1528,9 +1528,12 @@ void CFunction::FUN_UseSkillKillMonster(TAsmMonster tAsmMonster)
 		dbgPrint("FUN_UseSkillKillMonster vUserSkill=%d", g_pUser->vUserSkill.size());
 		for (auto skill : g_pUser->vUserSkill)
 		{
-			FUN_UseAttackSkill(skill, tAsmMonster);//多种类型技能区分
-			if (FUN_IsMonsterDie(&tAsmMonster) == false || !g_pMe->bRun)//false为死亡
+			
+			if (FUN_IsMonsterDie(&tAsmMonster) || !g_pMe->bRun)//false为死亡
 			{
+				FUN_UseAttackSkill(skill, tAsmMonster);//多种类型技能区分
+			}
+			else {
 				dbgPrint(_T("怪物已被消灭"));
 				return;
 			}
