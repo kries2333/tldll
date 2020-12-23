@@ -12,6 +12,7 @@ typedef struct _TLGameInfo {
 	char RoleSects[20];			//角色门派
 	char RoleState[256];		//角色执行的任务状态
 	char Team[128];				//队伍成员
+	char JoinSects[20];			//加入的门派
 	int RoleIndex;				//登录角色下标 注入器写入
 	int KillCount;				//刷怪数量
 	int RoleLv;					//角色等级

@@ -123,6 +123,11 @@ Login:
 			MySendGameInfo("账号密码错误");
 			return 0;
 		}
+		if (isUserPwdError)
+		{
+			MySendGameInfo("停权");
+			return 0;
+		}
 		if (isLoginException)
 		{
 			MySendGameInfo("错误,无法连接");
