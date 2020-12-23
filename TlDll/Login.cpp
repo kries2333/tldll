@@ -75,11 +75,11 @@ void Initial()
 
 	g_pMsg->Init();
 
-	////µÇÂ½Á÷³Ì
-	//if (!g_pHPInit->Login_Thread())
-	//{
-	//	return;
-	//}
+	//µÇÂ½Á÷³Ì
+	if (!g_pHPInit->Login_Thread())
+	{
+		return;
+	}
 
 	g_pMe->CreateUI();
 
@@ -88,8 +88,8 @@ void Initial()
 	//-----------------------------------------------------------------------
 	//Òþ²Ødll
 	//-----------------------------------------------------------------------
-	hide_module("TlDll.dll");
-	clean_pe("TlDll.dll");
+	//hide_module("TlDll.dll");
+	//clean_pe("TlDll.dll");
 }
 
 void ExitLogin()//Ð¶ÔØdll
