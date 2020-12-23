@@ -112,7 +112,7 @@ public:
 	bool FUN_TaskSuccessEx(_tstring taskName, int nType);
 
 	//加入门派
-	void FUN_JoinMenPai(_tstring szMenPaiName);
+	void FUN_JoinRace(CString strRaceName, CString strNpcName, int sceneId, float x, float y);
 
 	//升级
 	void FUN_Levelup();

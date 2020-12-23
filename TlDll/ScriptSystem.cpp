@@ -85,9 +85,12 @@ void CScriptSystem::LUA_ScriptSystemInitial(/*CString strScriptName*/)
 
 	objGlobal.Register("role_GetRaceName", *MeLua,
 		&CMeLua::LUA_GetMenPaiName);		//获取门派
+
+	objGlobal.Register("lua_GetConfigRaceName", *MeLua,
+		&CMeLua::LUA_GetConfigRaceName);		//配置加入门派
 	
-	objGlobal.Register("lua_JoinMenPai", *MeLua,
-		&CMeLua::LUA_JoinMenPai);		//加入门派
+	objGlobal.Register("lua_JoinRace", *MeLua,
+		&CMeLua::LUA_JoinRace);		//加入门派
 
 	objGlobal.Register("skill_IsSkillName", *MeLua,
 		&CMeLua::LUA_IsSkillName);		//判断是否学习了技能

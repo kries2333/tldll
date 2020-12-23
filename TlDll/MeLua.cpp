@@ -780,17 +780,33 @@ int CMeLua::LUA_GetBagItemIndex(LuaState* pState)	//判断是否学习了技能
 	return 0;
 }
 
-int CMeLua::LUA_JoinMenPai(LuaState* pState)	//加入门派
+// 需要加入的门派
+int CMeLua::LUA_GetConfigRaceName(LuaState* pState)
 {
-	dbgPrint("LUA_JoinMenPai");
+	//dbgPrint("LUA_GetConfigRaceName");
+
+	LuaStack args(pState);
+	
+	dbgPrint("LUA_GetConfigRaceName=%s", g_pMsg->mGameInfo->JoinSects);
+	pState->PushString(g_pMsg->mGameInfo->JoinSects);
+	return 1;
+}
+
+int CMeLua::LUA_JoinRace(LuaState* pState)	//加入门派
+{
+	dbgPrint("LUA_JoinRace");
 
 	LuaStack args(pState);
 
 	if (args[1].IsString())
 	{
-		_tstring szMenPaiName = args[1].GetString();
+		CString strRaceName = args[1].GetString();
+		CString strNpcName = args[2].GetString();
+		int nPosX = args[3].GetInteger();
+		int nPosY = args[4].GetInteger();
+		int nSceneId = args[5].GetInteger();
 
-		FUN_JoinMenPai(szMenPaiName);
+		FUN_JoinRace(strRaceName, strNpcName, nSceneId, nPosX, nPosY);
 		return 1;
 	}
 

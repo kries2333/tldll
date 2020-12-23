@@ -84,6 +84,7 @@ UINT __stdcall Gift_ThreadFunc(void* p)
 		return 0;
 	}
 
+	static bool isZuoQiGift = false;
 
 	while (true)
 	{
@@ -96,7 +97,7 @@ UINT __stdcall Gift_ThreadFunc(void* p)
 			TAsmRoleInfo tAsmRole = g_pAsmRole->GetRoleInfo();
 			if (tAsmRole.bool_ret)
 			{
-				if (tAsmRole.nLevel >= 10 && tAsmRole.nLevel <= 12)
+				if (tAsmRole.nLevel > 9 && tAsmRole.nLevel < 12 && isZuoQiGift == false)
 				{
 					int nBagNum = g_pAsmItem->GetBagItemBlankNum();
 
@@ -116,13 +117,15 @@ UINT __stdcall Gift_ThreadFunc(void* p)
 
 						g_pMsg->msg_dostring("setmetatable(_G, { __index = XinShouNew_Env }); XinShouNew_Close();");
 						Sleep(500);
+
+						isZuoQiGift = true;
 					}
 				}
 			}
 
 			g_pMsg->msg_dostring("setmetatable(_G, {__index = FreshmanWatch_Env}); FreshmanWatch_Bn2Click();");
 			Sleep(500);
-			for (int i = 0; i < 20; i++)
+			for (int i = 0; i < 5; i++)
 			{
 				CString strTemp = g_pMsg->msg_getstring("ItemName", " ItemName = PlayerPackage:GetBagItemName(%d)", i).c_str();
 				Sleep(500);

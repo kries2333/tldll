@@ -107,9 +107,11 @@ public:
 
 	int LUA_GetBagItemIndex(LuaState* pState); //获取背包物品Index
 
+	int LUA_GetConfigRaceName(LuaState* pState);
+
 	int LUA_GetMenPaiName(LuaState* pState); //获取门派
 
-	int LUA_JoinMenPai(LuaState* pState);
+	int LUA_JoinRace(LuaState* pState);
 
 	int LUA_InMenPai(LuaState* pState);	//获取想加入的门派
 

@@ -344,12 +344,11 @@ BOOL CFunction::FUN_RunToTargetEx(float fx, float fy, int SceneId, float dis)//¿
 
 					g_pMsg->msg_dostring("AutoRunToTargetEx(%d, %d, tonumber(%d))", (int)fx, (int)fy, SceneId);
 				}
-				Sleep(1000);
+				Sleep(200);
 				FUN_AutoMove();
 				bMov = true;
 			}
 		}
-		//dbgPrint("Ñ°Â·¼ÆÊ±%d", (dwCurTime - dwEndTime));
 		if ((dwCurTime - dwEndTime) > (5 * 1000)) //Èç¹û5ÃëÃ»ÓÐÒÆ¶¯¾ÍÖØÐÂÒÆ¶¯
 		{
 			auto APos = g_pAsmRole->GetPos();
@@ -373,11 +372,10 @@ BOOL CFunction::FUN_RunToTargetEx(float fx, float fy, int SceneId, float dis)//¿
 		{
 			dbgPrint("µ½´ïÄ¿µÄµØ");
 			g_pMe->bPauseProtect = false; //Æô¶¯³ÔÒ©±£»¤
-			//g_pMsg->CallInOutRide(0);
 			return TRUE;
 		}
 
-		Sleep(1000);
+		Sleep(500);
 	}
 	return FALSE;
 }
@@ -1001,7 +999,7 @@ bool CFunction::FUN_ExecuteTaskKill(_tstring taskName, int nType, int nMonsterTy
 					return TRUE;
 				}
 
-				FUN_MisKillMonsterByName(monsterName);
+				//FUN_MisKillMonsterByName(monsterName);
 
 				TAsmMonster tAsmMonster = FUN_GetMonsterByName(monsterName.c_str(), 0, 1);
 				if (tAsmMonster.nMonsterId != -1)
@@ -1143,53 +1141,45 @@ void CFunction::FUN_AttackMonster(_tstring monsterName, _tstring sceneName, floa
 }
 
 //¼ÓÈëÃÅÅÉ
-void CFunction::FUN_JoinMenPai(_tstring szMenPaiName)
+void CFunction::FUN_JoinRace(CString strRaceName, CString strNpcName, int sceneId, float x, float y)
 {
 	if (!g_pMe->bRun)
 	{
 		return;
 	}
 
-	dbgPrint("FUN_JoinMenPai");
 	int menpai = g_pAsmRole->GetMenPaiForId();
-	dbgPrint("FUN_JoinMenPai µ±Ç°ÃÅÅÉ=%d, ¼ÓÈëÃÅÅÉ=%s", menpai, szMenPaiName.c_str());
+	dbgPrint("FUN_JoinRace µ±Ç°ÃÅÅÉ=%d ´ý¼ÓÈëÃÅÅÉ=%s npc=%s ³¡¾°=%d ×ø±êx=%d y=%d", menpai, strRaceName, strNpcName, sceneId, x, y);
 	if (menpai == 9) //ÅÐ¶ÏÊÇ·ñÊÇÎÞÃÅÅÉ
 	{
 		_tstring taskName = "¾Å´óÃÅÅÉ";
 		while (g_pMe->bRun) {
-			if (FUN_IsTaskSuccess(taskName) == 1)
-			{
-				FUN_TaskSuccessEx(taskName, 1);
-				return;
-			}
 
 			g_pMsg->CallInOutRide(1);
 
-			int sceneId = FUN_GetSceneID("Áè²¨¶´");
-			float tmpPosX = 124;
-			float tmpPosY = 144;
-			if (FUN_RunToTargetEx(tmpPosX, tmpPosY, sceneId))
+			if (FUN_RunToTargetEx(x, y, sceneId))
 			{
-				g_pMsg->SetAutoRunTargetNPCName("ËÕÐÇºÓ"); //ÒÆ¶¯µ½NPC
+				g_pMsg->SetAutoRunTargetNPCName(strNpcName); //ÒÆ¶¯µ½NPC
 
 				g_pMsg->msg_dostring("ClickMission('¼ÓÈëÃÅÅÉ')");//msgµÄluaÏûÏ¢º¯Êý
-				Sleep(1000);
+				Sleep(500);
 
-				_tstring szTemp = "ÎÒÈ·¶¨Òª°ÝÈë" + szMenPaiName;
+				_tstring szTemp = "ÎÒÈ·¶¨Òª°ÝÈë" + strRaceName + "ÅÉ";
 				g_pMsg->msg_dostring("ClickMission(\"%s\")", szTemp.c_str());//msgµÄluaÏûÏ¢º¯Êý
 				Sleep(500);
 
 				g_pMsg->QuestFrameMissionContinue();
-				Sleep(200);
+				Sleep(500);
 
-				g_pMsg->QuestFrameMissionComplete(0);
-				Sleep(200);
+				//g_pMsg->QuestFrameMissionComplete(0);
+				//Sleep(500);
 
 				g_pMsg->MissionQuestAccept_Clicked();
-				Sleep(200);
+				Sleep(500);
+				return;
 			}
 
-			Sleep(500);
+			Sleep(200);
 		}
 	}
 }
@@ -1533,7 +1523,9 @@ void CFunction::FUN_UseSkillKillMonster(TAsmMonster tAsmMonster)
 
 		CString strTemp;
 		strTemp.Format("Ä¿±ê¹ÖÎï=%s Ê£ÓàÑªÁ¿=%f", tAsmMonster.szName, tAsmMonster.fMonsterHp);
+		g_pHPInit->MySendGameInfo(strTemp);
 
+		dbgPrint("FUN_UseSkillKillMonster vUserSkill=%d", g_pUser->vUserSkill.size());
 		for (auto skill : g_pUser->vUserSkill)
 		{
 			FUN_UseAttackSkill(skill, tAsmMonster);//¶àÖÖÀàÐÍ¼¼ÄÜÇø·Ö
@@ -1550,19 +1542,33 @@ void CFunction::FUN_UseSkillKillMonster(TAsmMonster tAsmMonster)
 
 void CFunction::FUN_UseAttackSkill(TUserSkill tUserSkill/*CString SkillName*/, TAsmMonster tAsmMonster)//Ê¹ÓÃ¹¥»÷¼¼ÄÜ
 {
-	auto ARoleInfo = g_pAsmRole->GetRoleInfo();
-	if (ARoleInfo.nState != 7)
+	//auto ARoleInfo = g_pAsmRole->GetRoleInfo();
+	//if (ARoleInfo.nState != 7)
+	//{
+	//	if (tUserSkill.nSkillId != -1)
+	//	{
+	//		if (tUserSkill.nType == 1)	//ÐèÒªÀäÈ´Ê±¼äµÃ¹¥»÷
+	//		{
+	//			//FUN_UseMovAttackSkill(tUserSkill.tAsmSkill, tAsmMonster);//Ê¹ÓÃ¹¥»÷¼¼ÄÜ
+	//		}
+	//		else if (tUserSkill.nType == 2)
+	//		{
+	//			dbgPrint("Ê¹ÓÃ¼¼ÄÜ%s ¼¼ÄÜId=%d", tUserSkill.tAsmSkill.szName, tUserSkill.tAsmSkill.nSkillId);
+	//			FUN_UseMovAttackSkill(tUserSkill.tAsmSkill, tAsmMonster);//Ê¹ÓÃ¹¥»÷¼¼ÄÜ
+	//		}
+	//	}
+	//}
+	dbgPrint("FUN_UseAttackSkill nSkillId=%d nType=%d", tUserSkill.nSkillId, tUserSkill.nType);
+	if (tUserSkill.nSkillId != -1)
 	{
-		if (tUserSkill.nSkillId != -1)
+		if (tUserSkill.nType == 1)	//ÐèÒªÀäÈ´Ê±¼äµÃ¹¥»÷
 		{
-			if (tUserSkill.nType == 1)	//ÐèÒªÀäÈ´Ê±¼äµÃ¹¥»÷
-			{
-				//FUN_UseMovAttackSkill(tUserSkill.tAsmSkill, tAsmMonster);//Ê¹ÓÃ¹¥»÷¼¼ÄÜ
-			}
-			else if (tUserSkill.nType == 2)
-			{
-				FUN_UseMovAttackSkill(tUserSkill.tAsmSkill, tAsmMonster);//Ê¹ÓÃ¹¥»÷¼¼ÄÜ
-			}
+			//FUN_UseMovAttackSkill(tUserSkill.tAsmSkill, tAsmMonster);//Ê¹ÓÃ¹¥»÷¼¼ÄÜ
+		}
+		else if (tUserSkill.nType == 2)
+		{
+			dbgPrint("Ê¹ÓÃ¼¼ÄÜ%s ¼¼ÄÜId=%d", tUserSkill.tAsmSkill.szName, tUserSkill.tAsmSkill.nSkillId);
+			FUN_UseMovAttackSkill(tUserSkill.tAsmSkill, tAsmMonster);//Ê¹ÓÃ¹¥»÷¼¼ÄÜ
 		}
 	}
 }
