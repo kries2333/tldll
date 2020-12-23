@@ -48,6 +48,7 @@ TAsmSkill CAsmSkill::AsmHaveMasterSkill(CString  skillName)//返回非零已学会
 CAsmSkill::CAsmSkill()
 {
 	//初始化技能分类
+	//-----逍遥
 	m_SkillClass.insert(pair<CString, CString>("落英剑", "百花经"));
 	m_SkillClass.insert(pair<CString, CString>("桃花阵", "百花经"));
 	m_SkillClass.insert(pair<CString, CString>("墨守成规", "百花经"));
@@ -69,6 +70,50 @@ CAsmSkill::CAsmSkill()
 	m_SkillClass.insert(pair<CString, CString>("排山倒海", "惊涛掌法"));
 	m_SkillClass.insert(pair<CString, CString>("波澜不惊", "惊涛掌法"));
 	m_SkillClass.insert(pair<CString, CString>("惊涛骇浪", "惊涛掌法"));
+	//-----峨眉
+	m_SkillClass.insert(pair<CString, CString>("貂蝉拜月", "神女拳法"));
+	m_SkillClass.insert(pair<CString, CString>("昭君出塞", "神女拳法"));
+	m_SkillClass.insert(pair<CString, CString>("坐怀不乱", "神女拳法"));
+	m_SkillClass.insert(pair<CString, CString>("西子捧心", "神佑经"));
+	m_SkillClass.insert(pair<CString, CString>("金顶绵掌", "神佑经"));
+	m_SkillClass.insert(pair<CString, CString>("月落西山", "神佑经"));
+	m_SkillClass.insert(pair<CString, CString>("佛光普照", "神佑经"));
+	m_SkillClass.insert(pair<CString, CString>("冲虚养气", "洗髓经"));
+	m_SkillClass.insert(pair<CString, CString>("起死回生", "洗髓经"));
+	m_SkillClass.insert(pair<CString, CString>("延年益寿", "洗髓经"));
+	m_SkillClass.insert(pair<CString, CString>("窈窕淑女", "淑女剑法"));
+	m_SkillClass.insert(pair<CString, CString>("回天术", "淑女剑法"));
+	m_SkillClass.insert(pair<CString, CString>("绝剑式", "淑女剑法"));
+	m_SkillClass.insert(pair<CString, CString>("护心诀", "淑女剑法"));
+	m_SkillClass.insert(pair<CString, CString>("君子好逑", "君子剑法"));
+	m_SkillClass.insert(pair<CString, CString>("障眼法", "君子剑法"));
+	m_SkillClass.insert(pair<CString, CString>("灭剑式", "君子剑法"));
+	m_SkillClass.insert(pair<CString, CString>("斩情诀", "君子剑法"));
+	m_SkillClass.insert(pair<CString, CString>("拖泥带水", "黯然别离掌"));
+	m_SkillClass.insert(pair<CString, CString>("行尸走肉", "黯然别离掌"));
+	m_SkillClass.insert(pair<CString, CString>("呆若木鸡", "黯然别离掌"));
+	//-----星宿
+	m_SkillClass.insert(pair<CString, CString>("蓝砂手", "腐尸功"));
+	m_SkillClass.insert(pair<CString, CString>("连珠腐尸毒", "腐尸功"));
+	m_SkillClass.insert(pair<CString, CString>("百毒不侵", "腐尸功"));
+	m_SkillClass.insert(pair<CString, CString>("幽冥神掌", "五毒功"));
+	m_SkillClass.insert(pair<CString, CString>("蝎尾针", "五毒功"));
+	m_SkillClass.insert(pair<CString, CString>("毒蟾功", "五毒功"));
+	m_SkillClass.insert(pair<CString, CString>("蜈蚣阵", "五毒功"));
+	m_SkillClass.insert(pair<CString, CString>("笑里藏刀", "三笑逍遥散"));
+	m_SkillClass.insert(pair<CString, CString>("谈笑自若", "三笑逍遥散"));
+	m_SkillClass.insert(pair<CString, CString>("含笑九泉", "三笑逍遥散"));
+	m_SkillClass.insert(pair<CString, CString>("木甲术", "神木功"));
+	m_SkillClass.insert(pair<CString, CString>("青蛇毒掌", "神木功"));
+	m_SkillClass.insert(pair<CString, CString>("木遁", "神木功"));
+	m_SkillClass.insert(pair<CString, CString>("指鹿为马", "神木功"));
+	m_SkillClass.insert(pair<CString, CString>("淬毒术", "圣水经"));
+	m_SkillClass.insert(pair<CString, CString>("冰蚕毒掌", "圣水经"));
+	m_SkillClass.insert(pair<CString, CString>("水遁", "圣水经"));
+	m_SkillClass.insert(pair<CString, CString>("经脉逆行", "圣水经"));
+	m_SkillClass.insert(pair<CString, CString>("玉碎昆岗", "拼命三式"));
+	m_SkillClass.insert(pair<CString, CString>("金石俱焚", "拼命三式"));
+	m_SkillClass.insert(pair<CString, CString>("天地同寿", "拼命三式"));
 }
 
 CAsmSkill::~CAsmSkill()
