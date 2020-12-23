@@ -62,7 +62,7 @@ public:
 	int  AsmGetItemNum(CString name);
 	int GetBagItemBlankNum();
 
-	void AsmUseHpItem(int nIndex, DWORD ItemObject1, DWORD ItemObject2, DWORD ItemObject3);
+	void AsmUseHpItem(int nRoleId, int nIndex, DWORD ItemObject1, DWORD ItemObject2, DWORD ItemObject3);
 private:
 	int GetEquipmentTypeForName(CString name);
 };

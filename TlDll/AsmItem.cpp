@@ -301,7 +301,7 @@ int CAsmItem::AsmGetItemNum(CString name)
 }
 
 //吃药发包
-void CAsmItem::AsmUseHpItem(int nIndex, DWORD ItemObject1, DWORD ItemObject2, DWORD ItemObject3)
+void CAsmItem::AsmUseHpItem(int nRoleId, int nIndex, DWORD ItemObject1, DWORD ItemObject2, DWORD ItemObject3)
 {
 	//吃药封包得Call
 
@@ -314,13 +314,13 @@ void CAsmItem::AsmUseHpItem(int nIndex, DWORD ItemObject1, DWORD ItemObject2, DW
 		if (IsBadReadPtr((DWORD*)CallEcx, 4) == 0)
 			CallEcx = *(DWORD*)CallEcx;
 
-		//dbgPrint("nIndex=%X, ItemObject1=%d ItemObject2=%X ItemObject3=%X", nIndex, ItemObject1, ItemObject2, ItemObject3);
+		dbgPrint("nIndex=%X, ItemObject1=%d ItemObject2=%X ItemObject3=%X", nIndex, ItemObject1, ItemObject2, ItemObject3);
 
 		DWORD CallObj = g_GameExeBase + 吃药封包数据对象;
 		TAsmSendEx* tAsmSendEx = BasePackerSendEx(CallObj, 0, 0, -1, nIndex, ItemObject3, ItemObject1, ItemObject2, 
-			0x4517, 0xBF800000, 0xBF800000, 0xBF800000);
+			nRoleId, 0xBF800000, 0xBF800000, 0xBF800000);
 
-		//dbgPrint("CallBase=%X, CallEcx=%X CallObj=%X tAsmSend=%X", CallBase, CallEcx, CallObj, tAsmSendEx);
+		dbgPrint("CallBase=%X, CallEcx=%X CallObj=%X tAsmSend=%X", CallBase, CallEcx, CallObj, tAsmSendEx);
 		_asm {
 			mov ecx, [CallEcx]
 			push tAsmSendEx

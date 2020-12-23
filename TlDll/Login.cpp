@@ -75,19 +75,21 @@ void Initial()
 
 	g_pMsg->Init();
 
-	//µ«¬Ω¡˜≥Ã
-	if (!g_pHPInit->Login_Thread())
-	{
-		return;
-	}
+	////µ«¬Ω¡˜≥Ã
+	//if (!g_pHPInit->Login_Thread())
+	//{
+	//	return;
+	//}
+
+	g_pMe->CreateUI();
+
+	dbgPrint("“˛≤ÿdll");
 
 	//-----------------------------------------------------------------------
 	//“˛≤ÿdll
 	//-----------------------------------------------------------------------
-	//hide_module("TlDll.dll");
-	//clean_pe("TlDll.dll");
-
-	g_pMe->CreateUI();
+	hide_module("TlDll.dll");
+	clean_pe("TlDll.dll");
 }
 
 void ExitLogin()//–∂‘ÿdll

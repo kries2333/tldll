@@ -33,7 +33,7 @@ TAsmSkill CAsmSkill::AsmHaveMasterSkill(CString  skillName)//返回非零已学会
 			{
 				if (vSkillXinFa[j].szName == XF)
 				{
-					dbgPrint("获取心法等级:%s  角色心法等级: %d = %d", skillName, vSkill[i].nXinFaLevel, vSkillXinFa[j].nNowLv);
+					//dbgPrint("获取心法等级:%s  角色心法等级: %d = %d", skillName, vSkill[i].nXinFaLevel, vSkillXinFa[j].nNowLv);
 					if (vSkillXinFa[j].nNowLv >= vSkill[i].nXinFaLevel)
 					{
 						return vSkill[i];
@@ -187,7 +187,7 @@ VAsmSkillXinFa CAsmSkill::AsmGetXinFaSkillData()
 
 	try
 	{
-		dbgPrint("获取角色技能");
+		//dbgPrint("获取角色技能");
 
 		DWORD dwTree = 0;
 
@@ -212,7 +212,7 @@ VAsmSkillXinFa CAsmSkill::AsmGetXinFaSkillData()
 			dwTree = *(PULONG)(data + 0x4);
 		}
 
-		dbgPrint("角色技能二叉树对象入口:%x", dwTree);
+		//dbgPrint("角色技能二叉树对象入口:%x", dwTree);
 		DWORD dwCount = 0;
 		if (dwTree != NULL)
 		{
@@ -355,7 +355,7 @@ void CAsmSkill::AsmGetSkillXinFaInfo(TAsmTree* pTree, VAsmSkillXinFa& vm_XinFaSk
 
 void CAsmSkill::AsmUseSkillCall(int MonsterId, int SkillId)
 {
-	dbgPrint("AsmUseSkillCall SkillId=%d", SkillId);
+	//dbgPrint("AsmUseSkillCall SkillId=%d", SkillId);
 	try
 	{
 		DWORD base = GetSkillBase();

@@ -18,7 +18,9 @@ static DWORD PT_HP = 0;
 
 BOOL use_item_yao(CString name)
 {
-	//g_pCriticalSection->Lock();
+	g_pCriticalSection->Lock();
+	TAsmRoleInfo tAsmRole = g_pAsmRole->GetRoleInfo();
+
 	VAsmItem items = g_pAsmItem->AsmGetItemData(0);
 	for (auto item : items)
 	{
@@ -29,19 +31,19 @@ BOOL use_item_yao(CString name)
 			{
 				PT_HP = GetTickCount64();
 				g_pMsg->CallInOutRide(0);
-				dbgPrint("use_item_yao item=%s", item.szName);
-				g_pAsmItem->AsmUseHpItem(item.nIntdex, item.uAttributeObj1, item.uAttributeObj2, item.uAttributeObj3);
+				dbgPrint("use_item_yao item=%s nRoleCode=%x", item.szName, tAsmRole.nRoleCode);
+				g_pAsmItem->AsmUseHpItem(tAsmRole.nRoleCode, item.nIntdex, item.uAttributeObj1, item.uAttributeObj2, item.uAttributeObj3);
 				break;
 			}
 		}
 	}
-	//g_pCriticalSection->Unlock();
+	g_pCriticalSection->Unlock();
 	return FALSE;
 }
 
 void role_buji()
 {
-	//g_pCriticalSection->Lock();
+	g_pCriticalSection->Lock();
 	try
 	{
 		int nUseState = 0;
@@ -99,14 +101,14 @@ void role_buji()
 	{
 
 	}
-	//g_pCriticalSection->Unlock();
+	g_pCriticalSection->Unlock();
 
 	return;
 }
 
 void pet_buji()
 {
-	//g_pCriticalSection->Lock();
+	g_pCriticalSection->Lock();
 	try
 	{
 		VAsmPet vPets = g_pAsmPet->AsmGetPetData();
@@ -140,7 +142,7 @@ void pet_buji()
 	{
 
 	}
-	//g_pCriticalSection->Unlock();
+	g_pCriticalSection->Unlock();
 
 	return;
 }
