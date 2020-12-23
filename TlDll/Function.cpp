@@ -1010,8 +1010,8 @@ bool CFunction::FUN_ExecuteTaskKill(_tstring taskName, int nType, int nMonsterTy
 
 				if (bPickUp) // «∑Ò ∞»°
 				{
-					Sleep(1000);
 					FUN_PickUp();
+					Sleep(3000);
 				}
 				Sleep(100);
 			}
