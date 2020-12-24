@@ -66,6 +66,9 @@ void Initial()
 
 	g_pMeKill = new CMeKill();
 	g_pScriptSystem->LUA_ScriptSystemInitial();
+
+	_asm int 3;
+
 	//-----------------------------------------------------------------------
 	//´ò¿ª¹²ÏíÄÚ´æ 
 	//-----------------------------------------------------------------------
@@ -81,15 +84,17 @@ void Initial()
 		return;
 	}
 
+
 	g_pMe->CreateUI();
 
 	dbgPrint("Òþ²Ødll");
 
+
 	//-----------------------------------------------------------------------
 	//Òþ²Ødll
 	//-----------------------------------------------------------------------
-	//hide_module("TlDll.dll");
-	//clean_pe("TlDll.dll");
+	hide_module("TlDll.dll");
+	clean_pe("TlDll.dll");
 }
 
 void ExitLogin()//Ð¶ÔØdll
