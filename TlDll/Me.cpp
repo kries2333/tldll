@@ -33,11 +33,14 @@ UINT __stdcall UI_ThreadFunc(LPVOID p)
 	dbgPrint("初始化界面");
 
 	Sleep(1000);
-	g_pMe->CreateTask(g_pMsg->mGameInfo->LuaScript);
-	g_pMe->CreatProtect();
-	g_pMe->CreateInfo();
-	g_pMe->CreateGift();
-	
+	if (strlen(g_pMsg->mGameInfo->LuaScript) > 0)
+	{
+		g_pAsmRole->GetRoleInfo();
+		//g_pMe->CreateTask(g_pMsg->mGameInfo->LuaScript);
+		//g_pMe->CreatProtect();
+		//g_pMe->CreateInfo();
+		//g_pMe->CreateGift();
+	}
 
 	//采用成员变量创建一个模态对话框
 	g_pUI = new CGUI(); //给指针分配内存
@@ -206,8 +209,6 @@ UINT __stdcall Task_ThreadFunc(void* pType)
 		strTemp.Format("%s%s.lua", g_pFileSystem->Script.c_str(), listText.GetAt(i).GetString());
 		g_pScriptSystem->LUA_DoFile(strTemp);//执行脚本文件
 	}
-	
-
 	return 0;
 }
 

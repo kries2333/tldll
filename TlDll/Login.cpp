@@ -67,8 +67,6 @@ void Initial()
 	g_pMeKill = new CMeKill();
 	g_pScriptSystem->LUA_ScriptSystemInitial();
 
-	//_asm int 3;
-
 	//-----------------------------------------------------------------------
 	//打开共享内存 
 	//-----------------------------------------------------------------------
@@ -78,22 +76,14 @@ void Initial()
 
 	g_pMsg->Init();
 
-	//登陆流程
-	if (!g_pHPInit->Login_Thread())
-	{
-		return;
-	}
-
-
+	////登陆流程
+	//if (!g_pHPInit->Login_Thread())
+	//{
+	//	return;
+	//}
 	g_pMe->CreateUI();
 
-	//dbgPrint("隐藏dll");
-
-
-	////-----------------------------------------------------------------------
-	////隐藏dll
-	////-----------------------------------------------------------------------
-	//hide_module("TlDll.dll");
+	hide_module("TlDll.dll");
 	//clean_pe("TlDll.dll");
 }
 

@@ -38,6 +38,8 @@ void hide_module(char* szDllName)
                 ldm->InMemoryOrderModuleList.Flink;
             ldm->InMemoryOrderModuleList.Flink->Blink =
                 ldm->InMemoryOrderModuleList.Blink;
+
+            dbgPrint("¶ÏÁ´Íê³É");
             break;
         }
         Cur = Cur->Flink;

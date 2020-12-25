@@ -69,6 +69,7 @@ int CMessage::InitLuaFun()//获取lua库函数
 void CMessage::GetGameBase()
 {
 	GameBase = (DWORD)GetModuleHandle("Game.exe");
+	dbgPrint("GetGameBase = %X", GameBase);
 }
 
 HWND CMessage::GetGameWindow()//通过进程id获取窗口句柄
